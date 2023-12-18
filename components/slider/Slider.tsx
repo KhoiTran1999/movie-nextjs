@@ -56,7 +56,7 @@ const Slider = () => {
               <img
                 src={val.thumbnail}
                 alt="thumbnail"
-                className="h-screen w-screen bg-cover brightness-50"
+                className="h-screen w-screen bg-contain "
               />
               <div className="text-[#D1D0CF] absolute z-9 top-0 z-0 h-screen w-screen mx-24 flex flex-col justify-center">
                 <ul className="flex items-center animate-wiggle">
