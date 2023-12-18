@@ -53,9 +53,7 @@ const Slider = () => {
           const url = val.thumbnail;
           return (
             <div className="text-white" key={idx + "a"}>
-              <Image
-                width={10000}
-                height={10000}
+              <img
                 src={val.thumbnail}
                 alt="thumbnail"
                 className="h-screen w-screen bg-cover brightness-50"
