@@ -22,7 +22,6 @@ export default function RootLayout({
           token: {
             colorPrimary: "#E50914",
             colorBgElevated: "#141314",
-            colorBgBase: "black",
             colorBgTextHover: "#E50914",
             colorText: "#D1D0CF",
             colorPrimaryActive: "#D1D0CF",

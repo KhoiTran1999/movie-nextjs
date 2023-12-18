@@ -1,8 +1,9 @@
 "use client";
 
 import React from "react";
+
 import { homeItems } from "@/constant/homeItem";
-import { Menu, theme } from "antd";
+import { Menu } from "antd";
 
 const Navigation = () => {
   return (
@@ -13,6 +14,7 @@ const Navigation = () => {
       style={{
         fontWeight: 600,
         fontSize: 16,
+        backgroundColor: "transparent",
       }}
     />
   );

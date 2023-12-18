@@ -8,6 +8,15 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      keyframes: {
+        wiggle: {
+          '0%': { transform: 'translate(300px)' },
+          '100%': { transform: 'translate(0px)' },
+        }
+      },
+      animation: {
+        wiggle: 'wiggle 1s ease-in-out',
+      }
     },
   },
   plugins: [],
