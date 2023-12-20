@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className="select-none overflow-x-hidden">
       <ConfigProvider
         theme={{
           token: {

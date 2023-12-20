@@ -6,6 +6,8 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  color: white;
+  background-color: black;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -14,4 +16,12 @@
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
   }
+}
+
+:root .slick-list {
+  overflow: visible;
+}
+
+:root .slick-list:hover {
+  z-index: 100;
 }

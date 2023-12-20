@@ -2,8 +2,8 @@
 
 export default function Loading() {
   return (
-    <div className="flex justify-center items-center text-red-600 text-5xl">
-      Loading...
+    <div className="w-screen h-screen flex justify-center items-center ">
+      <span className="animate-bounce">Loading...</span>
     </div>
   );
 }
