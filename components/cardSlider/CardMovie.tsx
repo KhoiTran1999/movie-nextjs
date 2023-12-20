@@ -25,7 +25,7 @@ const CardMovie = ({ movieUrl }: movieProprs) => {
         <img
           src={movieUrl}
           alt="thumbnail"
-          className="w-[233px] h-[133px] rounded-t"
+          className="w-[233px] object-cover h-[133px] rounded-t"
         />
         <span
           className={`${
