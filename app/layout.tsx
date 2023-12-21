@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ConfigProvider } from "antd";
+
+import GlobalWrapper from "@/components/wrapper/GlobalWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,20 +18,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="select-none overflow-x-hidden">
-      <ConfigProvider
-        theme={{
-          token: {
-            colorPrimary: "#E50914",
-            colorBgElevated: "#141314",
-            colorBgTextHover: "#E50914",
-            colorText: "#D1D0CF",
-            colorPrimaryActive: "#D1D0CF",
-            colorPrimaryBg: "#D1D0CF",
-          },
-        }}
-      >
-        <body className={inter.className}>{children}</body>
-      </ConfigProvider>
+      <body className={inter.className}>
+        <GlobalWrapper>{children}</GlobalWrapper>
+      </body>
     </html>
   );
 }

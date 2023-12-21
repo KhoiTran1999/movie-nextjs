@@ -1,6 +1,7 @@
 "use client";
 
 import CardSlider from "@/components/cardSlider/CardSlider";
+import { Introduction } from "@/components/introduction/Introduction";
 import NavigationMovie from "@/components/navigationMovie/NavigationMovie";
 import TopPageMovie from "@/components/topPageMovie/TopPageMovie";
 import Axios from "@/utils/axios";
@@ -10,32 +11,35 @@ export default function Home() {
   const [movieList1, setMovieList1] = useState<[]>([]);
   const [movieList2, setMovieList2] = useState<[]>([]);
   const [movieList3, setMovieList3] = useState<[]>([]);
+  const [isLoadedApi, setIsLoadedApi] = useState<boolean>(false);
 
   useEffect(() => {
     const callApi = async () => {
-      const res1 = await Axios("/users", {
-        params: {
-          page: 1,
-          limit: 5,
-        },
+      Promise.all([
+        Axios("/users", {
+          params: {
+            page: 1,
+            limit: 5,
+          },
+        }),
+        Axios("/users", {
+          params: {
+            page: 2,
+            limit: 5,
+          },
+        }),
+        Axios("/users", {
+          params: {
+            page: 3,
+            limit: 5,
+          },
+        }),
+      ]).then((val) => {
+        setMovieList1(val[0].data);
+        setMovieList2(val[1].data);
+        setMovieList3(val[2].data);
+        setIsLoadedApi(true);
       });
-      setMovieList1(res1.data);
-
-      const res2 = await Axios("/users", {
-        params: {
-          page: 2,
-          limit: 5,
-        },
-      });
-      setMovieList2(res2.data);
-
-      const res3 = await Axios("/users", {
-        params: {
-          page: 3,
-          limit: 5,
-        },
-      });
-      setMovieList3(res3.data);
     };
 
     callApi();
@@ -43,30 +47,36 @@ export default function Home() {
 
   return (
     <main>
-      <NavigationMovie />
-      <TopPageMovie />
-      <div className="px-12">
-        <CardSlider
-          movieList1={movieList1}
-          movieList2={movieList2}
-          movieList3={movieList3}
-        />
-        <CardSlider
-          movieList1={movieList1}
-          movieList2={movieList2}
-          movieList3={movieList3}
-        />
-        <CardSlider
-          movieList1={movieList1}
-          movieList2={movieList2}
-          movieList3={movieList3}
-        />
-        <CardSlider
-          movieList1={movieList1}
-          movieList2={movieList2}
-          movieList3={movieList3}
-        />
-      </div>
+      {isLoadedApi ? (
+        <>
+          <NavigationMovie />
+          <TopPageMovie />
+          <div className="px-12">
+            <CardSlider
+              movieList1={movieList1}
+              movieList2={movieList2}
+              movieList3={movieList3}
+            />
+            <CardSlider
+              movieList1={movieList1}
+              movieList2={movieList2}
+              movieList3={movieList3}
+            />
+            <CardSlider
+              movieList1={movieList1}
+              movieList2={movieList2}
+              movieList3={movieList3}
+            />
+            <CardSlider
+              movieList1={movieList1}
+              movieList2={movieList2}
+              movieList3={movieList3}
+            />
+          </div>
+        </>
+      ) : (
+        <Introduction />
+      )}
     </main>
   );
 }

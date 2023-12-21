@@ -25,3 +25,14 @@
 :root .slick-list:hover {
   z-index: 100;
 }
+
+:root .slick-next {
+  &::before {
+    content: "";
+  }
+}
+:root .slick-prev {
+  &::before {
+    content: "";
+  }
+}

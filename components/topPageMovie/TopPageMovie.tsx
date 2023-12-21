@@ -4,7 +4,8 @@ import Axios from "@/utils/axios";
 import { CaretRightFilled, InfoCircleOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { Rubik_Dirt } from "@next/font/google";
-import ReactPlayer from "react-player/youtube";
+import dynamic from "next/dynamic";
+const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
 interface previewMovieProps {
   description: string;
@@ -86,7 +87,7 @@ const TopPageMovie = () => {
           >
             BACK TO THE FUTURE 4
           </h1>
-          <p className="w-2/5 mb-4 max-h-[148px] break-words line-clamp-[5] text-ellipsis overflow-hidden animate-wiggle">
+          <p className="w-2/5 mb-4 max-h-[148px] break-words line-clamp-[3] text-ellipsis overflow-hidden animate-wiggle">
             In "Back to the Future 4" Tom Holland takes on the role of a
             brilliant young inventor, Jake McFly, who stumbles upon Doc Brown's
             long-lost journal. The journal contains secrets to enhance time
