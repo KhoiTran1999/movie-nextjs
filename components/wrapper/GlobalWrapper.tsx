@@ -19,7 +19,7 @@ const GlobalWrapper = ({ children }: { children: React.ReactNode }) => {
           },
         }}
       >
-        {children}
+        <div className="overflow-hidden">{children}</div>
       </ConfigProvider>
     </Providers>
   );

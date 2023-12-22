@@ -108,7 +108,7 @@ const CardSlider = ({
     <div className="mb-10">
       <h2 className="text-xl mb-2 hover:text-[#D1D0CF]">Only On Streamit</h2>
       <div onMouseEnter={handleOnMouseEnter} onMouseLeave={handleOnMouseLeft}>
-        <Carousel arrows={isHover} {...settings} className="hidden hello">
+        <Carousel arrows={isHover} dots={isHover} {...settings}>
           <div>
             <div className="flex items-center">
               {movieList1.map((val: movieProps, idx) => (

@@ -17,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="select-none overflow-x-hidden">
+    <html lang="en" className="select-none">
       <body className={inter.className}>
         <GlobalWrapper>{children}</GlobalWrapper>
       </body>

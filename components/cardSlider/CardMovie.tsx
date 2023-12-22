@@ -14,19 +14,21 @@ type movieProprs = {
 };
 
 const CardMovie = ({ movieUrl }: movieProprs) => {
-  const [isHovered, setIsHovered] = useState(false);
+  const [isHovered, setIsHovered] = useState<boolean>(false);
   const [delayTimeout, setDelayTimeout] = useState<any>(null);
+  const [isReady, setIsReady] = useState<boolean>(false);
 
   const handleOnMouseEnter = () => {
     const timeoutId: any = setTimeout(() => {
       setIsHovered(true);
-    }, 500);
+    }, 700);
 
     setDelayTimeout(timeoutId);
   };
   const onMouseLeave = () => {
     clearTimeout(delayTimeout);
     setIsHovered(false);
+    setIsReady(false);
   };
 
   return (
@@ -35,33 +37,42 @@ const CardMovie = ({ movieUrl }: movieProprs) => {
       onMouseLeave={onMouseLeave}
       className={`${
         isHovered
-          ? "z-10 scale-125 shadow-[rgba(0,_0,_0,_0.9)_0px_3px_8px]"
-          : "z-0"
-      } w-[19%] mx-2 inline-block rounded transition-all duration-700 cursor-pointer`}
+          ? "z-50 scale-[1.5] shadow-[rgba(0,_0,_0,_0.9)_0px_3px_8px]"
+          : "z-10"
+      } relative w-[19%] mx-2 inline-block rounded transition-all duration-500 cursor-pointer`}
     >
       <div className="relative">
-        {isHovered ? (
-          <ReactPlayer
-            url={"https://www.youtube.com/watch?v=nS12Fbtgr5A"}
-            loop
-            muted
-            playing
-            width={"100%"}
-            height={"20svh"}
-            style={{
-              objectFit: "cover",
-            }}
-          />
-        ) : (
-          <img
-            loading="lazy"
-            src={movieUrl}
-            alt="thumbnail"
-            className={`${
-              isHovered ? "rounded-t-md" : "rounded-md"
-            } w-full h-[20svh] object-cover`}
-          />
-        )}
+        <div className="w-full h-full overflow-hidden rounded-t-md">
+          <div className="relative after:content-[''] after:w-full after:h-full after:absolute after:top-0 after:left-0">
+            <ReactPlayer
+              url={
+                isHovered ? "https://www.youtube.com/watch?v=nS12Fbtgr5A" : ""
+              }
+              loop={true}
+              playing
+              controls={false}
+              muted
+              width={isReady ? "100%" : "0px"}
+              height={isReady ? "20svh" : "0px"}
+              onReady={() => setIsReady(true)}
+              style={{
+                objectFit: "cover",
+                transform: "scale(1.55)",
+              }}
+            />
+          </div>
+
+          {!isReady && (
+            <img
+              loading="lazy"
+              src={movieUrl}
+              alt="thumbnail"
+              className={`${
+                isHovered ? "rounded-t-md" : "rounded-md"
+              } w-full h-[20svh] object-cover`}
+            />
+          )}
+        </div>
 
         <span
           className={`${
@@ -87,7 +98,7 @@ const CardMovie = ({ movieUrl }: movieProprs) => {
         <div
           className={`${
             isHovered ? "visible opacity-100" : "invisible opacity-0"
-          } bg-[#141414] w-full absolute z-100 p-3 shadow-[rgba(0,_0,_0,_0.9)_0px_3px_8px] transition-all rounded-b-md duration-700`}
+          } bg-[#141414] w-full absolute z-50 p-3 shadow-[rgba(0,_0,_0,_0.9)_0px_3px_8px]  rounded-b-md`}
         >
           <span className="mr-3 text-xs">1h30p</span>
           <span className="text-xs">3 seasons</span>
