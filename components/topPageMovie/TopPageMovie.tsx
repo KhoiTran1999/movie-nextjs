@@ -39,7 +39,7 @@ const TopPageMovie = () => {
 
   return (
     <div>
-      <div className="text-white mb-4 overflow-hidden relative h-[80vh] w-screen">
+      <div className="text-white overflow-hidden relative h-[80vh] w-screen">
         {/* {previewMovie ? (
           <ReactPlayer
             url={"https://www.youtube.com/watch?v=nS12Fbtgr5A"}
@@ -75,10 +75,9 @@ const TopPageMovie = () => {
             transform: "scale(1.35)",
           }}
         />
-
         <div
           style={{
-            boxShadow: "0px -255px 44px -215px rgba(0,0,0,1) inset",
+            boxShadow: "0px -240px 44px -215px rgba(0,0,0,1) inset",
           }}
           className="text-[#D1D0CF] absolute z-9 top-1/2 translate-y-[-50%] z-0 h-[80vh] w-screen px-12 flex flex-col justify-center"
         >

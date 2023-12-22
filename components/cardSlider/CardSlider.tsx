@@ -112,21 +112,21 @@ const CardSlider = ({
           <div>
             <div className="flex items-center">
               {movieList1.map((val: movieProps, idx) => (
-                <CardMovie movieUrl={val.thumbnail} key={idx} />
+                <CardMovie movieUrl={val.thumbnail} key={val.movieId} />
               ))}
             </div>
           </div>
           <div>
             <div className="flex items-center">
               {movieList2.map((val: movieProps, idx) => (
-                <CardMovie movieUrl={val.thumbnail} key={idx} />
+                <CardMovie movieUrl={val.thumbnail} key={val.movieId} />
               ))}
             </div>
           </div>
           <div>
             <div className="flex items-center">
               {movieList3.map((val: movieProps, idx) => (
-                <CardMovie movieUrl={val.thumbnail} key={idx} />
+                <CardMovie movieUrl={val.thumbnail} key={val.movieId} />
               ))}
             </div>
           </div>

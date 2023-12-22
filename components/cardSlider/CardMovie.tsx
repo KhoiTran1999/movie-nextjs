@@ -7,6 +7,7 @@ import {
   FireFilled,
 } from "@ant-design/icons";
 import { useEffect, useRef, useState } from "react";
+import ReactPlayer from "react-player";
 
 type movieProprs = {
   movieUrl: string;
@@ -14,17 +15,11 @@ type movieProprs = {
 
 const CardMovie = ({ movieUrl }: movieProprs) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [delayTimeout, setDelayTimeout] = useState<any>(null);
 
   const handleOnMouseEnter = () => {
-    const timeoutId: any = setTimeout(() => {
-      setIsHovered(true);
-    }, 500);
-
-    setDelayTimeout(timeoutId);
+    setIsHovered(true);
   };
   const onMouseLeave = () => {
-    clearTimeout(delayTimeout);
     setIsHovered(false);
   };
 
@@ -39,14 +34,29 @@ const CardMovie = ({ movieUrl }: movieProprs) => {
       } w-[19%] mx-2 inline-block rounded transition-all duration-700 cursor-pointer`}
     >
       <div className="relative">
-        <img
-          loading="lazy"
-          src={movieUrl}
-          alt="thumbnail"
-          className={`${
-            isHovered ? "rounded-t-md" : "rounded-md"
-          } w-full h-[20vh] object-cover`}
-        />
+        {isHovered ? (
+          <ReactPlayer
+            url={"https://www.youtube.com/watch?v=nS12Fbtgr5A"}
+            loop
+            muted
+            playing
+            width={"100%"}
+            height={"20svh"}
+            style={{
+              objectFit: "cover",
+            }}
+          />
+        ) : (
+          <img
+            loading="lazy"
+            src={movieUrl}
+            alt="thumbnail"
+            className={`${
+              isHovered ? "rounded-t-md" : "rounded-md"
+            } w-full h-[20svh] object-cover`}
+          />
+        )}
+
         <span
           className={`${
             isHovered ? "opacity-100" : "opacity-0"
