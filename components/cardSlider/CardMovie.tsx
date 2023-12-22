@@ -15,11 +15,17 @@ type movieProprs = {
 
 const CardMovie = ({ movieUrl }: movieProprs) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [delayTimeout, setDelayTimeout] = useState<any>(null);
 
   const handleOnMouseEnter = () => {
-    setIsHovered(true);
+    const timeoutId: any = setTimeout(() => {
+      setIsHovered(true);
+    }, 500);
+
+    setDelayTimeout(timeoutId);
   };
   const onMouseLeave = () => {
+    clearTimeout(delayTimeout);
     setIsHovered(false);
   };
 
