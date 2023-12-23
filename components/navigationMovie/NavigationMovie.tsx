@@ -24,13 +24,12 @@ const NavigationMovie = () => {
       } w-full p-4 px-12 flex justify-between items-center fixed z-[100] top-0 left-0 transition-all`}
     >
       <Link href="/">
-        <Image src="/logo.png" alt="logo" width={153} height={38} />
+        <Image src="/logo.png" alt="logo" width={100} height={50} />
       </Link>
-      <Link href={"hello"}>GOGO</Link>
-      <div className="w-[400px]">
+      <div>
         <Navigation />
       </div>
-      <div className="w-[400px] pr-5 flex justify-end items-center">
+      <div className="pr-5 flex justify-end items-center">
         <SearchMovie />
         <User />
       </div>

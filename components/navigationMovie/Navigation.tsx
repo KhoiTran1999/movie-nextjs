@@ -1,16 +1,19 @@
 "use client";
 
 import React from "react";
-
-import { homeItems } from "@/constant/homeItem";
+import { usePathname } from "next/navigation";
 import { Menu } from "antd";
 
+import { homeItems } from "@/constant/homeItem";
+
 const Navigation = () => {
+  const pathname = usePathname();
+
   return (
     <Menu
       items={homeItems}
       mode="horizontal"
-      selectedKeys={["1"]}
+      selectedKeys={[pathname]}
       style={{
         fontWeight: 600,
         fontSize: 16,

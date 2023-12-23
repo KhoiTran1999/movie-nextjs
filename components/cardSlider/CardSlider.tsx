@@ -96,18 +96,37 @@ const CardSlider = ({
   movieList3,
 }: cardSliderProps) => {
   const [isHover, setIsHover] = useState<boolean>(false);
+  const [seeAll, setSeeAll] = useState<boolean>(false);
 
   const handleOnMouseEnter = () => {
     setIsHover(true);
   };
-  const handleOnMouseLeft = () => {
+  const onMouseLeave = () => {
     setIsHover(false);
   };
 
   return (
     <div className="mb-10">
-      <h2 className="text-xl mb-2 hover:text-[#D1D0CF]">Only On Streamit</h2>
-      <div onMouseEnter={handleOnMouseEnter} onMouseLeave={handleOnMouseLeft}>
+      <div className="mb-2">
+        <div
+          onMouseEnter={() => setSeeAll(true)}
+          onMouseLeave={() => setSeeAll(false)}
+          className="cursor-pointer inline-flex items-center"
+        >
+          <h2 className="text-xl hover:text-[#D1D0CF]">Only On Streamit</h2>
+          <div
+            className={`${
+              seeAll
+                ? "visible opacity-100 translate-x-[0px]"
+                : "invisible opacity-0 translate-x-[-20px]"
+            } transition-all ml-3 text-xs text-[#E50914] font-bold flex justify-center items-center`}
+          >
+            <span className="mr-1">Xem tất cả </span>
+            <RightOutlined />
+          </div>
+        </div>
+      </div>
+      <div onMouseEnter={handleOnMouseEnter} onMouseLeave={onMouseLeave}>
         <Carousel arrows={isHover} dots={isHover} {...settings}>
           <div>
             <div className="flex items-center">

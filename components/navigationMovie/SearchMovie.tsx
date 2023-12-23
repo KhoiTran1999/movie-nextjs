@@ -7,11 +7,13 @@ const SearchMovie = () => {
   const [searchFocus, setsearchFocus] = useState(false);
 
   return (
-    <form action="" className="flex justify-end items-center">
+    <form action="" className="flex justify-end items-center relative">
       <input
         className={`${
-          searchFocus ? "w-full border-[#E50914]" : "w-0 border-transparent"
-        } mr-3 p-1 rounded bg-transparent text-white border  outline-none transition-all`}
+          searchFocus
+            ? "w-[230px] h-[34px] border-[white] bg-[#000000c1]"
+            : "w-0 h-0 border-transparent bg-transparent"
+        } absolute right-[15px] mr-3 p-1 rounded text-white border outline-none transition-all`}
         placeholder="Search Movie"
         type="search"
         id="search"
