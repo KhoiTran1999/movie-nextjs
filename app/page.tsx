@@ -73,6 +73,7 @@ export default function Home() {
               movieList3={movieList3}
             />
           </div>
+          <div className="h-[200px] w-full">Footer</div>
         </>
       ) : (
         <Introduction />

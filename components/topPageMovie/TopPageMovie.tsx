@@ -5,7 +5,10 @@ import { CaretRightFilled, InfoCircleOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { Rubik_Dirt } from "@next/font/google";
 import dynamic from "next/dynamic";
-const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
+import Link from "next/link";
+const ReactPlayer = dynamic(() => import("react-player/youtube"), {
+  ssr: false,
+});
 
 interface previewMovieProps {
   description: string;
@@ -40,28 +43,6 @@ const TopPageMovie = () => {
   return (
     <div>
       <div className="text-white overflow-hidden relative h-[80vh] w-screen">
-        {/* {previewMovie ? (
-          <ReactPlayer
-            url={"https://www.youtube.com/watch?v=nS12Fbtgr5A"}
-            loop
-            muted
-            playing
-            width={"100vw"}
-            height={"80vh"}
-            style={{
-              backgroundSize: "contain",
-              filter: "brightness(.7)",
-              transform: "scale(1.35)",
-            }}
-          />
-        ) : (
-          <img
-            src="https://7z363nlh6c.execute-api.us-east-1.amazonaws.com/v1/storage-movie-data/2.jpg"
-            alt="thumbnail"
-            className="w-screen h-[80vh] bg-contain "
-          />
-        )} */}
-
         <ReactPlayer
           url={"https://www.youtube.com/watch?v=nS12Fbtgr5A"}
           loop
@@ -102,7 +83,9 @@ const TopPageMovie = () => {
             </button>
             <button className="w-44 px-6 py-3 bg-gray-600/20 hover:bg-gray-600/60 rounded text-sm font-semibold text-white transition-colors flex justify-center items-center">
               <InfoCircleOutlined className="text-xl mr-2" />
-              <span>Information</span>
+              <Link href={"/detail/2"}>
+                <span>Information</span>
+              </Link>
             </button>
           </div>
         </div>

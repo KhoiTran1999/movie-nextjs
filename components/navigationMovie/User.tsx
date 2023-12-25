@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Dropdown, Divider, theme, Avatar } from "antd";
+import { Dropdown, Divider, theme, Avatar, Tooltip } from "antd";
 import type { MenuProps } from "antd";
 
 const { useToken } = theme;
@@ -84,7 +84,9 @@ const User = () => {
         </div>
       )}
     >
-      <UserOutlined className="text-[#D1D0CF] text-xl cursor-pointer ml-5" />
+      <Tooltip title="Account">
+        <UserOutlined className="text-[#D1D0CF] text-xl cursor-pointer ml-5" />
+      </Tooltip>
     </Dropdown>
   );
 };

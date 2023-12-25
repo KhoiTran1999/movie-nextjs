@@ -5,9 +5,15 @@ import {
   PlusOutlined,
   LikeOutlined,
   FireFilled,
+  DownOutlined,
 } from "@ant-design/icons";
-import { useEffect, useRef, useState } from "react";
-import ReactPlayer from "react-player";
+import { Tooltip } from "antd";
+import dynamic from "next/dynamic";
+import Link from "next/link";
+import { useState } from "react";
+const ReactPlayer = dynamic(() => import("react-player/youtube"), {
+  ssr: false,
+});
 
 type movieProprs = {
   movieUrl: string;
@@ -39,7 +45,7 @@ const CardMovie = ({ movieUrl }: movieProprs) => {
         isHovered
           ? "z-50 scale-[1.5] shadow-[rgba(0,_0,_0,_0.9)_0px_3px_8px]"
           : "z-10"
-      } relative w-[19%] mx-2 inline-block rounded transition-all duration-500 cursor-pointer`}
+      } relative w-[19%] mx-2 inline-block rounded transition-all duration-500`}
     >
       <div className="relative">
         <div className="w-full h-full overflow-hidden rounded-t-md">
@@ -64,7 +70,6 @@ const CardMovie = ({ movieUrl }: movieProprs) => {
 
           {!isReady && (
             <img
-              loading="lazy"
               src={movieUrl}
               alt="thumbnail"
               className={`${
@@ -81,28 +86,49 @@ const CardMovie = ({ movieUrl }: movieProprs) => {
         >
           <CaretRightFilled />
         </span>
-        <span
-          className={`${
-            isHovered ? "opacity-100" : "opacity-0"
-          } absolute transition-all hover:scale-110 hover:bg-gray-700/60 bg-gray-700/90 bottom-2 right-11 w-3 h-3 p-3 rounded-full  flex justify-center items-center cursor-pointer`}
-        >
-          <PlusOutlined />
-        </span>
-        <span
-          className={`${
-            isHovered ? "opacity-100" : "opacity-0"
-          } absolute transition-all hover:scale-110 hover:bg-gray-700/60 bg-gray-700/90 bottom-2 right-20 w-3 h-3 p-3 rounded-full  flex justify-center items-center cursor-pointer`}
-        >
-          <LikeOutlined />
-        </span>
+        <Tooltip title="Add watch list">
+          <span
+            className={`${
+              isHovered ? "opacity-100" : "opacity-0"
+            } absolute transition-all hover:scale-110 hover:bg-gray-700/60 bg-gray-700/90 bottom-2 right-11 w-3 h-3 p-3 rounded-full  flex justify-center items-center cursor-pointer`}
+          >
+            <PlusOutlined />
+          </span>
+        </Tooltip>
+
+        <Tooltip title="Like">
+          <span
+            className={`${
+              isHovered ? "opacity-100" : "opacity-0"
+            } absolute transition-all hover:scale-110 hover:bg-gray-700/60 bg-gray-700/90 bottom-2 right-20 w-3 h-3 p-3 rounded-full  flex justify-center items-center cursor-pointer`}
+          >
+            <LikeOutlined />
+          </span>
+        </Tooltip>
+
         <div
           className={`${
             isHovered ? "visible opacity-100" : "invisible opacity-0"
           } bg-[#141414] w-full absolute z-50 p-3 shadow-[rgba(0,_0,_0,_0.9)_0px_3px_8px]  rounded-b-md`}
         >
-          <span className="mr-3 text-xs">1h30p</span>
-          <span className="text-xs">3 seasons</span>
-          <ul className="flex items-center text-xs flex-wrap">
+          <div className="mb-2 flex justify-between items-center">
+            <div>
+              <span className="mr-3 text-[10px] text-[#B6B6B6]">1h30p</span>
+              <span className="text-[10px] text-[#B6B6B6]">3 seasons</span>
+            </div>
+            <Tooltip title="More Information">
+              <Link href={"/detail/2"}>
+                <span
+                  className={`${
+                    isHovered ? "opacity-100" : "opacity-0"
+                  } transition-all hover:scale-110 hover:bg-gray-700/60 bg-gray-700/90 w-3 h-3 p-3 rounded-full  flex justify-center items-center cursor-pointer`}
+                >
+                  <DownOutlined />
+                </span>
+              </Link>
+            </Tooltip>
+          </div>
+          <ul className="flex items-center text-[10px] flex-wrap">
             {Array.from({ length: 5 }, (_, idx) => {
               if (idx + 1 < 5) {
                 return (

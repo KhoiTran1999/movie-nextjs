@@ -7,9 +7,9 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "7z363nlh6c.execute-api.us-east-1.amazonaws.com",
+        hostname: "preview.redd.it",
         port: "",
-        pathname: "/v1/storage-movie-data/**",
+        pathname: "/**",
       },
     ],
   },
