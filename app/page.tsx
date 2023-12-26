@@ -4,7 +4,7 @@ import CardSlider from "@/components/cardSlider/CardSlider";
 import { Introduction } from "@/components/introduction/Introduction";
 import NavigationMovie from "@/components/navigationMovie/NavigationMovie";
 import TopPageMovie from "@/components/topPageMovie/TopPageMovie";
-import Axios from "@/utils/axios";
+import { Axios2 } from "@/utils/axios";
 import { useEffect, useState } from "react";
 
 export default function Home() {
@@ -16,19 +16,19 @@ export default function Home() {
   useEffect(() => {
     const callApi = async () => {
       Promise.all([
-        Axios("/users", {
+        Axios2("/users", {
           params: {
             page: 1,
             limit: 5,
           },
         }),
-        Axios("/users", {
+        Axios2("/users", {
           params: {
             page: 2,
             limit: 5,
           },
         }),
-        Axios("/users", {
+        Axios2("/users", {
           params: {
             page: 3,
             limit: 5,

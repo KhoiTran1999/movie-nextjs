@@ -1,14 +1,25 @@
-export const Actor = () => {
+interface actorProps {
+  characterName: string;
+  image: string;
+  namePerson: number;
+  personId: string;
+}
+
+type castCharacteries = {
+  castCharacteries: [];
+};
+
+export const Actor = ({ castCharacteries }: castCharacteries) => {
   return (
     <div className="flex justify-start items-center flex-wrap">
-      {Array.from({ length: 5 }, (_, idx) => (
-        <div className="w-[18%] mr-2 mb-2">
+      {castCharacteries.map((val: actorProps) => (
+        <div className="w-[18%] mr-2 mb-2" key={val.personId}>
           <img
-            src="https://preview.redd.it/back-to-the-future-4-your-kids-are-gonna-love-it-v0-dogbil1y6f3b1.png?width=640&crop=smart&auto=webp&s=aa39e695f73610a3f80edec9a3a21e2bce2542bb"
+            src={val.image}
             alt=""
-            className="object-contain w-full"
+            className="object-contain w-full rounded"
           />
-          <span>Chris Hemsworth asdfasdf asdfas dfasdf as</span>
+          <span>{val.namePerson}</span>
         </div>
       ))}
     </div>

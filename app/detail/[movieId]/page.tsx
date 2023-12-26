@@ -13,9 +13,13 @@ import {
   FireFilled,
 } from "@ant-design/icons";
 import Image from "next/image";
-import { Tabs, Tooltip } from "antd";
-import type { TabsProps } from "antd";
+import { Tabs, Tooltip, Modal } from "antd";
 import { Actor } from "@/components/actorList/Actor";
+import { useEffect, useMemo, useRef, useState } from "react";
+import Axios from "@/utils/axios";
+import { Introduction } from "@/components/introduction/Introduction";
+import { EpisodeModal } from "@/components/episodeModal/EpisodeModal";
+import { WatchModal } from "@/components/watchModal/WatchModal";
 const ReactPlayer = dynamic(() => import("react-player/youtube"), {
   ssr: false,
 });
@@ -26,116 +30,285 @@ const rubik = Rubik_Dirt({
   style: ["normal"],
 });
 
+interface detailProps {
+  castCharacteries: [];
+  categories: [];
+  dateCreated: string;
+  dateUpdated: string;
+  description: string;
+  englishName: string;
+  feature: {};
+  mark: number;
+  movieId: string;
+  nation: {};
+  producer: {};
+  thumbnail: string;
+  time: number;
+  totalEpisodes: number;
+  totalSeasons: number;
+  trailer: string;
+  vietnamName: string;
+  viewer: number;
+}
+
+interface seasonProps {
+  seasonId: string;
+  seasonNumber: number;
+  name: string;
+  episodes: episodeProps[];
+}
+
+interface episodeProps {
+  episodeId: string;
+  episodeNumber: number;
+  name: string;
+  video: string;
+  dateCreated: string;
+  dateUpdated: string;
+}
+
 export default function Detail() {
-  const items: TabsProps["items"] = [
-    {
-      key: "Description",
-      label: "Description",
-      children: `In "Back to the Future 4" Tom Holland takes on the role of a
-            brilliant young inventor, Jake McFly, who stumbles upon Doc Brown's
-            long-lost journal. The journal contains secrets to enhance time
-            travel capabilities, opening up new possibilities and unforeseen
-            consequences. As Jake navigates through various timelines, he
-            encounters both familiar faces and new challenges, all while trying
-            to prevent a mysterious adversary from rewriting history.`,
-    },
-    {
-      key: "Actors",
-      label: "Actors",
-      children: <Actor />,
-    },
-  ];
+  const [data, setData] = useState<detailProps>({
+    castCharacteries: [],
+    categories: [],
+    dateCreated: "",
+    dateUpdated: "",
+    description: "",
+    englishName: "",
+    feature: {},
+    mark: 0,
+    movieId: "",
+    nation: {},
+    producer: {},
+    thumbnail: "",
+    time: 0,
+    totalEpisodes: 0,
+    totalSeasons: 0,
+    trailer: "",
+    vietnamName: "",
+    viewer: 0,
+  });
+
+  const [tabItem, setTabItem] = useState<any>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [isEpisodeModalOpen, setIsEpisodeModalOpen] = useState<boolean>(false);
+  const [isWatchModalOpen, setIsWatchModalOpen] = useState<boolean>(false);
+  const [watchMovie, setWatchMovie] = useState<seasonProps>({
+    seasonId: "",
+    seasonNumber: 1,
+    name: "",
+    episodes: [
+      {
+        episodeId: "",
+        episodeNumber: 1,
+        name: "",
+        video: "",
+        dateCreated: "",
+        dateUpdated: "",
+      },
+    ],
+  });
+  const iframeVideoRef = useRef<any>();
+
+  const showModal = () => {
+    if (data.totalEpisodes > 1 && data.totalSeasons > 1)
+      return setIsEpisodeModalOpen(true);
+
+    setIsWatchModalOpen(true);
+
+    //Take back iframe data
+    let iframeVideo: HTMLIFrameElement | null = document.getElementById(
+      "iframeVideo"
+    ) as HTMLIFrameElement;
+    if (iframeVideo) iframeVideo.src = iframeVideoRef.current;
+
+    const fetchAPI = async () => {
+      const res = await Axios("Seasons", {
+        params: {
+          movieId: data.movieId,
+          seasonNumber: 1,
+        },
+      });
+      setWatchMovie(res.data[0]);
+    };
+    fetchAPI();
+  };
+
+  const handleCancel = () => {
+    setIsEpisodeModalOpen(false);
+  };
+
+  const handleCancelWatch = () => {
+    setIsWatchModalOpen(false);
+  };
+
+  const handleAfterClose = () => {
+    let iframeVideo: HTMLIFrameElement | null = document.getElementById(
+      "iframeVideo"
+    ) as HTMLIFrameElement;
+    iframeVideoRef.current = iframeVideo.src;
+
+    //remove iframe data
+    iframeVideo.src = "";
+  };
+
+  useEffect(() => {
+    const fetchAPI = async () => {
+      const res = await Axios("Movie/bd345bda-a5fc-4c05-b4f2-6e91e2e76bab");
+      setData(res.data);
+      setTabItem([
+        {
+          key: "Description",
+          label: "Description",
+          children: res.data.description,
+        },
+        {
+          key: "Actors",
+          label: "Actors",
+          children: <Actor castCharacteries={res.data.castCharacteries} />,
+        },
+      ]);
+      setLoading(false);
+    };
+    fetchAPI();
+  }, []);
+
+  console.log("isWatchModalOpen: ", isWatchModalOpen);
 
   return (
-    <div>
-      <NavigationMovie />
-      <ReactPlayer
-        url={"https://www.youtube.com/watch?v=nS12Fbtgr5A"}
-        // playing
-        controls
-        width={"100svw"}
-        height={"80svh"}
-        style={{ marginTop: "82px" }}
-      />
-      <div className="flex justify-center items-start my-8">
-        <div
-          style={{
-            boxShadow: "0px -240px 44px -215px rgba(0,0,0,1) inset",
-          }}
-          className="w-1/2 mr-2 text-[#D1D0CF] flex flex-col justify-center"
-        >
-          <h1
-            className={`${rubik.className} text-7xl my-4 tracking-wider [word-spacing:5px] animate-wiggle w-full`}
+    <>
+      {loading ? (
+        <Introduction />
+      ) : (
+        <div>
+          <NavigationMovie />
+          <ReactPlayer
+            url={data.trailer}
+            // playing
+            controls
+            width={"100svw"}
+            height={"80svh"}
+            style={{ marginTop: "82px" }}
+          />
+          <div className="flex justify-center items-start my-8">
+            <div
+              style={{
+                boxShadow: "0px -240px 44px -215px rgba(0,0,0,1) inset",
+              }}
+              className="w-1/2 mr-2 text-[#D1D0CF] flex flex-col justify-center"
+            >
+              <h1
+                className={`${rubik.className} text-7xl my-4 tracking-wider [word-spacing:5px] animate-wiggle w-full`}
+              >
+                {data.englishName}
+              </h1>
+              <h2>{data.vietnamName}</h2>
+              <div className="my-4">
+                <span>{data.dateCreated.slice(0, 4)}</span>
+                <span className="mx-4">{data.time} minutes</span>
+                <span>
+                  {data.mark}/10 <StarFilled className="text-yellow-400" />
+                </span>
+                <ul className="mt-2 flex items-center flex-wrap">
+                  {data.categories.map(
+                    (val: { categoryId: number; name: string }, idx) => {
+                      if (idx + 1 < data.categories.length) {
+                        return (
+                          <li className="mr-2" key={val.categoryId}>
+                            <span className="mr-2 hover:text-[#E50914] cursor-pointer">
+                              {val.name}
+                            </span>
+                            <FireFilled className="text-xs text-[#E50914]" />
+                          </li>
+                        );
+                      }
+                      return (
+                        <li className="mr-2" key={val.categoryId}>
+                          <span className=" hover:text-[#E50914] cursor-pointer">
+                            {val.name}
+                          </span>
+                        </li>
+                      );
+                    }
+                  )}
+                </ul>
+              </div>
+              <Tabs
+                type="card"
+                defaultActiveKey="Description"
+                items={tabItem}
+              />
+              <div className="mt-5 flex">
+                <button
+                  onClick={showModal}
+                  className="w-44 px-6 py-3 mr-8 bg-[#E50914] hover:bg-red-800 rounded text-sm font-semibold text-white transition-colors flex justify-center items-center"
+                >
+                  <CaretRightFilled className="text-xl" />
+                  <span>Play Now</span>
+                </button>
+                <Tooltip color="grey" title="Add watch list">
+                  <span
+                    className={`transition-all hover:scale-110 hover:bg-gray-700/60 bg-gray-700/90 w-11 h-11 p-3 rounded-full  flex justify-center items-center cursor-pointer`}
+                  >
+                    <PlusOutlined className="text-xl" />
+                  </span>
+                </Tooltip>
+
+                <Tooltip color="grey" title="Like">
+                  <span
+                    className={`mx-3 transition-all hover:scale-110 hover:bg-gray-700/60 bg-gray-700/90 w-11 h-11 p-3 rounded-full  flex justify-center items-center cursor-pointer`}
+                  >
+                    <LikeOutlined className="text-xl" />
+                  </span>
+                </Tooltip>
+
+                <Tooltip color="grey" title="Share">
+                  <span
+                    className={`transition-all hover:scale-110 hover:bg-gray-700/60 bg-gray-700/90 w-11 h-11 p-3 rounded-full  flex justify-center items-center cursor-pointer`}
+                  >
+                    <ShareAltOutlined className="text-xl" />
+                  </span>
+                </Tooltip>
+              </div>
+            </div>
+            <img
+              src={data.thumbnail}
+              alt="thumbnail"
+              style={{ borderRadius: "10px" }}
+              className="w-[20%]"
+            />
+          </div>
+          <Modal
+            centered
+            open={isEpisodeModalOpen}
+            onCancel={handleCancel}
+            okButtonProps={{ hidden: true }}
+            cancelButtonProps={{ hidden: true }}
           >
-            BACK TO THE FUTURE 4
-          </h1>
-          <h2>Trở về tương lai 4</h2>
-          <div className="my-4">
-            <span>2023</span>
-            <span className="mx-4">1h20m</span>
-            <span>
-              4.3/5 <StarFilled className="text-yellow-400" />
-            </span>
-            <ul className="mt-2 flex items-center flex-wrap">
-              {Array.from({ length: 5 }, (_, idx) => {
-                if (idx + 1 < 5) {
-                  return (
-                    <li className="mr-2" key={idx}>
-                      <span className="mr-2 hover:text-[#E50914] cursor-pointer">
-                        Lý thú
-                      </span>
-                      <FireFilled className="text-xs text-[#E50914]" />
-                    </li>
-                  );
-                }
-                return (
-                  <li className="mr-2" key={idx}>
-                    <span className=" hover:text-[#E50914] cursor-pointer">
-                      Hành động
-                    </span>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-          <Tabs type="card" defaultActiveKey="Description" items={items} />
-          <div className="mt-5 flex">
-            <button className="w-44 px-6 py-3 mr-8 bg-[#E50914] hover:bg-red-800 rounded text-sm font-semibold text-white transition-colors flex justify-center items-center">
-              <CaretRightFilled className="text-xl" />
-              <span>Play Now</span>
-            </button>
-            <Tooltip color="grey" title="Add watch list">
-              <span
-                className={`transition-all hover:scale-110 hover:bg-gray-700/60 bg-gray-700/90 w-11 h-11 p-3 rounded-full  flex justify-center items-center cursor-pointer`}
-              >
-                <PlusOutlined className="text-xl" />
-              </span>
-            </Tooltip>
-
-            <Tooltip color="grey" title="Like">
-              <span
-                className={`mx-3 transition-all hover:scale-110 hover:bg-gray-700/60 bg-gray-700/90 w-11 h-11 p-3 rounded-full  flex justify-center items-center cursor-pointer`}
-              >
-                <LikeOutlined className="text-xl" />
-              </span>
-            </Tooltip>
-
-            <Tooltip color="grey" title="Share">
-              <span
-                className={`transition-all hover:scale-110 hover:bg-gray-700/60 bg-gray-700/90 w-11 h-11 p-3 rounded-full  flex justify-center items-center cursor-pointer`}
-              >
-                <ShareAltOutlined className="text-xl" />
-              </span>
-            </Tooltip>
-          </div>
+            <EpisodeModal
+              movieId={data.movieId}
+              totalSeasons={data.totalSeasons}
+            />
+          </Modal>
+          <Modal
+            open={isWatchModalOpen}
+            centered
+            width={"70svw"}
+            onCancel={handleCancelWatch}
+            okButtonProps={{ hidden: true }}
+            cancelButtonProps={{ hidden: true }}
+            styles={{ body: { paddingTop: "20px", paddingBottom: "10px" } }}
+            afterClose={handleAfterClose}
+          >
+            <WatchModal
+              episodeNumber={watchMovie?.episodes[0].episodeNumber}
+              seasonNumber={watchMovie?.seasonNumber}
+              name={watchMovie?.episodes[0].name}
+              video={watchMovie?.episodes[0].video}
+            />
+          </Modal>
         </div>
-        <img
-          src="https://preview.redd.it/back-to-the-future-4-your-kids-are-gonna-love-it-v0-dogbil1y6f3b1.png?width=640&crop=smart&auto=webp&s=aa39e695f73610a3f80edec9a3a21e2bce2542bb"
-          alt="thumbnail"
-          style={{ borderRadius: "10px" }}
-          className="w-[30%]"
-        />
-      </div>
-    </div>
+      )}
+    </>
   );
 }

@@ -36,3 +36,30 @@
     content: "";
   }
 }
+
+:root .ant-modal-close {
+  color: gray !important;
+}
+
+:root .ant-select-selection-item {
+  color: #d1d0cf !important;
+}
+
+:root .ant-select-arrow {
+  color: #d1d0cf !important;
+}
+
+:root .ant-select-selector {
+  background-color: #141314 !important;
+  border: 1px solid #d1d0cf !important;
+}
+
+:root .ant-select-item-option-selected {
+  color: #141314 !important;
+}
+
+:root .ant-select-dropdown {
+  background-color: #383738 !important;
+  border-radius: 5px;
+  box-shadow: 0px 5px 8px 1px black;
+}
