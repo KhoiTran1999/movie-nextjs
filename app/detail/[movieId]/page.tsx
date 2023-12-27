@@ -19,7 +19,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Axios from "@/utils/axios";
 import { Introduction } from "@/components/introduction/Introduction";
 import { EpisodeModal } from "@/components/episodeModal/EpisodeModal";
-import { WatchModal } from "@/components/watchModal/WatchModal";
+import { ExplainModal } from "@/components/explainModal/ExplainModal";
+import { useRouter } from "next/navigation";
 const ReactPlayer = dynamic(() => import("react-player/youtube"), {
   ssr: false,
 });
@@ -68,6 +69,8 @@ interface episodeProps {
 }
 
 export default function Detail() {
+  const router = useRouter();
+
   const [data, setData] = useState<detailProps>({
     castCharacteries: [],
     categories: [],
@@ -92,69 +95,33 @@ export default function Detail() {
   const [tabItem, setTabItem] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [isEpisodeModalOpen, setIsEpisodeModalOpen] = useState<boolean>(false);
-  const [isWatchModalOpen, setIsWatchModalOpen] = useState<boolean>(false);
-  const [watchMovie, setWatchMovie] = useState<seasonProps>({
-    seasonId: "",
-    seasonNumber: 1,
-    name: "",
-    episodes: [
-      {
-        episodeId: "",
-        episodeNumber: 1,
-        name: "",
-        video: "",
-        dateCreated: "",
-        dateUpdated: "",
-      },
-    ],
-  });
-  const iframeVideoRef = useRef<any>();
 
   const showModal = () => {
-    if (data.totalEpisodes > 1 && data.totalSeasons > 1)
+    const isFirstTime = localStorage.getItem("isFirstTime");
+    if (!isFirstTime) {
+      localStorage.setItem("isFirstTime", "false");
+      window.open(
+        "https://thptanlac-my.sharepoint.com/:v:/g/personal/ttlhmax1193_thptanlac_onmicrosoft_com/EXWxoEzAh3dLvKgX2rJ777QBocst7u5_6d5yZdWNKPs8Qg",
+        "_blank"
+      );
+      window.location.reload();
+      return;
+    }
+    if (data.totalEpisodes > 1 || data.totalSeasons > 1)
       return setIsEpisodeModalOpen(true);
 
-    setIsWatchModalOpen(true);
-
-    //Take back iframe data
-    let iframeVideo: HTMLIFrameElement | null = document.getElementById(
-      "iframeVideo"
-    ) as HTMLIFrameElement;
-    if (iframeVideo) iframeVideo.src = iframeVideoRef.current;
-
-    const fetchAPI = async () => {
-      const res = await Axios("Seasons", {
-        params: {
-          movieId: data.movieId,
-          seasonNumber: 1,
-        },
-      });
-      setWatchMovie(res.data[0]);
-    };
-    fetchAPI();
+    router.push(
+      "https://thptanlac-my.sharepoint.com/personal/ttlhmax1193_thptanlac_onmicrosoft_com/_layouts/15/embed.aspx?id=%2Fpersonal%2Fttlhmax1193%5Fthptanlac%5Fonmicrosoft%5Fcom%2FDocuments%2Fmovies%2FCinema%20Film%2FY%C3%AAu%20L%E1%BA%A1i%20V%E1%BB%A3%20Ng%E1%BA%A7u%20%2D%20Love%20Reset%20%282023%29%20Vietsub%20fullHD%5F2%2Ets&ga=1&referrer=StreamWebApp%2EWeb&referrerScenario=AddressBarCopied%2Eview"
+    );
   };
 
   const handleCancel = () => {
     setIsEpisodeModalOpen(false);
   };
 
-  const handleCancelWatch = () => {
-    setIsWatchModalOpen(false);
-  };
-
-  const handleAfterClose = () => {
-    let iframeVideo: HTMLIFrameElement | null = document.getElementById(
-      "iframeVideo"
-    ) as HTMLIFrameElement;
-    iframeVideoRef.current = iframeVideo.src;
-
-    //remove iframe data
-    iframeVideo.src = "";
-  };
-
   useEffect(() => {
     const fetchAPI = async () => {
-      const res = await Axios("Movie/bd345bda-a5fc-4c05-b4f2-6e91e2e76bab");
+      const res = await Axios("Movie/ca7274ea-0f24-4d20-88a7-d7605c449be9");
       setData(res.data);
       setTabItem([
         {
@@ -173,8 +140,6 @@ export default function Detail() {
     fetchAPI();
   }, []);
 
-  console.log("isWatchModalOpen: ", isWatchModalOpen);
-
   return (
     <>
       {loading ? (
@@ -184,7 +149,7 @@ export default function Detail() {
           <NavigationMovie />
           <ReactPlayer
             url={data.trailer}
-            // playing
+            playing
             controls
             width={"100svw"}
             height={"80svh"}
@@ -288,23 +253,6 @@ export default function Detail() {
             <EpisodeModal
               movieId={data.movieId}
               totalSeasons={data.totalSeasons}
-            />
-          </Modal>
-          <Modal
-            open={isWatchModalOpen}
-            centered
-            width={"70svw"}
-            onCancel={handleCancelWatch}
-            okButtonProps={{ hidden: true }}
-            cancelButtonProps={{ hidden: true }}
-            styles={{ body: { paddingTop: "20px", paddingBottom: "10px" } }}
-            afterClose={handleAfterClose}
-          >
-            <WatchModal
-              episodeNumber={watchMovie?.episodes[0].episodeNumber}
-              seasonNumber={watchMovie?.seasonNumber}
-              name={watchMovie?.episodes[0].name}
-              video={watchMovie?.episodes[0].video}
             />
           </Modal>
         </div>
