@@ -27,9 +27,11 @@ const SiderAdmin = () => {
       collapsible
       collapsed={isToggleSider}
     >
-      <div className="flex justify-center items-center p-2">
-        <Image src="/logo.png" alt="logo" width={100} height={50} />
-      </div>
+      <Link href={"/"}>
+        <div className="flex justify-center items-center p-2">
+          <Image src="/logo.png" alt="logo" width={100} height={50} />
+        </div>
+      </Link>
 
       <Menu
         theme="dark"

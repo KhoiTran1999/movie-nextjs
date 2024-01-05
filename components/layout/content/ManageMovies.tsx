@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 
 import { categoryItems } from "@/constant/categories";
 import CreateMovieModal from "./CreateMovieModal";
+import { useSelector } from "react-redux";
+import { statisticSelector } from "@/utils/redux/selector";
 
 const { Column, ColumnGroup } = Table;
 
@@ -47,13 +49,15 @@ interface DataType {
 }
 
 const ManageMovies = () => {
+  const statistics = useSelector(statisticSelector);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [data, setData] = useState<any>([]);
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 5,
-    total: 1000,
+    total: statistics.Upcoming + statistics.Release + statistics.Pending,
     showSizeChanger: false,
   });
 

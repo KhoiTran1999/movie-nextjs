@@ -18,7 +18,7 @@ const items: MenuProps["items"] = [
     key: "1",
     label: (
       <div>
-        <Link href="/account">My Account</Link>
+        <Link href="/admin">My Account</Link>
       </div>
     ),
     icon: <UserOutlined />,
@@ -65,7 +65,7 @@ const User = () => {
           <div className="flex items-center ">
             <Avatar src="/avatar.jpg" size="large" />
             <span className="max-w-[100px] font-semibold text-base ml-4 overflow-hidden text-ellipsis">
-              Peter
+              Admin
             </span>
           </div>
           <Divider
