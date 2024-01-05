@@ -1,6 +1,6 @@
 "use client";
 
-import NavigationMovie from "@/components/navigationMovie/NavigationMovie";
+import NavigationMovie from "@/components/homePage/navigationMovie/NavigationMovie";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Rubik_Dirt } from "@next/font/google";
@@ -14,13 +14,13 @@ import {
 } from "@ant-design/icons";
 import Image from "next/image";
 import { Tabs, Tooltip, Modal } from "antd";
-import { Actor } from "@/components/actorList/Actor";
+import { Actor } from "@/components/detailPage/actorList/Actor";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Axios from "@/utils/axios";
 import { Introduction } from "@/components/introduction/Introduction";
-import { EpisodeModal } from "@/components/episodeModal/EpisodeModal";
-import { ExplainModal } from "@/components/explainModal/ExplainModal";
+import { EpisodeModal } from "@/components/detailPage/episodeModal/EpisodeModal";
 import { useRouter } from "next/navigation";
+import { WatchModal } from "@/components/detailPage/watchModal/WatchModal";
 const ReactPlayer = dynamic(() => import("react-player/youtube"), {
   ssr: false,
 });
@@ -95,28 +95,65 @@ export default function Detail() {
   const [tabItem, setTabItem] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [isEpisodeModalOpen, setIsEpisodeModalOpen] = useState<boolean>(false);
+  const [isWatchModalOpen, setIsWatchModalOpen] = useState<boolean>(false);
+  const [watchMovie, setWatchMovie] = useState<seasonProps>({
+    seasonId: "",
+    seasonNumber: 1,
+    name: "",
+    episodes: [
+      {
+        episodeId: "",
+        episodeNumber: 1,
+        name: "",
+        video: "",
+        dateCreated: "",
+        dateUpdated: "",
+      },
+    ],
+  });
+
+  const iframeVideoRef = useRef<any>();
 
   const showModal = () => {
-    const isFirstTime = localStorage.getItem("isFirstTime");
-    if (!isFirstTime) {
-      localStorage.setItem("isFirstTime", "false");
-      window.open(
-        "https://thptanlac-my.sharepoint.com/:v:/g/personal/ttlhmax1193_thptanlac_onmicrosoft_com/EXWxoEzAh3dLvKgX2rJ777QBocst7u5_6d5yZdWNKPs8Qg",
-        "_blank"
-      );
-      window.location.reload();
-      return;
-    }
     if (data.totalEpisodes > 1 || data.totalSeasons > 1)
       return setIsEpisodeModalOpen(true);
 
-    router.push(
-      "https://thptanlac-my.sharepoint.com/personal/ttlhmax1193_thptanlac_onmicrosoft_com/_layouts/15/embed.aspx?id=%2Fpersonal%2Fttlhmax1193%5Fthptanlac%5Fonmicrosoft%5Fcom%2FDocuments%2Fmovies%2FCinema%20Film%2FY%C3%AAu%20L%E1%BA%A1i%20V%E1%BB%A3%20Ng%E1%BA%A7u%20%2D%20Love%20Reset%20%282023%29%20Vietsub%20fullHD%5F2%2Ets&ga=1&referrer=StreamWebApp%2EWeb&referrerScenario=AddressBarCopied%2Eview"
-    );
+    setIsWatchModalOpen(true);
+
+    //Take back iframe data
+    let iframeVideo: HTMLIFrameElement | null = document.getElementById(
+      "iframeVideo"
+    ) as HTMLIFrameElement;
+    if (iframeVideo) iframeVideo.src = iframeVideoRef.current;
+
+    const fetchAPI = async () => {
+      const res = await Axios("Seasons", {
+        params: {
+          movieId: data.movieId,
+          seasonNumber: 1,
+        },
+      });
+      setWatchMovie(res.data[0]);
+    };
+    fetchAPI();
   };
 
   const handleCancel = () => {
     setIsEpisodeModalOpen(false);
+  };
+
+  const handleCancelWatch = () => {
+    setIsWatchModalOpen(false);
+  };
+
+  const handleAfterClose = () => {
+    let iframeVideo: HTMLIFrameElement | null = document.getElementById(
+      "iframeVideo"
+    ) as HTMLIFrameElement;
+    iframeVideoRef.current = iframeVideo.src;
+
+    //remove iframe data
+    iframeVideo.src = "";
   };
 
   useEffect(() => {
@@ -208,14 +245,14 @@ export default function Detail() {
                   onClick={showModal}
                   className="w-44 px-6 py-3 mr-8 bg-[#E50914] hover:bg-red-800 rounded text-sm font-semibold text-white transition-colors flex justify-center items-center"
                 >
-                  <CaretRightFilled className="text-xl" />
+                  <i className="fa-duotone fa-play text-xl mr-2"></i>
                   <span>Play Now</span>
                 </button>
                 <Tooltip color="grey" title="Add watch list">
                   <span
                     className={`transition-all hover:scale-110 hover:bg-gray-700/60 bg-gray-700/90 w-11 h-11 p-3 rounded-full  flex justify-center items-center cursor-pointer`}
                   >
-                    <PlusOutlined className="text-xl" />
+                    <i className="fa-regular fa-plus text-xl"></i>
                   </span>
                 </Tooltip>
 
@@ -223,7 +260,7 @@ export default function Detail() {
                   <span
                     className={`mx-3 transition-all hover:scale-110 hover:bg-gray-700/60 bg-gray-700/90 w-11 h-11 p-3 rounded-full  flex justify-center items-center cursor-pointer`}
                   >
-                    <LikeOutlined className="text-xl" />
+                    <i className="fa-regular fa-heart text-xl"></i>
                   </span>
                 </Tooltip>
 
@@ -231,7 +268,7 @@ export default function Detail() {
                   <span
                     className={`transition-all hover:scale-110 hover:bg-gray-700/60 bg-gray-700/90 w-11 h-11 p-3 rounded-full  flex justify-center items-center cursor-pointer`}
                   >
-                    <ShareAltOutlined className="text-xl" />
+                    <i className="fa-light fa-share-from-square text-xl"></i>
                   </span>
                 </Tooltip>
               </div>
@@ -253,6 +290,24 @@ export default function Detail() {
             <EpisodeModal
               movieId={data.movieId}
               totalSeasons={data.totalSeasons}
+              englishName={data.englishName}
+            />
+          </Modal>
+          <Modal
+            open={isWatchModalOpen}
+            centered
+            width={"70svw"}
+            onCancel={handleCancelWatch}
+            okButtonProps={{ hidden: true }}
+            cancelButtonProps={{ hidden: true }}
+            styles={{ body: { paddingTop: "20px", paddingBottom: "10px" } }}
+            afterClose={handleAfterClose}
+          >
+            <WatchModal
+              episodeNumber={watchMovie?.episodes[0].episodeNumber}
+              seasonNumber={watchMovie?.seasonNumber}
+              name={watchMovie?.episodes[0].name}
+              video={watchMovie?.episodes[0].video}
             />
           </Modal>
         </div>

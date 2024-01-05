@@ -1,5 +1,5 @@
 "use client"
 
-const IsHoverSelector = (state:any) => state.isHoverCardSlider.value;
+const isToggleSiderSelector = (state:any) => state.isToggleSider.value;
 
-export {IsHoverSelector}
+export {isToggleSiderSelector}

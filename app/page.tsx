@@ -1,9 +1,9 @@
 "use client";
 
-import CardSlider from "@/components/cardSlider/CardSlider";
+import CardSlider from "@/components/homePage/cardSlider/CardSlider";
 import { Introduction } from "@/components/introduction/Introduction";
-import NavigationMovie from "@/components/navigationMovie/NavigationMovie";
-import TopPageMovie from "@/components/topPageMovie/TopPageMovie";
+import NavigationMovie from "@/components/homePage/navigationMovie/NavigationMovie";
+import TopPageMovie from "@/components/homePage/topPageMovie/TopPageMovie";
 import { Axios2 } from "@/utils/axios";
 import { useEffect, useState } from "react";
 

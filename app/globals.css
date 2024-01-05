@@ -63,3 +63,33 @@
   border-radius: 5px;
   box-shadow: 0px 5px 8px 1px black;
 }
+
+:root .ant-table {
+  background-color: transparent;
+}
+
+:root .ant-table-wrapper .ant-table-thead > tr > th {
+  background-color: #fffcfc3b;
+  color: white;
+}
+
+:root .ant-pagination .ant-pagination-disabled .ant-pagination-item-link {
+  color: white;
+}
+
+:root .ant-pagination .ant-pagination-item-active {
+  background-color: transparent;
+  border-color: white;
+}
+
+:root .ant-pagination .ant-pagination-item-active a {
+  color: white;
+}
+
+:root
+  .ant-pagination
+  .ant-pagination-jump-next
+  .ant-pagination-item-container
+  .ant-pagination-item-ellipsis {
+  color: white;
+}
