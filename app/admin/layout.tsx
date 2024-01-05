@@ -1,7 +1,7 @@
 "use client";
 
-import HeaderAdmin from "@/components/layout/header/HeaderAdmin";
-import SiderAdmin from "@/components/layout/sider/SiderAdmin";
+import HeaderAdmin from "@/components/adminPage/header/HeaderAdmin";
+import SiderAdmin from "@/components/adminPage/sider/SiderAdmin";
 import { Layout } from "antd";
 import { useEffect, useState } from "react";
 import { Introduction } from "@/components/introduction/Introduction";

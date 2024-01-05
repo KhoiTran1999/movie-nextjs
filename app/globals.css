@@ -93,3 +93,42 @@
   .ant-pagination-item-ellipsis {
   color: white;
 }
+
+:root .ant-input-number {
+  background-color: transparent;
+}
+
+/* :root .ant-picker-input > input {
+  background-color: transparent;
+} */
+
+:root .inputCustom input {
+  background-color: transparent;
+}
+:root .inputCustom {
+  background-color: transparent;
+}
+
+:root .inputCustom::placeholder {
+  color: rgb(156, 155, 155);
+}
+
+:root .inputCustom input::placeholder {
+  color: rgb(156, 155, 155);
+}
+
+:root .ant-picker .ant-picker-suffix > * {
+  color: white;
+}
+
+:root .ant-picker-dropdown .ant-picker-header button {
+  color: white;
+}
+
+:root .ant-picker-dropdown .ant-picker-cell-disabled {
+  color: rgb(93, 93, 93);
+}
+
+:root .ant-picker .ant-picker-input-placeholder > input {
+  color: rgb(93, 93, 93);
+}

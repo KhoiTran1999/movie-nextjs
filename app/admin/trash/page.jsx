@@ -1,4 +1,4 @@
-import Trash from "@/components/layout/content/Trash";
+import Trash from "@/components/adminPage/content/Trash";
 
 export default function page() {
   return <Trash />;
