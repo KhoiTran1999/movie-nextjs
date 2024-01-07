@@ -132,3 +132,26 @@
 :root .ant-picker .ant-picker-input-placeholder > input {
   color: rgb(93, 93, 93);
 }
+
+/* width */
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background-color: rgba(255, 255, 255, 0.534);
+  border-radius: 1000px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #555;
+
+  border-radius: 65px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #dedddd;
+}

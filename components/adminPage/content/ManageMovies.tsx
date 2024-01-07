@@ -53,6 +53,7 @@ const ManageMovies = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState<boolean>(true);
+  const [saveLoading, setSaveLoading] = useState<boolean>(false);
   const [data, setData] = useState<any>([]);
   const [pagination, setPagination] = useState({
     current: 1,
@@ -211,6 +212,14 @@ const ManageMovies = () => {
             onOk={handleOk}
             onCancel={handleCancel}
             centered
+            footer={[
+              <Button key="back" type="text" onClick={handleCancel}>
+                Cancel
+              </Button>,
+              <Button key="submit" loading={saveLoading} onClick={handleOk}>
+                Save
+              </Button>,
+            ]}
           >
             <CreateMovieModal />
           </Modal>
