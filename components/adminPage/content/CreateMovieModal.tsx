@@ -84,7 +84,11 @@ const CreateMovieModal = () => {
   //Call Api Feature, Category-----------------------
   useEffect(() => {
     const fetchApi = async () => {
-      const res = await Promise.all([Axios("Features"), Axios("Categories")]);
+      const res = await Promise.all([
+        Axios("Features"),
+        Axios("Categories"),
+        Axios("nations", { params: { page: 0 } }),
+      ]);
       const newFeatureOption = res[0].data.map((val: FeatureType) => ({
         value: val.featureId,
         label: val.name,
@@ -93,53 +97,49 @@ const CreateMovieModal = () => {
         value: val.categoryId,
         label: val.name,
       }));
+      const newNationOption = res[2].data.map((val: NationType) => ({
+        value: val.nationId,
+        label: val.name,
+      }));
       setFeatureOption(newFeatureOption);
       setCategoryOption(newCategoryOption);
+      setNationOption(newNationOption);
     };
     fetchApi();
   }, []);
 
   //Upload Thumbnail----------------------
-  const getBase64 = (img: RcFile, callback: (url: string) => void) => {
-    const reader = new FileReader();
-    reader.addEventListener("load", () => callback(reader.result as string));
-    reader.readAsDataURL(img);
-  };
 
   const beforeUpload = (file: RcFile) => {
     const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
     if (!isJpgOrPng) {
       message.error("You can only upload JPG/PNG file!");
+      setLoadingThumnail(true);
     }
     const isLt2M = file.size / 1024 / 1024 < 2;
     if (!isLt2M) {
       message.error("Image must smaller than 2MB!");
+      setLoadingThumnail(true);
     }
-    return isJpgOrPng && isLt2M;
+
+    return false;
   };
 
-  const handleChange: UploadProps["onChange"] = (
-    info: UploadChangeParam<UploadFile>
-  ) => {
-    if (info.file.status === "uploading") {
-      setLoadingThumnail(true);
-      return;
+  const handleChange = (info: any) => {
+    if (!loadingThumnail) {
+      setImageUrl(URL.createObjectURL(info.file));
+      info.fileList = [{ ...info.file }];
     }
-    if (info.file.status === "done") {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj as RcFile, (url) => {
-        setLoadingThumnail(false);
-        setImageUrl(url);
-      });
-    }
+    setLoadingThumnail(false);
   };
 
   const uploadButton = (
     <button style={{ border: 0, background: "none" }} type="button">
-      {loadingThumnail ? <LoadingOutlined /> : <PlusOutlined />}
+      <PlusOutlined />
       <div style={{ marginTop: 8 }}>Upload</div>
     </button>
   );
+  //-------------------------------------------------
 
   const onFinish = (values: any) => {
     console.log("Received values of form:", values);
@@ -225,11 +225,10 @@ const CreateMovieModal = () => {
 
         <Form.Item<FieldType> label="Thumbnail" name="Thumbnail">
           <Upload
-            name="avatar"
+            name="upload"
             listType="picture-card"
             className="avatar-uploader"
             showUploadList={false}
-            action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
             beforeUpload={beforeUpload}
             onChange={handleChange}
           >
@@ -262,14 +261,7 @@ const CreateMovieModal = () => {
           name="Nation"
           rules={[{ required: true }]}
         >
-          <Select
-            options={[
-              { value: 1, label: "VietNam" },
-              { value: 2, label: "Korea" },
-              { value: 3, label: "America" },
-            ]}
-            className="inputCustom"
-          />
+          <Select options={nationOption} className="inputCustom" />
         </Form.Item>
         <Divider style={{ backgroundColor: "#5d5d5d" }} />
         <Form.List name="videoList">

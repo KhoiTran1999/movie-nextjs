@@ -162,11 +162,12 @@ const ManageMovies = () => {
               title="Video"
               dataIndex="thumbnail"
               key="thumbnail"
-              render={(image: string) => (
+              render={(image: string, _, idx) => (
                 <img
                   src={image}
                   alt="thumbnail"
                   className="w-[100px] h-[160px] object-contain"
+                  key={idx}
                 />
               )}
             />
@@ -174,19 +175,23 @@ const ManageMovies = () => {
               title="Name"
               dataIndex="englishName"
               key="englishName"
-              render={(name) => <p className="font-bold">{name}</p>}
+              render={(name, _, idx) => (
+                <p className="font-bold" key={idx}>
+                  {name}
+                </p>
+              )}
             />
             <Column
               title="Time"
               dataIndex="time"
               key="time"
-              render={(time) => <span>{time} minutes</span>}
+              render={(time, _, idx) => <span key={idx}>{time} minutes</span>}
             />
             <Column
               title="Mark"
               dataIndex="mark"
               key="mark"
-              render={(mark) => <span>{mark}/10</span>}
+              render={(mark, _, idx) => <span key={idx}>{mark}/10</span>}
             />
             <Column title="Status" dataIndex="status" key="status" />
             <Column title="Feature" dataIndex="feature" key="feature" />
@@ -194,8 +199,8 @@ const ManageMovies = () => {
               title="Categories"
               dataIndex="categories"
               key="categories"
-              render={(tags: string[]) => (
-                <>
+              render={(tags: string[], _, idx) => (
+                <div key={idx}>
                   {tags.map((tag, idx) => {
                     let color = "blue";
                     categoryItems.some((val) => {
@@ -211,15 +216,15 @@ const ManageMovies = () => {
                       </Tag>
                     );
                   })}
-                </>
+                </div>
               )}
             />
             <Column
               title="Operation"
               dataIndex="operation"
               key="operation"
-              render={() => (
-                <div className="flex items-center">
+              render={(val, _, idx) => (
+                <div className="flex items-center" key={idx}>
                   <Button className="mr-3">Update</Button>
                   <Button type="primary" danger>
                     Delete
@@ -238,7 +243,12 @@ const ManageMovies = () => {
               <Button key="back" type="text" onClick={handleCancel}>
                 Cancel
               </Button>,
-              <Button key="submit" loading={saveLoading} onClick={handleOk}>
+              <Button
+                key="submit"
+                htmlType="submit"
+                loading={saveLoading}
+                onClick={handleOk}
+              >
                 Save
               </Button>,
             ]}
