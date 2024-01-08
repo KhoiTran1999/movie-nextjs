@@ -6,6 +6,7 @@ import { setStatistics } from "@/utils/redux/slices/data/statisticSlice";
 import { useEffect, useState } from "react";
 import CountUp from "react-countup";
 import { useDispatch, useSelector } from "react-redux";
+import { Button, Result } from "antd";
 
 interface statisticType {
   Upcoming: number;
@@ -20,13 +21,19 @@ const Dashboard = () => {
   const statistics = useSelector(statisticSelector);
 
   const [loading, setLoading] = useState<boolean>(true);
+  const [isError, setIsError] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchApi = async () => {
-      setLoading(true);
-      const res = await Axios("Admin/Statistics");
-      dispatch(setStatistics(res.data));
-      setLoading(false);
+      try {
+        setLoading(true);
+        const res = await Axios("Admin/Statistics");
+        dispatch(setStatistics(res.data));
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+        setIsError(true);
+      }
     };
     fetchApi();
   }, []);
@@ -34,9 +41,23 @@ const Dashboard = () => {
   return (
     <>
       {loading ? (
-        <div className="w-full h-full flex justify-center items-center">
-          <i className="fa-solid fa-spinner-scale text-6xl animate-spin text-[red]"></i>
-        </div>
+        <>
+          {isError ? (
+            <Result
+              status="500"
+              title="Sorry, something went wrong"
+              extra={
+                <Button type="primary" href="/">
+                  Back Home
+                </Button>
+              }
+            />
+          ) : (
+            <div className="w-full h-full flex justify-center items-center">
+              <i className="fa-solid fa-spinner-scale text-6xl animate-spin text-[red]"></i>
+            </div>
+          )}
+        </>
       ) : (
         <div className="flex items-center flex-wrap">
           <div className="p-5 mr-5 mb-5 shadow-[0_0_10px_5px_#cd8d7a9f] bg-gradient-to-r from-[#DBCC95] to-[#cd8d7a] w-60 rounded-md text-center relative">

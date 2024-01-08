@@ -2,18 +2,9 @@
 
 import NavigationMovie from "@/components/homePage/navigationMovie/NavigationMovie";
 import dynamic from "next/dynamic";
-import Link from "next/link";
 import { Rubik_Dirt } from "@next/font/google";
-import {
-  CaretRightFilled,
-  StarFilled,
-  PlusOutlined,
-  LikeOutlined,
-  ShareAltOutlined,
-  FireFilled,
-} from "@ant-design/icons";
-import Image from "next/image";
-import { Tabs, Tooltip, Modal } from "antd";
+import { StarFilled, FireFilled } from "@ant-design/icons";
+import { Tabs, Tooltip, Modal, Button, Result } from "antd";
 import { Actor } from "@/components/detailPage/actorList/Actor";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Axios from "@/utils/axios";
@@ -94,6 +85,7 @@ export default function Detail() {
 
   const [tabItem, setTabItem] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [isError, setIsError] = useState<boolean>(false);
   const [isEpisodeModalOpen, setIsEpisodeModalOpen] = useState<boolean>(false);
   const [isWatchModalOpen, setIsWatchModalOpen] = useState<boolean>(false);
   const [watchMovie, setWatchMovie] = useState<seasonProps>({
@@ -127,13 +119,18 @@ export default function Detail() {
     if (iframeVideo) iframeVideo.src = iframeVideoRef.current;
 
     const fetchAPI = async () => {
-      const res = await Axios("Seasons", {
-        params: {
-          movieId: data.movieId,
-          seasonNumber: 1,
-        },
-      });
-      setWatchMovie(res.data[0]);
+      try {
+        const res = await Axios("Seasons", {
+          params: {
+            movieId: data.movieId,
+            seasonNumber: 1,
+          },
+        });
+        setWatchMovie(res.data[0]);
+      } catch (error) {
+        console.log(error);
+        setIsError(true);
+      }
     };
     fetchAPI();
   };
@@ -158,21 +155,26 @@ export default function Detail() {
 
   useEffect(() => {
     const fetchAPI = async () => {
-      const res = await Axios("Movie/ca7274ea-0f24-4d20-88a7-d7605c449be9");
-      setData(res.data);
-      setTabItem([
-        {
-          key: "Description",
-          label: "Description",
-          children: res.data.description,
-        },
-        {
-          key: "Actors",
-          label: "Actors",
-          children: <Actor castCharacteries={res.data.castCharacteries} />,
-        },
-      ]);
-      setLoading(false);
+      try {
+        const res = await Axios("Movie/ca7274ea-0f24-4d20-88a7-d7605c449be9");
+        setData(res.data);
+        setTabItem([
+          {
+            key: "Description",
+            label: "Description",
+            children: res.data.description,
+          },
+          {
+            key: "Actors",
+            label: "Actors",
+            children: <Actor castCharacteries={res.data.castCharacteries} />,
+          },
+        ]);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+        setIsError(true);
+      }
     };
     fetchAPI();
   }, []);
@@ -180,7 +182,21 @@ export default function Detail() {
   return (
     <>
       {loading ? (
-        <Introduction />
+        <>
+          {isError ? (
+            <Result
+              status="500"
+              title="Sorry, something went wrong"
+              extra={
+                <Button type="primary" href="/">
+                  Back Home
+                </Button>
+              }
+            />
+          ) : (
+            <Introduction />
+          )}
+        </>
       ) : (
         <div>
           <NavigationMovie />

@@ -6,10 +6,16 @@ import {
   message,
   Upload,
   Select,
+  Button,
+  Divider,
 } from "antd";
 import type { UploadChangeParam } from "antd/es/upload";
 import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
-import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  LoadingOutlined,
+  PlusOutlined,
+  MinusCircleOutlined,
+} from "@ant-design/icons";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import Axios from "@/utils/axios";
@@ -27,6 +33,8 @@ type FieldType = {
   Thumbnail?: string;
   Feature?: number;
   Category?: number;
+  Nation?: number;
+  LinkVideo?: [];
 };
 
 interface FeatureType {
@@ -39,11 +47,33 @@ interface CategoryType {
   name: string;
 }
 
+interface NationType {
+  nationId: number;
+  name: string;
+}
+
+const formItemLayout = {
+  labelCol: {
+    span: 7,
+  },
+  wrapperCol: {
+    span: 14,
+  },
+};
+
+const formItemLayoutWithOutLabel = {
+  wrapperCol: {
+    span: 14,
+    offset: 7,
+  },
+};
+
 const CreateMovieModal = () => {
   const [loadingThumnail, setLoadingThumnail] = useState(false);
   const [imageUrl, setImageUrl] = useState<string>();
-  const [featureOption, setFeatureOption] = useState<[]>();
-  const [categoryOption, setCategoryOption] = useState<[]>();
+  const [featureOption, setFeatureOption] = useState<FeatureType[]>();
+  const [categoryOption, setCategoryOption] = useState<CategoryType[]>();
+  const [nationOption, setNationOption] = useState<[]>([]);
 
   //Turn of the day of the future when choose Produced Date
   const disabledDate = (current: any) => {
@@ -111,6 +141,10 @@ const CreateMovieModal = () => {
     </button>
   );
 
+  const onFinish = (values: any) => {
+    console.log("Received values of form:", values);
+  };
+
   return (
     <div className="max-h-[70svh] overflow-auto">
       <Form
@@ -118,6 +152,7 @@ const CreateMovieModal = () => {
         wrapperCol={{ span: 14 }}
         layout="horizontal"
         style={{ maxWidth: 600 }}
+        onFinish={onFinish}
       >
         <Form.Item<FieldType>
           label="Mark"
@@ -146,12 +181,6 @@ const CreateMovieModal = () => {
           label="Duration"
           name="Duration"
           wrapperCol={{ span: 8 }}
-          rules={[
-            {
-              message: "From 20 to 240 only",
-            },
-            { required: true },
-          ]}
         >
           <InputNumber
             min={20}
@@ -194,7 +223,7 @@ const CreateMovieModal = () => {
           <Input placeholder="Link Trailer" className="inputCustom" />
         </Form.Item>
 
-        <Form.Item<FieldType> label="Thumnail" name="Thumbnail">
+        <Form.Item<FieldType> label="Thumbnail" name="Thumbnail">
           <Upload
             name="avatar"
             listType="picture-card"
@@ -226,6 +255,77 @@ const CreateMovieModal = () => {
           rules={[{ required: true }]}
         >
           <Select options={categoryOption} className="inputCustom" />
+        </Form.Item>
+
+        <Form.Item<FieldType>
+          label="Nation"
+          name="Nation"
+          rules={[{ required: true }]}
+        >
+          <Select
+            options={[
+              { value: 1, label: "VietNam" },
+              { value: 2, label: "Korea" },
+              { value: 3, label: "America" },
+            ]}
+            className="inputCustom"
+          />
+        </Form.Item>
+        <Divider style={{ backgroundColor: "#5d5d5d" }} />
+        <Form.List name="videoList">
+          {(fields, { add, remove }, { errors }) => (
+            <>
+              {fields.map((field, index) => (
+                <Form.Item
+                  {...(index === 0
+                    ? formItemLayout
+                    : formItemLayoutWithOutLabel)}
+                  label={index === 0 ? "Link Video" : ""}
+                  required={false}
+                  key={field.key}
+                >
+                  <div className="flex items-center">
+                    <Form.Item
+                      {...field}
+                      rules={[
+                        {
+                          required: true,
+                          whitespace: true,
+                          message:
+                            "Please input Link Video or delete this field.",
+                        },
+                      ]}
+                      noStyle
+                    >
+                      <Input
+                        className="bg-transparent placeholder:text-[#5d5d5d]"
+                        placeholder="Link Movie"
+                      />
+                    </Form.Item>
+                    {fields.length > 0 ? (
+                      <MinusCircleOutlined
+                        className="dynamic-delete-button ml-3 hover:text-[red] transition-colors"
+                        onClick={() => remove(field.name)}
+                      />
+                    ) : null}
+                  </div>
+                </Form.Item>
+              ))}
+              <Form.Item wrapperCol={{ offset: 7 }}>
+                <Button
+                  type="dashed"
+                  onClick={() => add()}
+                  icon={<PlusOutlined />}
+                >
+                  Add Link Video
+                </Button>
+                <Form.ErrorList errors={errors} />
+              </Form.Item>
+            </>
+          )}
+        </Form.List>
+        <Form.Item>
+          <Button htmlType="submit">Save</Button>
         </Form.Item>
       </Form>
     </div>

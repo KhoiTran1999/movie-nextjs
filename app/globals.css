@@ -126,11 +126,11 @@
 }
 
 :root .ant-picker-dropdown .ant-picker-cell-disabled {
-  color: rgb(93, 93, 93);
+  color: #5d5d5d;
 }
 
 :root .ant-picker .ant-picker-input-placeholder > input {
-  color: rgb(93, 93, 93);
+  color: #5d5d5d;
 }
 
 /* width */

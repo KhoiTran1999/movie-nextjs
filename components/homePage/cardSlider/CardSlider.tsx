@@ -6,6 +6,7 @@ import { Carousel, Flex } from "antd";
 import { RightOutlined, LeftOutlined } from "@ant-design/icons";
 
 type cardSliderProps = {
+  title: string;
   movieList1: [];
   movieList2: [];
   movieList3: [];
@@ -91,6 +92,7 @@ const settings = {
 };
 
 const CardSlider = ({
+  title,
   movieList1,
   movieList2,
   movieList3,
@@ -113,7 +115,7 @@ const CardSlider = ({
           onMouseLeave={() => setSeeAll(false)}
           className="cursor-pointer inline-flex items-center"
         >
-          <h2 className="text-xl hover:text-[#D1D0CF]">Only On Streamit</h2>
+          <h2 className="text-xl hover:text-[#D1D0CF]">{title}</h2>
           <div
             className={`${
               seeAll
@@ -121,7 +123,7 @@ const CardSlider = ({
                 : "invisible opacity-0 translate-x-[-20px]"
             } transition-all ml-3 text-xs text-[#E50914] font-bold flex justify-center items-center`}
           >
-            <span className="mr-1">Xem tất cả </span>
+            <span className="mr-1">See all </span>
             <RightOutlined />
           </div>
         </div>

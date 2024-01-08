@@ -132,7 +132,7 @@ export const EpisodeModal = ({
             <Spin />
           </div>
         ) : (
-          <ul>
+          <ul className="px-3 max-h-[70svh] overflow-y-auto">
             {season?.episodes.map((val: episodeProps, idx) => (
               <li
                 key={idx}
