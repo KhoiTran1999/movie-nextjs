@@ -194,7 +194,9 @@ export default function Detail() {
               }
             />
           ) : (
-            <Introduction />
+            <div className="w-full h-[80vh] flex justify-center items-center">
+              <i className="fa-solid fa-spinner-scale text-6xl animate-spin text-[red]"></i>
+            </div>
           )}
         </>
       ) : (

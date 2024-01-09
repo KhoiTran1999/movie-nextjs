@@ -54,7 +54,6 @@ const ManageMovies = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [isError, setIsError] = useState<boolean>(false);
-  const [saveLoading, setSaveLoading] = useState<boolean>(false);
   const [data, setData] = useState<any>([]);
   const [pagination, setPagination] = useState({
     current: 1,
@@ -233,28 +232,11 @@ const ManageMovies = () => {
               )}
             />
           </Table>
-          <Modal
-            title="Create Movie"
-            open={isModalOpen}
-            onOk={handleOk}
-            onCancel={handleCancel}
-            centered
-            footer={[
-              <Button key="back" type="text" onClick={handleCancel}>
-                Cancel
-              </Button>,
-              <Button
-                key="submit"
-                htmlType="submit"
-                loading={saveLoading}
-                onClick={handleOk}
-              >
-                Save
-              </Button>,
-            ]}
-          >
-            <CreateMovieModal />
-          </Modal>
+          <CreateMovieModal
+            isModalOpen={isModalOpen}
+            handleOk={handleOk}
+            handleCancel={handleCancel}
+          />
         </div>
       )}
     </>

@@ -133,6 +133,23 @@
   color: #5d5d5d;
 }
 
+:root .ant-select-multiple .ant-select-selection-item {
+  background-color: #d1d0cf3c;
+}
+
+:root .ant-empty-normal .ant-empty-description {
+  color: rgba(255, 255, 255, 0.664);
+}
+
+:root .ant-popover .ant-popover-inner {
+  background-color: #1e1e1e;
+}
+
+:root .ant-message .ant-message-notice-wrapper .ant-message-notice-content {
+  background-color: wheat;
+  color: black;
+}
+
 /* width */
 ::-webkit-scrollbar {
   width: 7px;
