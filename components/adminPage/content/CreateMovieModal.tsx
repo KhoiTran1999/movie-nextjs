@@ -10,6 +10,7 @@ import {
   Divider,
   Modal,
   Popconfirm,
+  InputRef,
 } from "antd";
 import type { UploadChangeParam } from "antd/es/upload";
 import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
@@ -19,8 +20,11 @@ import {
   MinusCircleOutlined,
 } from "@ant-design/icons";
 import moment from "moment";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Axios from "@/utils/axios";
+import { useDispatch } from "react-redux";
+import { setmovieList } from "@/utils/redux/slices/data/movieListSlice";
+import { setStatistics } from "@/utils/redux/slices/data/statisticSlice";
 const { TextArea } = Input;
 
 type FieldType = {
@@ -69,10 +73,35 @@ interface ValueFormType {
   Feature: number;
   Mark: number;
   Nation: string;
-  Thumbnail: File;
+  Thumbnail: any;
   Trailer: string;
   Viewer: number;
   videoList: [];
+}
+
+interface ApiType {
+  categories: categoryType[];
+  dateCreated: string;
+  englishName: string;
+  feature: featureType;
+  mark: number;
+  movieId: string;
+  status: string;
+  thumbnail: string;
+  time: number;
+  totalEpisodes: number;
+  totalSeasons: number;
+  vietnamName: string;
+}
+
+interface categoryType {
+  categoryId: number;
+  name: string;
+}
+
+interface featureType {
+  featureId: number;
+  name: string;
 }
 
 const formItemLayout = {
@@ -96,6 +125,10 @@ const CreateMovieModal = ({
   handleOk,
   handleCancel,
 }: CreateMovieModalType) => {
+  const movieNameRef = useRef<InputRef>(null);
+
+  const dispatch = useDispatch();
+
   const [loadingThumnail, setLoadingThumnail] = useState(false);
   const [saveLoading, setSaveLoading] = useState<boolean>(false);
   const [imageUrl, setImageUrl] = useState<any>();
@@ -187,8 +220,30 @@ const CreateMovieModal = ({
   );
   //-------------------------------------------------
 
+  const filterData = (arr: []) => {
+    const filteredData = arr.map((val: ApiType) => {
+      const feature = val.feature.name;
+      const categories = val.categories.map((val: categoryType) => val.name);
+      const newObj = {
+        movieId: val.movieId,
+        thumbnail: val.thumbnail,
+        englishName: val.englishName,
+        time: val.time,
+        mark: val.mark,
+        status: val.status,
+        feature,
+        categories,
+        dateCreated: val.dateCreated,
+        deletedButton: val.movieId,
+      };
+      return newObj;
+    });
+    return filteredData;
+  };
+
   const onFinish = (values: ValueFormType) => {
-    setSaveLoading(true);
+    console.log(values);
+
     const postMovie = async () => {
       const data = {
         Categories: values.Category,
@@ -200,29 +255,67 @@ const CreateMovieModal = ({
         FeatureId: values.Feature,
         Mark: values.Mark,
         NationId: values.Nation,
-        Thumbnail: values.Thumbnail,
+        Thumbnail: values.Thumbnail.file,
         Trailer: values.Trailer,
         Viewer: values.Viewer,
       };
       try {
-        const res = await Axios.post("Movie", data, {
+        setSaveLoading(true);
+        const movieId = await Axios.post("Movie", data, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
-        console.log(data);
+        console.log("movieId: ", movieId);
+
+        const movieList = await Axios("Movies", {
+          params: { page: 1, eachPage: 5 },
+        });
+
+        if (values.videoList) {
+          try {
+            const seasonId = await Axios.post("Seasons", {
+              movieId: movieId.data,
+            });
+            try {
+              const newVideoList = values.videoList.map((val) => ({
+                video: val,
+              }));
+              await Axios.post("episode", newVideoList, {
+                params: { seasonId: seasonId.data },
+              });
+              console.log("created episode successfully");
+            } catch (error) {
+              console.log(error);
+              errorRes("Failed to add Episode");
+            }
+          } catch (error) {
+            console.log(error);
+            errorRes("Failed to add Season");
+          }
+        }
+
+        try {
+          const res = await Axios("Admin/Statistics");
+          dispatch(setStatistics(res.data));
+        } catch (error) {
+          console.log(error);
+        }
 
         form.resetFields();
         success();
         handleOk();
-        console.log(res.data);
+        dispatch(setmovieList(filterData(movieList.data)));
+        setSaveLoading(false);
+        setImageUrl(null);
       } catch (error) {
         console.log(error);
-        // errorRes(`error ${error.response.data.title}`);
+        errorRes("Movie already exists!");
+        movieNameRef.current?.focus();
+        setSaveLoading(false);
       }
     };
     postMovie();
-    setSaveLoading(false);
   };
 
   return (
@@ -285,10 +378,12 @@ const CreateMovieModal = ({
             ]}
           >
             <Input
+              ref={movieNameRef}
               minLength={2}
               maxLength={100}
               placeholder="Movie English Name"
               className="inputCustom"
+              disabled={saveLoading}
             />
           </Form.Item>
 
@@ -313,6 +408,7 @@ const CreateMovieModal = ({
             <Input
               placeholder="Movie Vietnamese Name"
               className="inputCustom"
+              disabled={saveLoading}
             />
           </Form.Item>
           <Form.Item<FieldType>
@@ -320,7 +416,11 @@ const CreateMovieModal = ({
             name="Feature"
             rules={[{ required: true }]}
           >
-            <Select options={featureOption} className="inputCustom" />
+            <Select
+              options={featureOption}
+              className="inputCustom"
+              disabled={saveLoading}
+            />
           </Form.Item>
 
           <Form.Item<FieldType>
@@ -328,7 +428,11 @@ const CreateMovieModal = ({
             name="Nation"
             rules={[{ required: true }]}
           >
-            <Select options={nationOption} className="inputCustom" />
+            <Select
+              options={nationOption}
+              className="inputCustom"
+              disabled={saveLoading}
+            />
           </Form.Item>
           <Form.Item<FieldType>
             label="Mark"
@@ -341,6 +445,7 @@ const CreateMovieModal = ({
               placeholder="from 1-10"
               addonAfter={<i className="fa-solid fa-star text-yellow-400"></i>}
               className="inputCustom"
+              disabled={saveLoading}
             />
           </Form.Item>
 
@@ -355,6 +460,7 @@ const CreateMovieModal = ({
               placeholder="from 20-240"
               addonAfter="Minutes"
               className="inputCustom"
+              disabled={saveLoading}
             />
           </Form.Item>
 
@@ -363,11 +469,17 @@ const CreateMovieModal = ({
               placeholder="Pick a date"
               disabledDate={disabledDate}
               className="inputCustom"
+              disabled={saveLoading}
             />
           </Form.Item>
 
           <Form.Item<FieldType> label="Viewer" name="Viewer">
-            <InputNumber placeholder="Viewer" min={0} className="inputCustom" />
+            <InputNumber
+              placeholder="Viewer"
+              min={0}
+              className="inputCustom"
+              disabled={saveLoading}
+            />
           </Form.Item>
 
           <Form.Item<FieldType>
@@ -384,7 +496,11 @@ const CreateMovieModal = ({
               },
             ]}
           >
-            <Input placeholder="https://example.com" className="inputCustom" />
+            <Input
+              placeholder="https://example.com"
+              className="inputCustom"
+              disabled={saveLoading}
+            />
           </Form.Item>
 
           <Form.Item<FieldType> label="Thumbnail" name="Thumbnail">
@@ -395,6 +511,7 @@ const CreateMovieModal = ({
               showUploadList={false}
               beforeUpload={beforeUpload}
               onChange={handleChange}
+              disabled={saveLoading}
             >
               {imageUrl ? (
                 <img src={imageUrl} alt="avatar" style={{ width: "100%" }} />
@@ -429,15 +546,26 @@ const CreateMovieModal = ({
               placeholder="Descript the movie"
               className="inputCustom"
               style={{ resize: "none" }}
+              disabled={saveLoading}
             />
           </Form.Item>
 
-          <Form.Item<FieldType> label="Category" name="Category">
+          <Form.Item<FieldType>
+            label="Category"
+            name="Category"
+            rules={[
+              {
+                required: true,
+                message: "This field is required.",
+              },
+            ]}
+          >
             <Select
               mode="multiple"
               options={categoryOption}
               className="inputCustom"
               showSearch={false}
+              disabled={saveLoading}
             />
           </Form.Item>
 
@@ -471,6 +599,7 @@ const CreateMovieModal = ({
                         <Input
                           className="bg-transparent placeholder:text-[#5d5d5d]"
                           placeholder="https://example.com"
+                          disabled={saveLoading}
                         />
                       </Form.Item>
                       {fields.length > 0 ? (
@@ -483,13 +612,15 @@ const CreateMovieModal = ({
                   </Form.Item>
                 ))}
                 <Form.Item wrapperCol={{ offset: 9 }}>
-                  <Button
-                    type="dashed"
-                    onClick={() => add()}
-                    icon={<PlusOutlined />}
-                  >
-                    Add Link Video
-                  </Button>
+                  {!saveLoading && (
+                    <Button
+                      type="dashed"
+                      onClick={() => add()}
+                      icon={<PlusOutlined />}
+                    >
+                      Add Link Video
+                    </Button>
+                  )}
                   <Form.ErrorList errors={errors} />
                 </Form.Item>
               </>

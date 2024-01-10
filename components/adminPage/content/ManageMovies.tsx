@@ -1,13 +1,15 @@
 "use client";
 
 import Axios from "@/utils/axios";
-import { Button, Table, Tag, Modal, Result } from "antd";
+import { Button, Table, Tag, Modal, Result, Popconfirm, message } from "antd";
 import { useEffect, useState } from "react";
 
 import { categoryItems } from "@/constant/categories";
 import CreateMovieModal from "./CreateMovieModal";
-import { useSelector } from "react-redux";
-import { statisticSelector } from "@/utils/redux/selector";
+import { useDispatch, useSelector } from "react-redux";
+import { movieListSelector, statisticSelector } from "@/utils/redux/selector";
+import { setmovieList } from "@/utils/redux/slices/data/movieListSlice";
+import { setStatistics } from "@/utils/redux/slices/data/statisticSlice";
 
 const { Column, ColumnGroup } = Table;
 
@@ -49,12 +51,21 @@ interface DataType {
 }
 
 const ManageMovies = () => {
+  const dispatch = useDispatch();
+
   const statistics = useSelector(statisticSelector);
+  const data = useSelector(movieListSelector);
+
+  const [messageApi, contextHolder] = message.useMessage();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState<boolean>(true);
+  const [deleteLoadingState, setDeleteLoadingState] = useState<
+    Record<string, boolean>
+  >({});
   const [isError, setIsError] = useState<boolean>(false);
-  const [data, setData] = useState<any>([]);
+
+  // const [data, setData] = useState<any>([]);
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 5,
@@ -62,36 +73,39 @@ const ManageMovies = () => {
     showSizeChanger: false,
   });
 
+  const filterData = (arr: []) => {
+    const filteredData = arr.map((val: ApiType) => {
+      const feature = val.feature.name;
+      const categories = val.categories.map((val: categoryType) => val.name);
+      const newObj = {
+        movieId: val.movieId,
+        thumbnail: val.thumbnail,
+        englishName: val.englishName,
+        time: val.time,
+        mark: val.mark,
+        status: val.status,
+        feature,
+        categories,
+        dateCreated: val.dateCreated,
+        deletedButton: val.movieId,
+      };
+      return newObj;
+    });
+    return filteredData;
+  };
+
   useEffect(() => {
     const fetchApi = async () => {
       try {
         setLoading(true);
-        const res = await Axios("/Movies", {
+        const res = await Axios("Movies", {
           params: {
             page: pagination.current,
             eachPage: pagination.pageSize,
           },
         });
 
-        const filteredData = res.data.map((val: ApiType) => {
-          const feature = val.feature.name;
-          const categories = val.categories.map(
-            (val: categoryType) => val.name
-          );
-          const newObj = {
-            movieId: val.movieId,
-            thumbnail: val.thumbnail,
-            englishName: val.englishName,
-            time: val.time,
-            mark: val.mark,
-            status: val.status,
-            feature,
-            categories,
-            dateCreated: val.dateCreated,
-          };
-          return newObj;
-        });
-        setData(filteredData);
+        dispatch(setmovieList(filterData(res.data)));
         setLoading(false);
       } catch (error) {
         console.log(error);
@@ -117,6 +131,58 @@ const ManageMovies = () => {
     setIsModalOpen(false);
   };
 
+  //Message when created movie
+  const success = () => {
+    messageApi.open({
+      type: "success",
+      content: "Deleted successfully!",
+    });
+  };
+
+  const errorRes = (error: any) => {
+    messageApi.open({
+      type: "error",
+      content: error,
+    });
+  };
+
+  const handleDelete = (val: any) => {
+    const deleteMovie = async () => {
+      try {
+        setDeleteLoadingState((prev) => ({ ...prev, [val]: true }));
+        await Axios.delete(`Movie/${val}`);
+        success();
+
+        const res = await Axios("/Movies", {
+          params: {
+            page: 1,
+            eachPage: 5,
+          },
+        });
+        dispatch(setmovieList(filterData(res.data)));
+        setPagination({
+          current: 1,
+          pageSize: 5,
+          total: statistics.Upcoming + statistics.Release + statistics.Pending,
+          showSizeChanger: false,
+        });
+        setDeleteLoadingState((prev) => ({ ...prev, [val]: false }));
+
+        try {
+          const res = await Axios("Admin/Statistics");
+          dispatch(setStatistics(res.data));
+        } catch (error) {
+          console.log(error);
+        }
+      } catch (error) {
+        console.log(error);
+        errorRes("Failed to delete the movie");
+        setDeleteLoadingState((prev) => ({ ...prev, [val]: false }));
+      }
+    };
+    deleteMovie();
+  };
+
   return (
     <>
       {loading ? (
@@ -139,6 +205,7 @@ const ManageMovies = () => {
         </>
       ) : (
         <div>
+          {contextHolder}
           <div className="flex justify-end mb-8">
             <button
               onClick={showModal}
@@ -184,13 +251,19 @@ const ManageMovies = () => {
               title="Time"
               dataIndex="time"
               key="time"
-              render={(time, _, idx) => <span key={idx}>{time} minutes</span>}
+              render={(time, _, idx) => (
+                <span key={idx}>
+                  {time ? `${time} minutes` : "no duration"}
+                </span>
+              )}
             />
             <Column
               title="Mark"
               dataIndex="mark"
               key="mark"
-              render={(mark, _, idx) => <span key={idx}>{mark}/10</span>}
+              render={(mark, _, idx) => (
+                <span key={idx}>{mark ? `${mark}/10` : "unrated"}</span>
+              )}
             />
             <Column title="Status" dataIndex="status" key="status" />
             <Column title="Feature" dataIndex="feature" key="feature" />
@@ -220,14 +293,24 @@ const ManageMovies = () => {
             />
             <Column
               title="Operation"
-              dataIndex="operation"
-              key="operation"
+              dataIndex="deletedButton"
+              key="deletedButton"
               render={(val, _, idx) => (
                 <div className="flex items-center" key={idx}>
                   <Button className="mr-3">Update</Button>
-                  <Button type="primary" danger>
-                    Delete
-                  </Button>
+                  <Popconfirm
+                    title="Delete movie"
+                    description="Are you sure to delete this movie?"
+                    onConfirm={() => handleDelete(val)}
+                  >
+                    <Button
+                      type="primary"
+                      danger
+                      loading={deleteLoadingState[val]}
+                    >
+                      Delete
+                    </Button>
+                  </Popconfirm>
                 </div>
               )}
             />
