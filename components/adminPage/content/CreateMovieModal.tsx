@@ -11,8 +11,8 @@ import {
   Modal,
   Popconfirm,
   InputRef,
+  Tooltip,
 } from "antd";
-import type { UploadChangeParam } from "antd/es/upload";
 import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
 import {
   LoadingOutlined,
@@ -135,9 +135,14 @@ const CreateMovieModal = ({
   const [featureOption, setFeatureOption] = useState<FeatureType[]>();
   const [categoryOption, setCategoryOption] = useState<CategoryType[]>();
   const [nationOption, setNationOption] = useState<[]>([]);
+  const [valueTextArea, setValueTextArea] = useState<string>("");
+  const [textAreaLoading, setTextAreaLoading] = useState<boolean>(false);
 
   const [form] = Form.useForm();
+
   const [messageApi, contextHolder] = message.useMessage();
+
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   //Message when created movie
   const success = () => {
@@ -266,7 +271,6 @@ const CreateMovieModal = ({
             "Content-Type": "multipart/form-data",
           },
         });
-        console.log("movieId: ", movieId);
 
         const movieList = await Axios("Movies", {
           params: { page: 1, eachPage: 5 },
@@ -317,6 +321,40 @@ const CreateMovieModal = ({
     };
     postMovie();
   };
+
+  //AI Create -----------------------------
+  const handleAiCreate = async () => {
+    setValueTextArea("");
+    const text = `summarize movie "spiderman: multi-verse" within 50 words without breaks`;
+    try {
+      setTextAreaLoading(true);
+      const res = await fetch(
+        `${window.origin}/api/palmAi/search?text=${text}`
+      );
+      if (!res.ok || !res.body) {
+        throw res.statusText;
+      }
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) {
+          setTextAreaLoading(false);
+          break;
+        }
+        const decodedChunk = decoder.decode(value, { stream: true });
+        console.log(decodedChunk);
+
+        setValueTextArea((pre) => `${pre}${decodedChunk}`);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    console.log(valueTextArea);
+  }, [valueTextArea]);
 
   return (
     <Modal
@@ -534,20 +572,33 @@ const CreateMovieModal = ({
                 message: "At least 20 letters",
               },
               {
-                max: 9999,
+                max: 10000,
                 message: "Maximum 10000 letters",
               },
             ]}
           >
-            <TextArea
-              rows={6}
-              minLength={20}
-              maxLength={10000}
-              placeholder="Descript the movie"
-              className="inputCustom"
-              style={{ resize: "none" }}
-              disabled={saveLoading}
-            />
+            <div className="relative group">
+              <TextArea
+                rows={6}
+                minLength={20}
+                maxLength={9999}
+                placeholder="Descript the movie"
+                className="inputCustom"
+                style={{ resize: "none" }}
+                disabled={saveLoading || textAreaLoading}
+                value={valueTextArea}
+                onChange={(e) => setValueTextArea(e.target.value)}
+              />
+              <Tooltip title="Create description with AI">
+                <Button
+                  loading={textAreaLoading}
+                  onClick={handleAiCreate}
+                  className="bg-black opacity-0 group-hover:opacity-80 border-2 absolute top-1 right-1 rounded-full px-[10px] py-4 flex justify-center items-center transition-all"
+                >
+                  <i className="fa-sharp fa-solid fa-stars"></i>
+                </Button>
+              </Tooltip>
+            </div>
           </Form.Item>
 
           <Form.Item<FieldType>

@@ -5,14 +5,29 @@ import { useEffect, useState } from "react";
 
 const Trash = () => {
   const [data, setData] = useState("");
-  const text = "summarize spiderman: multi-verse with 100 words without breaks";
+  const text = `summarize movie "spiderman: multi-verse" within 50 words without breaks`;
   useEffect(() => {
-    axios(`http://localhost:3000/api/palmAi/search?text=${text}`).then(
-      (res) => {
-        setData(res.data);
-        console.log(res.data);
+    const fetchApi = async () => {
+      try {
+        const res = await fetch(
+          `${window.origin}/api/palmAi/search?text=${text}`
+        );
+        if (!res.ok || !res.body) {
+          throw res.statusText;
+        }
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        while (true) {
+          const { value, done } = await reader.read();
+          if (done) break;
+          const decodedChunk = decoder.decode(value, { stream: true });
+          setData((pre) => `${pre}${decodedChunk}`);
+        }
+      } catch (error) {
+        console.log(error);
       }
-    );
+    };
+    fetchApi();
   }, []);
 
   return <div>{data}</div>;
