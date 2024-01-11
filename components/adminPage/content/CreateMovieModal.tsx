@@ -25,6 +25,7 @@ import Axios from "@/utils/axios";
 import { useDispatch } from "react-redux";
 import { setmovieList } from "@/utils/redux/slices/data/movieListSlice";
 import { setStatistics } from "@/utils/redux/slices/data/statisticSlice";
+import axios from "axios";
 const { TextArea } = Input;
 
 type FieldType = {
@@ -328,25 +329,11 @@ const CreateMovieModal = ({
     const text = `summarize movie "spiderman: multi-verse" within 50 words without breaks`;
     try {
       setTextAreaLoading(true);
-      const res = await fetch(
+      const res = await axios(
         `${window.origin}/api/palmAi/search?text=${text}`
       );
-      if (!res.ok || !res.body) {
-        throw res.statusText;
-      }
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      while (true) {
-        const { value, done } = await reader.read();
-        if (done) {
-          setTextAreaLoading(false);
-          break;
-        }
-        const decodedChunk = decoder.decode(value, { stream: true });
-        console.log(decodedChunk);
-
-        setValueTextArea((pre) => `${pre}${decodedChunk}`);
-      }
+      setValueTextArea(res.data);
+      setTextAreaLoading(false);
     } catch (error) {
       console.log(error);
     }
