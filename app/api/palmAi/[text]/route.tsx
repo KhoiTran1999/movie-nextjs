@@ -18,5 +18,5 @@ export async function GET(req: NextRequest, res: NextApiResponse) {
     text += chunkText;
   }
 
-  return new Response(text);
+  return new Response("hello");
 }
