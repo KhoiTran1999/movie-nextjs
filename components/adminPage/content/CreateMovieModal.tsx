@@ -132,24 +132,22 @@ const CreateMovieModal = ({
 
   const [loadingThumnail, setLoadingThumnail] = useState(false);
   const [saveLoading, setSaveLoading] = useState<boolean>(false);
+  const [saveAILoading, setSaveAILoading] = useState<boolean>(false);
+  const [AILoading, setAILoading] = useState<boolean>(false);
   const [imageUrl, setImageUrl] = useState<any>();
   const [featureOption, setFeatureOption] = useState<FeatureType[]>();
   const [categoryOption, setCategoryOption] = useState<CategoryType[]>();
   const [nationOption, setNationOption] = useState<[]>([]);
-  const [valueTextArea, setValueTextArea] = useState<string>("");
-  const [textAreaLoading, setTextAreaLoading] = useState<boolean>(false);
 
   const [form] = Form.useForm();
 
   const [messageApi, contextHolder] = message.useMessage();
 
-  const textAreaRef = useRef<HTMLTextAreaElement>(null);
-
   //Message when created movie
-  const success = () => {
+  const success = (text: any) => {
     messageApi.open({
       type: "success",
-      content: "Movie have been created successfully!",
+      content: text,
     });
   };
 
@@ -308,7 +306,7 @@ const CreateMovieModal = ({
         }
 
         form.resetFields();
-        success();
+        success("Movie have been created successfully!");
         handleOk();
         dispatch(setmovieList(filterData(movieList.data)));
         setSaveLoading(false);
@@ -323,25 +321,48 @@ const CreateMovieModal = ({
     postMovie();
   };
 
-  //AI Create -----------------------------
-  const handleAiCreate = async () => {
-    setValueTextArea("");
-    const text = `summarize movie "spiderman: multi-verse" within 50 words without breaks`;
+  //AI create Movie ----------------------------
+  const handleAICreateMovie = async () => {
+    const englishName = form.getFieldValue("EnglishName");
+    if (!englishName) {
+      movieNameRef.current?.focus();
+      return errorRes("Required input English Name");
+    }
+
+    if (englishName.length < 2) {
+      return movieNameRef.current?.focus();
+    }
+
+    const nation = form.getFieldValue("Nation");
+
     try {
-      setTextAreaLoading(true);
-      const res = await axios(
-        `${window.origin}/api/palmAi/search?text=${text}`
+      setAILoading(true);
+      setSaveAILoading(true);
+      const res = await Axios("Chat", {
+        params: { content: englishName, nation },
+      });
+
+      form.setFieldsValue({
+        Category: res.data.Categories,
+        // DateCreated: moment(res.data.DateCreated, "YYYY/MM/DD"),
+        Description: res.data.Description,
+        Feature: res.data.FeatureId,
+        Mark: res.data.Mark,
+        Nation: res.data.NationId,
+        Duration: res.data.Time,
+        Viewer: res.data.Viewer,
+      });
+      setAILoading(false);
+      setSaveAILoading(false);
+      success(
+        `AI have created the movie information, Click button "AI Create" again if you have unexpected result`
       );
-      setValueTextArea(res.data);
-      setTextAreaLoading(false);
     } catch (error) {
       console.log(error);
+      setAILoading(false);
+      setSaveAILoading(false);
     }
   };
-
-  useEffect(() => {
-    console.log(valueTextArea);
-  }, [valueTextArea]);
 
   return (
     <Modal
@@ -350,6 +371,21 @@ const CreateMovieModal = ({
       centered
       closeIcon={false}
       footer={[
+        <Tooltip
+          title={
+            <p>
+              AI will help you create a movie.
+              <br /> *English Name: required
+              <br />
+              *Nation: optional. It will help the result more exactly
+            </p>
+          }
+        >
+          <Button onClick={handleAICreateMovie} danger loading={AILoading}>
+            <i className="fa-sharp fa-solid fa-stars mr-1"></i>
+            AI Create
+          </Button>
+        </Tooltip>,
         <Popconfirm
           title="Cancel create movie"
           description="Are you sure to cancel this movie? All this data will be lost"
@@ -382,9 +418,13 @@ const CreateMovieModal = ({
           layout="horizontal"
           style={{ maxWidth: 600 }}
           onFinish={onFinish}
+          onFinishFailed={(e) =>
+            form.scrollToField(e.errorFields[0].name, { behavior: "smooth" })
+          }
           id="createMovieForm"
         >
           <Form.Item<FieldType>
+            validateDebounce={1000}
             label="English Name"
             name="EnglishName"
             rules={[
@@ -408,11 +448,12 @@ const CreateMovieModal = ({
               maxLength={100}
               placeholder="Movie English Name"
               className="inputCustom"
-              disabled={saveLoading}
+              disabled={saveLoading || saveAILoading}
             />
           </Form.Item>
 
           <Form.Item<FieldType>
+            validateDebounce={1000}
             label="Vietnamese Name"
             name="VietnamName"
             rules={[
@@ -433,10 +474,11 @@ const CreateMovieModal = ({
             <Input
               placeholder="Movie Vietnamese Name"
               className="inputCustom"
-              disabled={saveLoading}
+              disabled={saveLoading || saveAILoading}
             />
           </Form.Item>
           <Form.Item<FieldType>
+            validateDebounce={1000}
             label="Feature"
             name="Feature"
             rules={[{ required: true }]}
@@ -444,11 +486,12 @@ const CreateMovieModal = ({
             <Select
               options={featureOption}
               className="inputCustom"
-              disabled={saveLoading}
+              disabled={saveLoading || saveAILoading}
             />
           </Form.Item>
 
           <Form.Item<FieldType>
+            validateDebounce={1000}
             label="Nation"
             name="Nation"
             rules={[{ required: true }]}
@@ -456,10 +499,11 @@ const CreateMovieModal = ({
             <Select
               options={nationOption}
               className="inputCustom"
-              disabled={saveLoading}
+              disabled={saveLoading || saveAILoading}
             />
           </Form.Item>
           <Form.Item<FieldType>
+            validateDebounce={1000}
             label="Mark"
             name="Mark"
             wrapperCol={{ span: 9 }}
@@ -470,11 +514,12 @@ const CreateMovieModal = ({
               placeholder="from 1-10"
               addonAfter={<i className="fa-solid fa-star text-yellow-400"></i>}
               className="inputCustom"
-              disabled={saveLoading}
+              disabled={saveLoading || saveAILoading}
             />
           </Form.Item>
 
           <Form.Item<FieldType>
+            validateDebounce={1000}
             label="Duration"
             name="Duration"
             wrapperCol={{ span: 9 }}
@@ -485,29 +530,39 @@ const CreateMovieModal = ({
               placeholder="from 20-240"
               addonAfter="Minutes"
               className="inputCustom"
-              disabled={saveLoading}
-            />
-          </Form.Item>
-
-          <Form.Item<FieldType> label="Produced Date" name="DateCreated">
-            <DatePicker
-              placeholder="Pick a date"
-              disabledDate={disabledDate}
-              className="inputCustom"
-              disabled={saveLoading}
-            />
-          </Form.Item>
-
-          <Form.Item<FieldType> label="Viewer" name="Viewer">
-            <InputNumber
-              placeholder="Viewer"
-              min={0}
-              className="inputCustom"
-              disabled={saveLoading}
+              disabled={saveLoading || saveAILoading}
             />
           </Form.Item>
 
           <Form.Item<FieldType>
+            validateDebounce={1000}
+            label="Produced Date"
+            name="DateCreated"
+          >
+            <DatePicker
+              format={"YYYY/MM/DD"}
+              placeholder="Pick a date"
+              disabledDate={disabledDate}
+              className="inputCustom"
+              disabled={saveLoading || saveAILoading}
+            />
+          </Form.Item>
+
+          <Form.Item<FieldType>
+            validateDebounce={1000}
+            label="Viewer"
+            name="Viewer"
+          >
+            <InputNumber
+              placeholder="Viewer"
+              min={0}
+              className="inputCustom"
+              disabled={saveLoading || saveAILoading}
+            />
+          </Form.Item>
+
+          <Form.Item<FieldType>
+            validateDebounce={1000}
             label="Link Trailer"
             name="Trailer"
             rules={[
@@ -524,11 +579,15 @@ const CreateMovieModal = ({
             <Input
               placeholder="https://example.com"
               className="inputCustom"
-              disabled={saveLoading}
+              disabled={saveLoading || saveAILoading}
             />
           </Form.Item>
 
-          <Form.Item<FieldType> label="Thumbnail" name="Thumbnail">
+          <Form.Item<FieldType>
+            validateDebounce={1000}
+            label="Thumbnail"
+            name="Thumbnail"
+          >
             <Upload
               name="upload"
               listType="picture-card"
@@ -536,7 +595,7 @@ const CreateMovieModal = ({
               showUploadList={false}
               beforeUpload={beforeUpload}
               onChange={handleChange}
-              disabled={saveLoading}
+              disabled={saveLoading || saveAILoading}
             >
               {imageUrl ? (
                 <img src={imageUrl} alt="avatar" style={{ width: "100%" }} />
@@ -547,6 +606,7 @@ const CreateMovieModal = ({
           </Form.Item>
 
           <Form.Item<FieldType>
+            validateDebounce={1000}
             label="Description"
             name="Description"
             rules={[
@@ -564,31 +624,19 @@ const CreateMovieModal = ({
               },
             ]}
           >
-            <div className="relative group">
-              <TextArea
-                rows={6}
-                minLength={20}
-                maxLength={9999}
-                placeholder="Descript the movie"
-                className="inputCustom"
-                style={{ resize: "none" }}
-                disabled={saveLoading || textAreaLoading}
-                value={valueTextArea}
-                onChange={(e) => setValueTextArea(e.target.value)}
-              />
-              <Tooltip title="Create description with AI">
-                <Button
-                  loading={textAreaLoading}
-                  onClick={handleAiCreate}
-                  className="bg-black opacity-0 group-hover:opacity-80 border-2 absolute top-1 right-1 rounded-full px-[10px] py-4 flex justify-center items-center transition-all"
-                >
-                  <i className="fa-sharp fa-solid fa-stars"></i>
-                </Button>
-              </Tooltip>
-            </div>
+            <TextArea
+              rows={6}
+              minLength={20}
+              maxLength={9999}
+              placeholder="Descript the movie"
+              className="inputCustom"
+              style={{ resize: "none" }}
+              disabled={saveLoading || saveAILoading}
+            />
           </Form.Item>
 
           <Form.Item<FieldType>
+            validateDebounce={1000}
             label="Category"
             name="Category"
             rules={[
@@ -603,7 +651,7 @@ const CreateMovieModal = ({
               options={categoryOption}
               className="inputCustom"
               showSearch={false}
-              disabled={saveLoading}
+              disabled={saveLoading || saveAILoading}
             />
           </Form.Item>
 
@@ -637,7 +685,7 @@ const CreateMovieModal = ({
                         <Input
                           className="bg-transparent placeholder:text-[#5d5d5d]"
                           placeholder="https://example.com"
-                          disabled={saveLoading}
+                          disabled={saveLoading || saveAILoading}
                         />
                       </Form.Item>
                       {fields.length > 0 ? (
