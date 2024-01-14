@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { movieListSelector, statisticSelector } from "@/utils/redux/selector";
 import { setmovieList } from "@/utils/redux/slices/data/movieListSlice";
 import { setStatistics } from "@/utils/redux/slices/data/statisticSlice";
+import UpdateMovieModal from "./UpdateMovieModal";
+import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
 
 const { Column, ColumnGroup } = Table;
 
@@ -59,6 +61,7 @@ const ManageMovies = () => {
   const [messageApi, contextHolder] = message.useMessage();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [deleteLoadingState, setDeleteLoadingState] = useState<
     Record<string, boolean>
@@ -131,6 +134,14 @@ const ManageMovies = () => {
     setIsModalOpen(false);
   };
 
+  const handleOkUpdateModal = () => {
+    setIsUpdateModalOpen(false);
+  };
+
+  const handleCancelUpdateModal = () => {
+    setIsUpdateModalOpen(false);
+  };
+
   //Message when created movie
   const success = () => {
     messageApi.open({
@@ -146,41 +157,43 @@ const ManageMovies = () => {
     });
   };
 
-  const handleDelete = (val: any) => {
-    const deleteMovie = async () => {
+  const handleDelete = async (val: any) => {
+    try {
+      setDeleteLoadingState((prev) => ({ ...prev, [val]: true }));
+      await Axios.delete(`Movie/${val}`);
+      success();
+
+      const res = await Axios("/Movies", {
+        params: {
+          page: 1,
+          eachPage: 5,
+        },
+      });
+      dispatch(setmovieList(filterData(res.data)));
+      setPagination({
+        current: 1,
+        pageSize: 5,
+        total: statistics.Upcoming + statistics.Release + statistics.Pending,
+        showSizeChanger: false,
+      });
+      setDeleteLoadingState((prev) => ({ ...prev, [val]: false }));
+
       try {
-        setDeleteLoadingState((prev) => ({ ...prev, [val]: true }));
-        await Axios.delete(`Movie/${val}`);
-        success();
-
-        const res = await Axios("/Movies", {
-          params: {
-            page: 1,
-            eachPage: 5,
-          },
-        });
-        dispatch(setmovieList(filterData(res.data)));
-        setPagination({
-          current: 1,
-          pageSize: 5,
-          total: statistics.Upcoming + statistics.Release + statistics.Pending,
-          showSizeChanger: false,
-        });
-        setDeleteLoadingState((prev) => ({ ...prev, [val]: false }));
-
-        try {
-          const res = await Axios("Admin/Statistics");
-          dispatch(setStatistics(res.data));
-        } catch (error) {
-          console.log(error);
-        }
+        const res = await Axios("Admin/Statistics");
+        dispatch(setStatistics(res.data));
       } catch (error) {
         console.log(error);
-        errorRes("Failed to delete the movie");
-        setDeleteLoadingState((prev) => ({ ...prev, [val]: false }));
       }
-    };
-    deleteMovie();
+    } catch (error) {
+      console.log(error);
+      errorRes("Failed to delete the movie");
+      setDeleteLoadingState((prev) => ({ ...prev, [val]: false }));
+    }
+  };
+
+  const handleUpdateModalOpen = async (movieId: any) => {
+    dispatch(setMovieId(movieId));
+    setIsUpdateModalOpen(true);
   };
 
   return (
@@ -297,7 +310,12 @@ const ManageMovies = () => {
               key="deletedButton"
               render={(val, _, idx) => (
                 <div className="flex items-center" key={idx}>
-                  <Button className="mr-3">Update</Button>
+                  <Button
+                    className="mr-3"
+                    onClick={() => handleUpdateModalOpen(val)}
+                  >
+                    Update
+                  </Button>
                   <Popconfirm
                     title="Delete movie"
                     description="Are you sure to delete this movie?"
@@ -315,6 +333,11 @@ const ManageMovies = () => {
               )}
             />
           </Table>
+          <UpdateMovieModal
+            isUpdateModalOpen={isUpdateModalOpen}
+            handleOkUpdateModal={handleOkUpdateModal}
+            handleCancelUpdateModal={handleCancelUpdateModal}
+          />
           <CreateMovieModal
             isModalOpen={isModalOpen}
             handleOk={handleOk}

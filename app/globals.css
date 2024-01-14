@@ -107,6 +107,7 @@
 }
 :root .inputCustom {
   background-color: transparent;
+  caret-color: red;
 }
 
 :root .inputCustom::placeholder {
@@ -169,9 +170,53 @@
   color: #d1d0cf;
 }
 
+:root
+  .ant-steps
+  .ant-steps-item-custom
+  > .ant-steps-item-container
+  > .ant-steps-item-icon
+  > .ant-steps-icon {
+  top: 2px;
+}
+
+:root
+  .ant-steps
+  .ant-steps-item-wait.ant-steps-item-custom
+  .ant-steps-item-icon
+  > .ant-steps-icon {
+  color: #979696;
+}
+
+:root
+  .ant-steps
+  .ant-steps-item-wait
+  > .ant-steps-item-container
+  > .ant-steps-item-content
+  > .ant-steps-item-title {
+  color: #979696;
+}
+
+:root
+  .ant-steps
+  .ant-steps-item-process
+  > .ant-steps-item-container
+  > .ant-steps-item-content
+  > .ant-steps-item-title::after {
+  background-color: #979696;
+}
+
+:root
+  .ant-steps
+  .ant-steps-item-wait
+  > .ant-steps-item-container
+  > .ant-steps-item-content
+  > .ant-steps-item-title::after {
+  background-color: #979696;
+}
+
 /* width */
 ::-webkit-scrollbar {
-  width: 7px;
+  width: 3px;
 }
 
 /* Track */
@@ -189,5 +234,5 @@
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #dedddd;
+  background: #1d1d1d;
 }
