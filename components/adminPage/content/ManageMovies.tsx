@@ -161,7 +161,6 @@ const ManageMovies = () => {
     try {
       setDeleteLoadingState((prev) => ({ ...prev, [val]: true }));
       await Axios.delete(`Movie/${val}`);
-      success();
 
       const res = await Axios("/Movies", {
         params: {
@@ -177,6 +176,7 @@ const ManageMovies = () => {
         showSizeChanger: false,
       });
       setDeleteLoadingState((prev) => ({ ...prev, [val]: false }));
+      success();
 
       try {
         const res = await Axios("Admin/Statistics");

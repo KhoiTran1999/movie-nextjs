@@ -32,6 +32,7 @@ import {
   isCancelButtonModalSelector,
   isLoadingAIButtonSelector,
 } from "@/utils/redux/selector";
+import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
 const { TextArea } = Input;
 
 type FieldType = {
@@ -42,7 +43,7 @@ type FieldType = {
   EnglishName?: string;
   VietnamName?: string;
   Trailer?: string;
-  DateCreated?: string;
+  ProducedDate?: string;
   Thumbnail?: string;
   Feature?: number;
   Category?: number;
@@ -75,7 +76,7 @@ interface InformationFormType {
 
 interface ValueFormType {
   Category: [];
-  DateCreated: Date;
+  ProducedDate: Date;
   Description: string;
   Duration: number;
   EnglishName: string;
@@ -91,7 +92,7 @@ interface ValueFormType {
 
 interface ApiType {
   categories: categoryType[];
-  dateCreated: string;
+  producedDate: string;
   englishName: string;
   feature: featureType;
   mark: number;
@@ -249,7 +250,7 @@ const InformationForm = ({
         status: val.status,
         feature,
         categories,
-        dateCreated: val.dateCreated,
+        producedDate: val.producedDate,
         deletedButton: val.movieId,
       };
       return newObj;
@@ -261,7 +262,7 @@ const InformationForm = ({
     const postMovie = async () => {
       const data = {
         Categories: values.Category,
-        DateCreated: values.DateCreated,
+        ProducedDate: values.ProducedDate,
         Description: values.Description,
         Time: values.Duration,
         EnglishName: values.EnglishName,
@@ -281,32 +282,11 @@ const InformationForm = ({
           },
         });
 
+        dispatch(setMovieId(movieId));
+
         const movieList = await Axios("Movies", {
           params: { page: 1, eachPage: 5 },
         });
-
-        // if (values.videoList) {
-        //   try {
-        //     const seasonId = await Axios.post("Seasons", {
-        //       movieId: movieId.data,
-        //     });
-        //     try {
-        //       const newVideoList = values.videoList.map((val) => ({
-        //         video: val,
-        //       }));
-        //       await Axios.post("episode", newVideoList, {
-        //         params: { seasonId: seasonId.data },
-        //       });
-        //       console.log("created episode successfully");
-        //     } catch (error) {
-        //       console.log(error);
-        //       errorRes("Failed to add Episode");
-        //     }
-        //   } catch (error) {
-        //     console.log(error);
-        //     errorRes("Failed to add Season");
-        //   }
-        // }
 
         try {
           const res = await Axios("Admin/Statistics");
@@ -318,9 +298,9 @@ const InformationForm = ({
         success("Movie have been created successfully!");
         form.resetFields();
         dispatch(setmovieList(filterData(movieList.data)));
-        setIsLoadingNextButton(false);
         setImageUrl(null);
         setTimeout(() => {
+          setIsLoadingNextButton(false);
           setCurrent((prev: number) => prev + 1);
         }, 2000);
       } catch (error) {
@@ -358,7 +338,7 @@ const InformationForm = ({
 
           form.setFieldsValue({
             Category: res.data.Categories,
-            DateCreated: dayjs(res.data.DateCreated, "YYYY/MM/DD"),
+            ProducedDate: dayjs(res.data.ProducedDate, "YYYY/MM/DD"),
             Description: res.data.Description,
             Feature: res.data.FeatureId > 4 ? null : res.data.FeatureId,
             Mark: res.data.Mark,
@@ -372,7 +352,9 @@ const InformationForm = ({
           );
         } catch (error) {
           console.log(error);
+          errorRes(`${englishName} Not Found`);
           dispatch(setIsLoadingAIButton(false));
+          movieNameRef.current?.focus();
         }
       };
       handleAICreateMovie();
@@ -402,7 +384,7 @@ const InformationForm = ({
             behavior: "smooth",
           })
         }
-        id="createInformationForm"
+        id="createMovie"
       >
         <Form.Item<FieldType>
           validateDebounce={1000}
@@ -520,7 +502,7 @@ const InformationForm = ({
         <Form.Item<FieldType>
           validateDebounce={1000}
           label="Produced Date"
-          name="DateCreated"
+          name="ProducedDate"
         >
           <DatePicker
             format={"YYYY/MM/DD"}

@@ -98,7 +98,7 @@ const CreateMovieModal = ({
           disabled={isLoadingAIButton}
           key="Submit"
           htmlType="submit"
-          form="createInformationForm"
+          form="createMovie"
           loading={isLoadingNextButton}
           // onClick={() => setCurrent(current + 1)}
         >
@@ -112,13 +112,17 @@ const CreateMovieModal = ({
             <InformationForm
               handleOk={handleOk}
               handleCancel={handleCancel}
-              setCurrent={setCurrent}
               clickAIButton={clickAIButton}
+              setCurrent={setCurrent}
               setIsLoadingNextButton={setIsLoadingNextButton}
               isLoadingNextButton={isLoadingNextButton}
             />
           ) : current === 1 ? (
-            <VideoForm />
+            <VideoForm
+              setCurrent={setCurrent}
+              setIsLoadingNextButton={setIsLoadingNextButton}
+              isLoadingNextButton={isLoadingNextButton}
+            />
           ) : (
             <div>Actor</div>
           )}

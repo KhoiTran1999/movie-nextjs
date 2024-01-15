@@ -12,6 +12,8 @@ import { Introduction } from "@/components/introduction/Introduction";
 import { EpisodeModal } from "@/components/detailPage/episodeModal/EpisodeModal";
 import { useRouter } from "next/navigation";
 import { WatchModal } from "@/components/detailPage/watchModal/WatchModal";
+import { useDispatch } from "react-redux";
+import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
 const ReactPlayer = dynamic(() => import("react-player/youtube"), {
   ssr: false,
 });
@@ -61,6 +63,8 @@ interface episodeProps {
 
 export default function Detail() {
   const router = useRouter();
+
+  const dispatch = useDispatch();
 
   const [data, setData] = useState<detailProps>({
     castCharacteries: [],
@@ -137,10 +141,12 @@ export default function Detail() {
 
   const handleCancel = () => {
     setIsEpisodeModalOpen(false);
+    dispatch(setMovieId(""));
   };
 
   const handleCancelWatch = () => {
     setIsWatchModalOpen(false);
+    dispatch(setMovieId(""));
   };
 
   const handleAfterClose = () => {
