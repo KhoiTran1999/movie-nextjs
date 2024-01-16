@@ -62,13 +62,12 @@ const ManageMovies = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [deleteLoadingState, setDeleteLoadingState] = useState<
     Record<string, boolean>
   >({});
   const [isError, setIsError] = useState<boolean>(false);
 
-  // const [data, setData] = useState<any>([]);
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 5,
@@ -100,7 +99,7 @@ const ManageMovies = () => {
   useEffect(() => {
     const fetchApi = async () => {
       try {
-        setLoading(true);
+        // setLoading(true);
         const res = await Axios("Movies", {
           params: {
             page: pagination.current,

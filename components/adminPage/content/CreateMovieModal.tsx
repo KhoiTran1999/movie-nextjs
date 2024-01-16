@@ -5,6 +5,8 @@ import InformationForm from "./form/InformationForm";
 import VideoForm from "./form/videoForm";
 import { isLoadingAIButtonSelector } from "@/utils/redux/selector";
 import { setIsCancelButtonModal } from "@/utils/redux/slices/toggle/IsCancelButtonModalSlice";
+import ActorForm from "./form/actorForm";
+import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
 
 interface CreateMovieModalType {
   isModalOpen: boolean;
@@ -84,6 +86,7 @@ const CreateMovieModal = ({
             handleCancel();
             dispath(setIsCancelButtonModal());
             setCurrent(0);
+            dispath(setMovieId(""));
           }}
         >
           <Button
@@ -100,7 +103,7 @@ const CreateMovieModal = ({
           htmlType="submit"
           form="createMovie"
           loading={isLoadingNextButton}
-          // onClick={() => setCurrent(current + 1)}
+          onClick={() => setCurrent(current + 1)}
         >
           Next
         </Button>,
@@ -108,7 +111,7 @@ const CreateMovieModal = ({
     >
       <div className="h-[70svh] overflow-auto p-3">
         <div className="flex justify-center">
-          {current === 0 ? (
+          {/* {current === 0 ? (
             <InformationForm
               handleOk={handleOk}
               handleCancel={handleCancel}
@@ -124,8 +127,9 @@ const CreateMovieModal = ({
               isLoadingNextButton={isLoadingNextButton}
             />
           ) : (
-            <div>Actor</div>
-          )}
+            <ActorForm />
+          )} */}
+          <ActorForm />
         </div>
       </div>
     </Modal>

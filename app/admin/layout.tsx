@@ -18,7 +18,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch();
 
   const [firstLoading, setFirstLoading] = useState<boolean>(true);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
 
   useEffect(() => {
