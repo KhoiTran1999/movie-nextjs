@@ -54,8 +54,8 @@ const Dashboard = () => {
         <p className="text-4xl font-bold text-white mt-2">
           <CountUp
             className="account-balance"
-            start={statistics.Release}
-            end={40}
+            start={0}
+            end={statistics.Release}
             duration={2}
             useEasing={true}
             separator=","

@@ -251,6 +251,10 @@
   background-color: transparent;
 }
 
+:root .ant-table-wrapper .ant-table-tbody > tr.ant-table-placeholder:hover {
+  background: transparent;
+}
+
 /* width */
 ::-webkit-scrollbar {
   width: 3px;

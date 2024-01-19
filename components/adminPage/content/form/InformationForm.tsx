@@ -14,7 +14,7 @@ import {
   Tooltip,
   Steps,
 } from "antd";
-import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
+import type { RcFile } from "antd/es/upload/interface";
 import {
   LoadingOutlined,
   PlusOutlined,

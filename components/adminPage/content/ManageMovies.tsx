@@ -68,12 +68,20 @@ const ManageMovies = () => {
   >({});
   const [isError, setIsError] = useState<boolean>(false);
 
+  //Get statistics --------------------------------
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 5,
     total: statistics.Upcoming + statistics.Release + statistics.Pending,
     showSizeChanger: false,
   });
+
+  useEffect(() => {
+    setPagination((prev) => ({
+      ...prev,
+      total: statistics.Upcoming + statistics.Release + statistics.Pending,
+    }));
+  }, [statistics]);
 
   const filterData = (arr: []) => {
     const filteredData = arr.map((val: ApiType) => {
@@ -226,7 +234,7 @@ const ManageMovies = () => {
               <span className="w-32 h-32 rotate-45 translate-x-12 -translate-y-2 absolute left-0 top-0 bg-white opacity-[3%]"></span>
               <span className="absolute top-0 left-0 w-48 h-48 -mt-1 transition-all duration-500 ease-in-out rotate-45 -translate-x-56 -translate-y-24 bg-white opacity-100 group-hover:-translate-x-8"></span>
               <span className="relative w-full text-left tracking-wide text-base text-white transition-colors duration-200 ease-in-out group-hover:text-gray-900">
-                <i className="fa-regular fa-plus mr-2"></i> New Movie
+                <i className="fa-regular fa-plus mr-2"></i> Add Movie
               </span>
               <span className="absolute inset-0 border-2 border-white rounded-2xl"></span>
             </button>

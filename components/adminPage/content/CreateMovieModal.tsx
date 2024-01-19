@@ -25,11 +25,11 @@ const CreateMovieModal = ({
   const [clickAIButton, setClickAIButton] = useState<number>(0);
   const [isLoadingNextButton, setIsLoadingNextButton] =
     useState<boolean>(false);
-
   const isLoadingAIButton = useSelector(isLoadingAIButtonSelector);
 
   return (
     <Modal
+      width={current === 2 ? "800px" : "530px"}
       title={
         <Steps current={current}>
           <Steps.Step
@@ -39,11 +39,10 @@ const CreateMovieModal = ({
           <Steps.Step
             title="Video"
             icon={<i className="fa-light fa-clapperboard-play"></i>}
-            active={true}
           />
           <Steps.Step
             title="Actor"
-            icon={<i className="fa-light fa-users"></i>}
+            icon={<i className="fa-light fa-user"></i>}
           />
         </Steps>
       }
@@ -103,7 +102,13 @@ const CreateMovieModal = ({
           htmlType="submit"
           form="createMovie"
           loading={isLoadingNextButton}
-          onClick={() => setCurrent(current + 1)}
+          onClick={() => {
+            if (current === 2) {
+              handleOk();
+              return setCurrent(0);
+            }
+            setCurrent(current + 1);
+          }}
         >
           Next
         </Button>,
@@ -129,7 +134,12 @@ const CreateMovieModal = ({
           ) : (
             <ActorForm />
           )} */}
-          <ActorForm />
+          <ActorForm
+            setCurrent={setCurrent}
+            current={current}
+            setIsLoadingNextButton={setIsLoadingNextButton}
+            isLoadingNextButton={isLoadingNextButton}
+          />
         </div>
       </div>
     </Modal>

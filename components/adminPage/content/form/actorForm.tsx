@@ -1,13 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Button, Form, Input, Space, Table } from "antd";
+import { Button, Form, Input, Modal, Space, Table, Tooltip } from "antd";
 import type { InputRef, TableColumnType, TableColumnsType } from "antd";
 import Column from "antd/es/table/Column";
 import { FilterDropdownProps } from "antd/es/table/interface";
 import { SearchOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 import Axios from "@/utils/axios";
-import { useSelector } from "react-redux";
-import { movieIdSelector } from "@/utils/redux/selector";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  isCancelButtonModalSelector,
+  movieIdSelector,
+  personListSelector,
+} from "@/utils/redux/selector";
+import CreatePersonModal from "./createPersonModal";
+import { setPersonList } from "@/utils/redux/slices/data/personListSlice";
+import { current } from "@reduxjs/toolkit";
 
 interface DataType {
   key: React.Key;
@@ -28,39 +35,50 @@ interface PersonType {
   doB: string;
 }
 
-const data: DataType[] = [];
-for (let i = 0; i < 46; i++) {
-  data.push({
-    key: i,
-    image:
-      "https://i.pinimg.com/originals/32/27/d0/3227d0b5ed315b7d255516f18bff26ba.jpg",
-    namePerson: `Edward King ${i}`,
-    nationName: `Korea`,
-    role: "AC",
-    doB: "20/02/1983",
-  });
+interface VideoFormType {
+  setCurrent: Function;
+  current: number;
+  setIsLoadingNextButton: Function;
+  isLoadingNextButton: boolean;
 }
 
 type DataIndex = keyof DataType;
 
-const ActorForm = () => {
-  const [searchText, setSearchText] = useState("");
-  const [searchedColumn, setSearchedColumn] = useState("");
+const ActorForm = ({
+  setCurrent,
+  current,
+  setIsLoadingNextButton,
+  isLoadingNextButton,
+}: VideoFormType) => {
+  const dispatch = useDispatch();
+
+  const [searchText, setSearchText] = useState<string>("");
+  const [searchedColumn, setSearchedColumn] = useState<string>("");
   const searchInput = useRef<InputRef>(null);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [reloading, setReloading] = useState<boolean>(false);
-  const [personList, setPersonList] = useState<[]>([]);
+  const [isOpenCreatePersonModal, setIsOpenCreatePersonModal] =
+    useState<boolean>(false);
 
   const movieId = useSelector(movieIdSelector);
+  const personList = useSelector(personListSelector);
+  const isCancelButtonModal = useSelector(isCancelButtonModalSelector);
+
+  const [form] = Form.useForm();
 
   useEffect(() => {
     const fetchApi = async () => {
       try {
         setLoading(true);
         const res = await Axios("Persons");
-        setPersonList(
-          res.data.map((val: PersonType, idx: number) => ({ ...val, key: idx }))
+        dispatch(
+          setPersonList(
+            res.data.map((val: PersonType, idx: number) => ({
+              ...val,
+              key: idx,
+            }))
+          )
         );
         setLoading(false);
       } catch (error) {
@@ -72,6 +90,16 @@ const ActorForm = () => {
     fetchApi();
   }, []);
 
+  //Row Selection -------------------
+  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
+    setSelectedRowKeys(newSelectedRowKeys);
+  };
+
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+  };
+
   //Search person -----------------------------
   const start = () => {
     setReloading(true);
@@ -80,15 +108,6 @@ const ActorForm = () => {
       setSelectedRowKeys([]);
       setReloading(false);
     }, 1000);
-  };
-
-  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    setSelectedRowKeys(newSelectedRowKeys);
-  };
-
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
   };
   const hasSelected = selectedRowKeys.length > 0;
 
@@ -106,6 +125,7 @@ const ActorForm = () => {
     clearFilters();
     setSearchText("");
   };
+
   //-----------------------------------------
 
   const handleOnFinish = async () => {
@@ -115,12 +135,7 @@ const ActorForm = () => {
 
         const person = {
           personId: val.personId,
-          image: val.image,
-          namePerson: val.namePerson,
-          nationId: val.nationId,
-          nationName: val.nationName,
-          role: val.role,
-          doB: val.doB,
+          characterName: val.namePerson,
         };
 
         return [...acc, person];
@@ -130,6 +145,21 @@ const ActorForm = () => {
     console.log(selectedPersons);
   };
 
+  //-----------------------------------------
+  useEffect(() => {
+    if (current === 3) {
+      setIsLoadingNextButton(true);
+      form.resetFields;
+    }
+  }, [current]);
+
+  useEffect(() => {
+    form.resetFields();
+    setSearchText("");
+    setSearchedColumn("");
+    setSelectedRowKeys([]);
+  }, [isCancelButtonModal]);
+
   return (
     <>
       {loading ? (
@@ -138,28 +168,63 @@ const ActorForm = () => {
         </div>
       ) : (
         <div>
-          <div style={{ marginBottom: 16 }}>
-            <Button onClick={start} disabled={!hasSelected} loading={reloading}>
-              Reload
-            </Button>
-            <span style={{ marginLeft: 8 }}>
-              {hasSelected ? `Selected ${selectedRowKeys.length} persons` : ""}
-            </span>
+          <div
+            className="flex justify-between items-center"
+            style={{ marginBottom: 16 }}
+          >
+            <div>
+              <Button
+                onClick={start}
+                disabled={!hasSelected}
+                loading={reloading}
+              >
+                Reset
+              </Button>
+              <span style={{ marginLeft: 8 }}>
+                {hasSelected
+                  ? `Selected ${selectedRowKeys.length} persons`
+                  : ""}
+              </span>
+            </div>
+            {searchedColumn !== "" ? (
+              <Button onClick={() => setIsOpenCreatePersonModal(true)}>
+                <i className="fa-regular fa-plus mr-2"></i> Add Person
+              </Button>
+            ) : (
+              <Tooltip title="To add new person, you must Search or use Filter first!">
+                <Button disabled className="tracking-wide font-medium text-sm">
+                  <i className="fa-regular fa-plus mr-2"></i> Add Person
+                </Button>
+              </Tooltip>
+            )}
           </div>
           <Form id="createMovie" onFinish={handleOnFinish}>
-            <Form.Item>
-              <Table rowSelection={rowSelection} dataSource={personList}>
+            <Form.Item name={""}>
+              <Table
+                className="w-[642px]"
+                rowSelection={rowSelection}
+                dataSource={personList}
+                onChange={(pagination, filters, sorter, extra) =>
+                  console.log("params", pagination, filters, sorter, extra)
+                }
+              >
                 <Column
                   title="Image"
-                  dataIndex="image"
-                  key="image"
+                  dataIndex="thumbnail"
+                  key="thumbnail"
                   render={(image: string, _, idx) => (
-                    <img
-                      src={image}
-                      alt="thumbnail"
-                      className="w-[200px] h-[160px] object-contain"
-                      key={idx}
-                    />
+                    <div className="w-fit h-[160px] overflow-hidden rounded-lg">
+                      <img
+                        src={image}
+                        alt="thumbnail"
+                        className="h-full object-contain"
+                        key={idx}
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = "/errorAvatar.jpg";
+                        }}
+                      />
+                    </div>
                   )}
                 />
                 <Column
@@ -181,6 +246,7 @@ const ActorForm = () => {
                       onKeyDown={(e) => e.stopPropagation()}
                     >
                       <Input
+                        className="inputCustom"
                         ref={searchInput}
                         placeholder={`Search name`}
                         value={selectedKeys[0]}
@@ -189,22 +255,13 @@ const ActorForm = () => {
                             e.target.value ? [e.target.value] : []
                           )
                         }
-                        onPressEnter={() =>
-                          handleSearch(
-                            selectedKeys as string[],
-                            confirm,
-                            "namePerson"
-                          )
-                        }
                         style={{
                           marginBottom: 8,
                           display: "block",
-                          color: "black",
                         }}
                       />
                       <Space>
                         <Button
-                          type="primary"
                           onClick={() =>
                             handleSearch(
                               selectedKeys as string[],
@@ -223,23 +280,13 @@ const ActorForm = () => {
                             clearFilters && handleReset(clearFilters)
                           }
                           size="small"
+                          type="dashed"
                           style={{ width: 90 }}
                         >
                           Reset
                         </Button>
                         <Button
-                          type="link"
-                          size="small"
-                          onClick={() => {
-                            confirm({ closeDropdown: false });
-                            setSearchText((selectedKeys as string[])[0]);
-                            setSearchedColumn("namePerson");
-                          }}
-                        >
-                          Filter
-                        </Button>
-                        <Button
-                          type="link"
+                          type="text"
                           size="small"
                           onClick={() => {
                             close();
@@ -292,6 +339,7 @@ const ActorForm = () => {
                     <i className="fa-sharp fa-solid fa-filter-list text-gray-400 "></i>
                   }
                   onFilter={(value: any, record: DataType) => {
+                    setSearchedColumn("nationName");
                     return record.nationName.includes(value);
                   }}
                 />
@@ -300,13 +348,14 @@ const ActorForm = () => {
                   dataIndex="role"
                   key="role"
                   filters={[
-                    { text: "Actor", value: "AC" },
-                    { text: "Producer", value: "PR" },
+                    { text: "Actor", value: "Actor" },
+                    { text: "Producer", value: "Producer" },
                   ]}
                   filterIcon={
                     <i className="fa-sharp fa-solid fa-filter-list text-gray-400 "></i>
                   }
                   onFilter={(value: any, record: DataType) => {
+                    setSearchedColumn("role");
                     return record.role.includes(value);
                   }}
                 />
@@ -314,6 +363,10 @@ const ActorForm = () => {
               </Table>
             </Form.Item>
           </Form>
+          <CreatePersonModal
+            isOpenCreatePersonModal={isOpenCreatePersonModal}
+            setIsOpenCreatePersonModal={setIsOpenCreatePersonModal}
+          />
         </div>
       )}
     </>
