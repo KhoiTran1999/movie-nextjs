@@ -50,18 +50,30 @@ const VideoForm = ({
   }, [isCancelButtonModal]);
 
   const handleOnFinish = async (values: any) => {
-    if (movieId) {
+    if (movieId && values.seasonList) {
       setIsLoadingNextButton(true);
-      values.season.forEach(async (episode: any) => {
+      values.seasonList.forEach(async (season: any) => {
         try {
           const seasonId = await Axios.post("Seasons", {
             movieId: movieId.data,
+            name: season.seasonName,
           });
 
           try {
-            await Axios.post("episode", episode.episode, {
+            await Axios.post("episode", season.episode, {
               params: { seasonId: seasonId.data },
             });
+
+            try {
+              Axios.patch(
+                `Movie/${movieId}`,
+                {},
+                { params: { status: "Release" } }
+              );
+            } catch (error) {
+              console.log(error);
+            }
+
             success("Create Episode succesfully");
             setTimeout(() => {
               setIsLoadingNextButton(false);
@@ -79,6 +91,8 @@ const VideoForm = ({
           return;
         }
       });
+    } else {
+      setCurrent((prev: number) => prev + 1);
     }
   };
 
@@ -87,13 +101,12 @@ const VideoForm = ({
       {contextHolder}
       <Form
         form={form}
-        labelCol={{ span: 8, flex: "110px" }}
         layout="horizontal"
         style={{ width: "100%" }}
         id="createMovie"
         onFinish={handleOnFinish}
       >
-        <Form.List name="season">
+        <Form.List name="seasonList">
           {(fields, { add, remove }) => (
             <div
               style={{ display: "flex", rowGap: 16, flexDirection: "column" }}
@@ -112,6 +125,16 @@ const VideoForm = ({
                     />
                   }
                 >
+                  <Form.Item
+                    label={"Name"}
+                    name={[field.name, "seasonName"]}
+                    rules={[{ required: true }]}
+                  >
+                    <Input
+                      className="bg-transparent placeholder:text-[#5d5d5d]"
+                      placeholder="season name"
+                    />
+                  </Form.Item>
                   <Form.Item>
                     <Form.List name={[field.name, "episode"]}>
                       {(subFields, subOpt, { errors }) => (

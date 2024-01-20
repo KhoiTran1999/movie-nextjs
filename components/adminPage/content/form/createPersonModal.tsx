@@ -137,7 +137,9 @@ const CreatePersonModal = ({
 
       try {
         //update personList
-        const res = await Axios("Persons");
+        const res = await Axios("Persons", {
+          params: { sortBy: "CreatedDate", page: 0 },
+        });
         dispatch(
           setPersonList(
             res.data.map((val: any, idx: number) => ({

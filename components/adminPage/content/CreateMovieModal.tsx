@@ -29,7 +29,7 @@ const CreateMovieModal = ({
 
   return (
     <Modal
-      width={current === 2 ? "800px" : "530px"}
+      width={current >= 2 ? "800px" : "530px"}
       title={
         <Steps current={current}>
           <Steps.Step
@@ -103,11 +103,12 @@ const CreateMovieModal = ({
           form="createMovie"
           loading={isLoadingNextButton}
           onClick={() => {
-            if (current === 2) {
-              handleOk();
-              return setCurrent(0);
+            if (current >= 2) {
+              return setTimeout(() => {
+                handleOk();
+                setCurrent(0);
+              }, 2000);
             }
-            setCurrent(current + 1);
           }}
         >
           Next
@@ -116,7 +117,7 @@ const CreateMovieModal = ({
     >
       <div className="h-[70svh] overflow-auto p-3">
         <div className="flex justify-center">
-          {/* {current === 0 ? (
+          {current === 0 ? (
             <InformationForm
               handleOk={handleOk}
               handleCancel={handleCancel}
@@ -132,14 +133,13 @@ const CreateMovieModal = ({
               isLoadingNextButton={isLoadingNextButton}
             />
           ) : (
-            <ActorForm />
-          )} */}
-          <ActorForm
-            setCurrent={setCurrent}
-            current={current}
-            setIsLoadingNextButton={setIsLoadingNextButton}
-            isLoadingNextButton={isLoadingNextButton}
-          />
+            <ActorForm
+              setCurrent={setCurrent}
+              current={current}
+              setIsLoadingNextButton={setIsLoadingNextButton}
+              isLoadingNextButton={isLoadingNextButton}
+            />
+          )}
         </div>
       </div>
     </Modal>

@@ -296,10 +296,10 @@ const InformationForm = ({
         }
 
         success("Movie have been created successfully!");
-        form.resetFields();
-        dispatch(setmovieList(filterData(movieList.data)));
-        setImageUrl(null);
         setTimeout(() => {
+          form.resetFields();
+          dispatch(setmovieList(filterData(movieList.data)));
+          setImageUrl(null);
           setIsLoadingNextButton(false);
           setCurrent((prev: number) => prev + 1);
         }, 2000);
@@ -315,7 +315,7 @@ const InformationForm = ({
 
   //AI Create Information --------------------------------
   useEffect(() => {
-    if (clickAIButton) {
+    if (clickAIButton > 0) {
       //AI create Movie ----------------------------
       const handleAICreateMovie = async () => {
         const englishName = form.getFieldValue("EnglishName");
@@ -503,6 +503,7 @@ const InformationForm = ({
           validateDebounce={1000}
           label="Produced Date"
           name="ProducedDate"
+          rules={[{ required: true }]}
         >
           <DatePicker
             format={"YYYY/MM/DD"}

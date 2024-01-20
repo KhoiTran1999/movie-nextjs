@@ -27,7 +27,7 @@ const rubik = Rubik_Dirt({
 interface detailProps {
   castCharacteries: [];
   categories: [];
-  dateCreated: string;
+  producedDate: string;
   dateUpdated: string;
   description: string;
   englishName: string;
@@ -69,7 +69,7 @@ export default function Detail() {
   const [data, setData] = useState<detailProps>({
     castCharacteries: [],
     categories: [],
-    dateCreated: "",
+    producedDate: "",
     dateUpdated: "",
     description: "",
     englishName: "",
@@ -162,7 +162,9 @@ export default function Detail() {
   useEffect(() => {
     const fetchAPI = async () => {
       try {
-        const res = await Axios("Movie/ca7274ea-0f24-4d20-88a7-d7605c449be9");
+        const res = await Axios("Movie/89da8cea-9335-4ed5-88ef-19ec73c20840");
+        console.log(res.data);
+
         setData(res.data);
         setTabItem([
           {
@@ -230,7 +232,7 @@ export default function Detail() {
               </h1>
               <h2>{data.vietnamName}</h2>
               <div className="my-4">
-                <span>{data.dateCreated.slice(0, 4)}</span>
+                <span>{data.producedDate.slice(0, 4)}</span>
                 <span className="mx-4">{data.time} minutes</span>
                 <span>
                   {data.mark}/10 <StarFilled className="text-yellow-400" />

@@ -62,7 +62,7 @@ const ManageMovies = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [deleteLoadingState, setDeleteLoadingState] = useState<
     Record<string, boolean>
   >({});

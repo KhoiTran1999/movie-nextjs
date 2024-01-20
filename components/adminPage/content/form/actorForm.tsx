@@ -1,5 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Button, Form, Input, Modal, Space, Table, Tooltip } from "antd";
+import {
+  Button,
+  Form,
+  Input,
+  Modal,
+  Space,
+  Table,
+  Tooltip,
+  message,
+} from "antd";
 import type { InputRef, TableColumnType, TableColumnsType } from "antd";
 import Column from "antd/es/table/Column";
 import { FilterDropdownProps } from "antd/es/table/interface";
@@ -15,6 +24,7 @@ import {
 import CreatePersonModal from "./createPersonModal";
 import { setPersonList } from "@/utils/redux/slices/data/personListSlice";
 import { current } from "@reduxjs/toolkit";
+import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
 
 interface DataType {
   key: React.Key;
@@ -67,11 +77,30 @@ const ActorForm = ({
 
   const [form] = Form.useForm();
 
+  const [messageApi, contextHolder] = message.useMessage();
+
+  //Message when created movie
+  const success = (text: any) => {
+    messageApi.open({
+      type: "success",
+      content: text,
+    });
+  };
+
+  const errorRes = (error: any) => {
+    messageApi.open({
+      type: "error",
+      content: error,
+    });
+  };
+
   useEffect(() => {
     const fetchApi = async () => {
       try {
         setLoading(true);
-        const res = await Axios("Persons");
+        const res = await Axios("Persons", {
+          params: { sortBy: "CreatedDate", page: 0 },
+        });
         dispatch(
           setPersonList(
             res.data.map((val: PersonType, idx: number) => ({
@@ -128,7 +157,12 @@ const ActorForm = ({
 
   //-----------------------------------------
 
-  const handleOnFinish = async () => {
+  const handleOnFinish = async (values: any) => {
+    if (selectedRowKeys.length === 0) {
+      success("Finish!");
+      return;
+    }
+
     const selectedPersons = personList.reduce(
       (acc: any, val: PersonType, idx: number) => {
         if (!selectedRowKeys.includes(idx)) return acc;
@@ -137,27 +171,47 @@ const ActorForm = ({
           personId: val.personId,
           characterName: val.namePerson,
         };
-
         return [...acc, person];
       },
       []
     );
-    console.log(selectedPersons);
+
+    try {
+      setIsLoadingNextButton(true);
+      await Axios.post("Cast", selectedPersons, {
+        params: { movieId: movieId.data },
+      });
+
+      success("Add actors successfully!");
+      setTimeout(() => {
+        setIsLoadingNextButton(false);
+        form.resetFields();
+        setSearchText("");
+        setSearchedColumn("");
+        setSelectedRowKeys([]);
+        dispatch(setMovieId(""));
+      }, 2000);
+    } catch (error) {
+      console.log(error);
+      errorRes("Failed to add actors!");
+      setIsLoadingNextButton(false);
+    }
   };
 
   //-----------------------------------------
-  useEffect(() => {
-    if (current === 3) {
-      setIsLoadingNextButton(true);
-      form.resetFields;
-    }
-  }, [current]);
+  // useEffect(() => {
+  //   if (current === 3) {
+  //     dispatch(setMovieId(""))
+  //     form.resetFields;
+  //   }
+  // }, [current]);
 
   useEffect(() => {
     form.resetFields();
     setSearchText("");
     setSearchedColumn("");
     setSelectedRowKeys([]);
+    dispatch(setMovieId(""));
   }, [isCancelButtonModal]);
 
   return (
@@ -168,6 +222,7 @@ const ActorForm = ({
         </div>
       ) : (
         <div>
+          {contextHolder}
           <div
             className="flex justify-between items-center"
             style={{ marginBottom: 16 }}
@@ -175,7 +230,7 @@ const ActorForm = ({
             <div>
               <Button
                 onClick={start}
-                disabled={!hasSelected}
+                disabled={!hasSelected || isLoadingNextButton}
                 loading={reloading}
               >
                 Reset
@@ -187,7 +242,10 @@ const ActorForm = ({
               </span>
             </div>
             {searchedColumn !== "" ? (
-              <Button onClick={() => setIsOpenCreatePersonModal(true)}>
+              <Button
+                disabled={isLoadingNextButton}
+                onClick={() => setIsOpenCreatePersonModal(true)}
+              >
                 <i className="fa-regular fa-plus mr-2"></i> Add Person
               </Button>
             ) : (
@@ -204,9 +262,6 @@ const ActorForm = ({
                 className="w-[642px]"
                 rowSelection={rowSelection}
                 dataSource={personList}
-                onChange={(pagination, filters, sorter, extra) =>
-                  console.log("params", pagination, filters, sorter, extra)
-                }
               >
                 <Column
                   title="Image"
