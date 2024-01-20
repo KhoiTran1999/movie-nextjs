@@ -1,102 +1,33 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import CardMovie from "./CardMovie";
-import { Carousel, Flex } from "antd";
-import { RightOutlined, LeftOutlined } from "@ant-design/icons";
+import { RightOutlined } from "@ant-design/icons";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Scrollbar, A11y } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/scrollbar";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 type cardSliderProps = {
   title: string;
-  movieList1: [];
-  movieList2: [];
-  movieList3: [];
+  movieList: [];
 };
 
 type movieProps = {
+  movieId: string;
   mark: number;
+  time: number;
+  vietnamName: string;
+  englishName: string;
   thumbnail: string;
   totalSeasons: number;
   totalEpisodes: number;
-  dataCreated: string;
-  movieId: string;
+  dateCreated: string;
 };
 
-const SampleNextArrow = (props: any) => {
-  const { className, style, onClick } = props;
-  return (
-    <div
-      className={className}
-      style={{
-        ...style,
-        fontSize: "30px",
-        zIndex: 1000,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-      onClick={onClick}
-    >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          padding: "10px",
-          borderRadius: 1000,
-          backgroundColor: "rgba(159, 158, 158, 0.534)",
-        }}
-        className="hover:scale-125 transition-all"
-      >
-        <RightOutlined className="text-white w-6 h-6 hover:scale-[1.35] transition-all" />
-      </div>
-    </div>
-  );
-};
-
-const SamplePrevArrow = (props: any) => {
-  const { className, style, onClick } = props;
-
-  return (
-    <div
-      className={className}
-      style={{
-        ...style,
-        fontSize: "30px",
-        zIndex: 1000,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-      onClick={onClick}
-    >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          padding: "10px",
-          borderRadius: 1000,
-          backgroundColor: "rgba(159, 158, 158, 0.534)",
-        }}
-        className="hover:scale-125 transition-all"
-      >
-        <LeftOutlined className="text-white w-6 h-6 hover:scale-[1.35] transition-all" />
-      </div>
-    </div>
-  );
-};
-
-const settings = {
-  nextArrow: <SampleNextArrow />,
-  prevArrow: <SamplePrevArrow />,
-};
-
-const CardSlider = ({
-  title,
-  movieList1,
-  movieList2,
-  movieList3,
-}: cardSliderProps) => {
+const CardSlider = ({ title, movieList = [] }: cardSliderProps) => {
   const [isHover, setIsHover] = useState<boolean>(false);
   const [seeAll, setSeeAll] = useState<boolean>(false);
 
@@ -129,29 +60,50 @@ const CardSlider = ({
         </div>
       </div>
       <div onMouseEnter={handleOnMouseEnter} onMouseLeave={onMouseLeave}>
-        <Carousel arrows={isHover} dots={isHover} {...settings}>
-          <div>
-            <div className="flex items-center">
-              {movieList1.map((val: movieProps, idx) => (
-                <CardMovie movieUrl={val.thumbnail} key={val.movieId} />
-              ))}
-            </div>
-          </div>
-          <div>
-            <div className="flex items-center">
-              {movieList2.map((val: movieProps, idx) => (
-                <CardMovie movieUrl={val.thumbnail} key={val.movieId} />
-              ))}
-            </div>
-          </div>
-          <div>
-            <div className="flex items-center">
-              {movieList3.map((val: movieProps, idx) => (
-                <CardMovie movieUrl={val.thumbnail} key={val.movieId} />
-              ))}
-            </div>
-          </div>
-        </Carousel>
+        <Swiper
+          spaceBetween={15}
+          lazyPreloadPrevNext={5}
+          slidesPerView={5}
+          navigation={isHover}
+          modules={[Navigation, Scrollbar, A11y]}
+          loop
+        >
+          {movieList.map((val: movieProps, idx: number) => (
+            <SwiperSlide key={idx}>
+              <div
+                className={`flex flex-col justify-center items-center relative cursor-pointer`}
+              >
+                <LazyLoadImage
+                  alt="Thumbnail"
+                  src={val.thumbnail}
+                  effect="blur"
+                  loading="lazy"
+                  placeholderSrc="/blurImage.jpg"
+                  className="h-[330px] object-contain rounded-md"
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = "/errorThumbnail.png";
+                  }}
+                />
+                <div className="w-full p-1">
+                  <h3 className="text-left font-bold text-base whitespace-nowrap overflow-hidden overflow-ellipsis">
+                    {val.englishName}
+                  </h3>
+                  <h4 className="text-left text-gray-400 text-sm whitespace-nowrap overflow-hidden overflow-ellipsis">
+                    {val.vietnamName}
+                  </h4>
+                </div>
+              </div>
+              <div className="inline-block text-xs font-semibold px-2 py-1 bg-[red] rounded absolute top-2 right-2">
+                {val.totalSeasons > 1
+                  ? `${val.totalSeasons} Seasons`
+                  : val.totalEpisodes > 1
+                  ? `${val.totalEpisodes} Episodes`
+                  : `${val.time} minutes`}
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
     </div>
   );

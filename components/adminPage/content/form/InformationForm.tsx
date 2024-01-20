@@ -553,6 +553,7 @@ const InformationForm = ({
           validateDebounce={1000}
           label="Thumbnail"
           name="Thumbnail"
+          rules={[{ required: true }]}
         >
           <Upload
             name="upload"

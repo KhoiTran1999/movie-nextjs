@@ -4,42 +4,61 @@ import CardSlider from "@/components/homePage/cardSlider/CardSlider";
 import { Introduction } from "@/components/introduction/Introduction";
 import NavigationMovie from "@/components/homePage/navigationMovie/NavigationMovie";
 import TopPageMovie from "@/components/homePage/topPageMovie/TopPageMovie";
-import { Axios2 } from "@/utils/axios";
+import Axios from "@/utils/axios";
 import { useEffect, useState } from "react";
 import { Button, Result } from "antd";
 
+// Import Swiper styles
+import "swiper/css";
+
 export default function Home() {
-  const [movieList1, setMovieList1] = useState<[]>([]);
-  const [movieList2, setMovieList2] = useState<[]>([]);
-  const [movieList3, setMovieList3] = useState<[]>([]);
+  const [newMovieList, setNewMovieList] = useState<[]>([]);
+  const [standaloneMovieList, setStandaloneMovieList] = useState<[]>([]);
+  const [cinemaMovieList, setCinemaMovieList] = useState<[]>([]);
+  const [TVSeriesMovieList, setTVSeriesMovieList] = useState<[]>([]);
   const [isLoadedApi, setIsLoadedApi] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   useEffect(() => {
     const callApi = async () => {
       try {
         const res = await Promise.all([
-          Axios2("/users", {
+          Axios("Movies", {
             params: {
+              sortBy: "produceddate",
               page: 1,
-              limit: 5,
+              eachPage: 15,
             },
           }),
-          Axios2("/users", {
+          Axios("Movies", {
             params: {
-              page: 2,
-              limit: 5,
+              filterBy: "feature",
+              key: 1,
+              page: 1,
+              eachPage: 15,
             },
           }),
-          Axios2("/users", {
+          Axios("Movies", {
             params: {
-              page: 3,
-              limit: 5,
+              filterBy: "feature",
+              key: 2,
+              page: 1,
+              eachPage: 15,
+            },
+          }),
+          Axios("Movies", {
+            params: {
+              filterBy: "feature",
+              key: 3,
+              page: 1,
+              eachPage: 15,
             },
           }),
         ]);
-        setMovieList1(res[0].data);
-        setMovieList2(res[1].data);
-        setMovieList3(res[2].data);
+        setNewMovieList(res[0].data);
+        setStandaloneMovieList(res[1].data);
+        setCinemaMovieList(res[2].data);
+        setTVSeriesMovieList(res[3].data);
+
         setIsLoadedApi(true);
       } catch (error) {
         console.log(error);
@@ -56,43 +75,31 @@ export default function Home() {
       {isLoadedApi ? (
         <>
           {isError ? (
-            <Result
-              status="500"
-              title="Sorry, something went wrong"
-              extra={
-                <Button type="primary" href="/">
-                  Reload
-                </Button>
-              }
-            />
+            <div className="w-screen h-screen flex justify-center items-center">
+              <Result
+                status="500"
+                title="Sorry, something went wrong"
+                extra={
+                  <Button type="primary" href="/">
+                    Reload
+                  </Button>
+                }
+              />
+            </div>
           ) : (
             <>
               <NavigationMovie />
               <TopPageMovie />
               <div className="px-12">
+                <CardSlider title="New Movies" movieList={newMovieList} />
                 <CardSlider
-                  title="New Movies"
-                  movieList1={movieList1}
-                  movieList2={movieList2}
-                  movieList3={movieList3}
+                  title="Standalone Movies"
+                  movieList={standaloneMovieList}
                 />
+                <CardSlider title="Cinema Movies" movieList={cinemaMovieList} />
                 <CardSlider
-                  title="Standalone Film"
-                  movieList1={movieList1}
-                  movieList2={movieList2}
-                  movieList3={movieList3}
-                />
-                <CardSlider
-                  title="Cinema Film"
-                  movieList1={movieList1}
-                  movieList2={movieList2}
-                  movieList3={movieList3}
-                />
-                <CardSlider
-                  title="TV Series"
-                  movieList1={movieList1}
-                  movieList2={movieList2}
-                  movieList3={movieList3}
+                  title="TV Series Movies"
+                  movieList={TVSeriesMovieList}
                 />
               </div>
               <div className="h-[200px] w-full">Footer</div>
