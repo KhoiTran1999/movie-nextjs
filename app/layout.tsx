@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-
+import StyledComponentsRegistry from "@/lib/antd.registry";
 import GlobalWrapper from "@/components/wrapper/GlobalWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -19,7 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="select-none">
       <body className={inter.className}>
-        <GlobalWrapper>{children}</GlobalWrapper>
+        <StyledComponentsRegistry>
+          <GlobalWrapper>{children}</GlobalWrapper>
+        </StyledComponentsRegistry>
       </body>
     </html>
   );

@@ -1,15 +1,9 @@
-"use client";
-
 import Axios from "@/utils/axios";
 import { CaretRightFilled, InfoCircleOutlined } from "@ant-design/icons";
-import { useEffect, useState } from "react";
 import { Rubik_Dirt } from "@next/font/google";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Skeleton } from "antd";
-const ReactPlayer = dynamic(() => import("react-player/youtube"), {
-  ssr: false,
-});
+import VideoPlayer from "./component/VideoPlayer";
 
 interface previewMovieProps {
   description: string;
@@ -26,42 +20,32 @@ const rubik = Rubik_Dirt({
   style: ["normal"],
 });
 
-const TopPageMovie = () => {
-  const [previewMovie, setPreviewMovie] = useState<previewMovieProps>();
-  const [loading, setLoading] = useState<boolean>(true);
-  const [isVideoReady, setIsVideoReady] = useState<boolean>(false);
+const TopPageMovie = async () => {
+  // const [previewMovie, setPreviewMovie] = useState<previewMovieProps>();
+  // const [loading, setLoading] = useState<boolean>(true);
+  // const [isVideoReady, setIsVideoReady] = useState<boolean>(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const res = await Axios("/Movies/Newest");
-        setPreviewMovie(res.data);
-        setLoading(false);
-      } catch (error) {
-        console.log(error);
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       setLoading(true);
+  //       const res = await Axios("/Movies/Newest");
+  //       setPreviewMovie(res.data);
+  //       setLoading(false);
+  //     } catch (error) {
+  //       console.log(error);
+  //       setLoading(false);
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
+
+  const res = await Axios("/Movies/Newest");
+  const previewMovie: previewMovieProps = res.data;
 
   return (
     <div className="text-white overflow-hidden relative h-[80vh] w-screen">
-      <ReactPlayer
-        url={previewMovie?.trailer}
-        loop
-        muted
-        playing
-        width={"100vw"}
-        height={"80vh"}
-        style={{
-          backgroundSize: "contain",
-          filter: "brightness(.7)",
-          transform: "scale(1.35)",
-        }}
-        onReady={() => setIsVideoReady(true)}
-      />
+      <VideoPlayer trailer={previewMovie?.trailer} />
 
       <div
         style={{
@@ -69,7 +53,7 @@ const TopPageMovie = () => {
         }}
         className="text-[#D1D0CF] absolute z-9 top-1/2 translate-y-[-50%] z-0 h-[80vh] w-screen px-12 flex flex-col justify-center"
       >
-        {!isVideoReady ? (
+        {!previewMovie ? (
           <Skeleton
             active
             paragraph={{
