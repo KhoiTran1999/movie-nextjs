@@ -1,7 +1,8 @@
-import { usePathname } from "next/navigation";
-import { Menu } from "antd";
+"use client";
 
+import { Menu } from "antd";
 import { homeItems } from "@/constant/homeItem";
+import { usePathname } from "next/navigation";
 
 const Navigation = () => {
   const pathname = usePathname();

@@ -10,8 +10,6 @@ interface VideoType {
 }
 
 const VideoPlayer = ({ trailer }: VideoType) => {
-  console.log(trailer);
-
   return (
     <ReactPlayer
       url={trailer}
