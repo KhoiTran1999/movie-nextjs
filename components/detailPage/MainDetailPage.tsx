@@ -283,7 +283,7 @@ export default function MainDetailPage({ ...props }: detailProps) {
                 defaultActiveKey="Description"
                 items={tabItem}
               />
-              <div className="mt-5 flex">
+              <div className="mt-10 flex">
                 <button
                   onClick={showModal}
                   className="w-44 px-6 py-3 mr-8 bg-[#E50914] hover:bg-red-800 rounded text-sm font-semibold text-white transition-colors flex justify-center items-center"

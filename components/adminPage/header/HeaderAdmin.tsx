@@ -1,3 +1,5 @@
+"use client";
+
 import { Layout, Tooltip, Badge } from "antd";
 import { MenuOutlined, BellOutlined, LogoutOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";

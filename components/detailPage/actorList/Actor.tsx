@@ -1,3 +1,5 @@
+import { LazyLoadImage } from "react-lazy-load-image-component";
+
 interface actorProps {
   characterName: string;
   thumbnail: string;
@@ -16,10 +18,16 @@ export const Actor = ({ castCharacteries }: castCharacteries) => {
     <div className="flex justify-start items-center flex-wrap">
       {castCharacteries.map((val: actorProps) => (
         <div className="w-[18%] h-[150px] mr-2 mb-2" key={val.personId}>
-          <img
+          <LazyLoadImage
+            alt="Actors"
             src={val.thumbnail}
-            alt="avatar actors"
-            className="object-cover w-full h-full rounded"
+            effect="opacity"
+            placeholderSrc="/blurImage.jpg"
+            className="h-[150px] w-full object-cover rounded-md"
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = "/errorThumbnail.png";
+            }}
           />
           <span>{val.namePerson}</span>
         </div>

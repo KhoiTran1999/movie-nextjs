@@ -1,11 +1,15 @@
-"use client";
-
 import Dashboard from "@/components/adminPage/content/Dashboard";
 import Axios from "@/utils/axios";
-import { setStatistics } from "@/utils/redux/slices/data/statisticSlice";
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 
-export default function page() {
-  return <Dashboard />;
+export default async function page() {
+  let data;
+  try {
+    const res = await Axios("Admin/Statistics");
+    data = res.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to fetch Statistics");
+  }
+
+  return <Dashboard {...data} />;
 }

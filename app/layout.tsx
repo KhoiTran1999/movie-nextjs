@@ -19,9 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="select-none">
       <body className={inter.className}>
-        <StyledComponentsRegistry>
-          <GlobalWrapper>{children}</GlobalWrapper>
-        </StyledComponentsRegistry>
+        <GlobalWrapper>
+          <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+        </GlobalWrapper>
       </body>
     </html>
   );

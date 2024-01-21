@@ -42,7 +42,9 @@ const CardSlider = ({ title, movieList = [] }: cardSliderProps) => {
     <div className="mb-10">
       <div className="mb-2">
         <div className="cursor-pointer inline-flex items-center">
-          <h2 className="text-xl hover:text-[#D1D0CF]">{title}</h2>
+          <h2 className="font-semibold text-xl hover:text-[#D1D0CF]">
+            {title}
+          </h2>
           <div
             className={`${
               seeAll
