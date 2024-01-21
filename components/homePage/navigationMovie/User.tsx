@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Dropdown, Divider, theme, Avatar, Tooltip } from "antd";
 import type { MenuProps } from "antd";
