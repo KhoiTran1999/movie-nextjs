@@ -40,7 +40,11 @@ const CardSlider = ({ title, movieList = [] }: cardSliderProps) => {
 
   return (
     <div className="mb-10">
-      <div className="mb-2">
+      <div
+        className="mb-2"
+        onMouseEnter={() => setSeeAll(true)}
+        onMouseLeave={() => setSeeAll(false)}
+      >
         <div className="cursor-pointer inline-flex items-center">
           <h2 className="font-semibold text-xl hover:text-[#D1D0CF]">
             {title}
@@ -76,7 +80,6 @@ const CardSlider = ({ title, movieList = [] }: cardSliderProps) => {
                   src={val.thumbnail}
                   effect="blur"
                   loading="lazy"
-                  placeholderSrc="/blurImage.jpg"
                   className="h-[330px] object-contain rounded-md"
                   onError={(e) => {
                     e.currentTarget.onerror = null;

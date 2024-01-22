@@ -21,8 +21,7 @@ export const Actor = ({ castCharacteries }: castCharacteries) => {
           <LazyLoadImage
             alt="Actors"
             src={val.thumbnail}
-            effect="opacity"
-            placeholderSrc="/blurImage.jpg"
+            effect="blur"
             className="h-[150px] w-full object-cover rounded-md"
             onError={(e) => {
               e.currentTarget.onerror = null;

@@ -217,7 +217,7 @@ export default function MainDetailPage({ ...props }: detailProps) {
               }
             />
           ) : (
-            <div className="w-full h-[80vh] flex justify-center items-center">
+            <div className="w-full h-[100svh] flex justify-center items-center">
               <i className="fa-solid fa-spinner-scale text-6xl animate-spin text-[red]"></i>
             </div>
           )}
