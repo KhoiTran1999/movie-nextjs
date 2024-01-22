@@ -55,7 +55,7 @@ const TopPageMovie = async () => {
             </p>
           </>
         )}
-        <div className="mt-5 flex">
+        <div className="mt-5 flex animate-wiggle">
           <button className="w-44 px-6 py-3 bg-[#E50914] hover:bg-red-800 rounded text-sm font-semibold text-white transition-colors flex justify-center items-center">
             <CaretRightFilled className="text-xl" />
             <Link href={"/detail/2"}>

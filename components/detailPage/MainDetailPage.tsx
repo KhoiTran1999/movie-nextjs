@@ -179,7 +179,7 @@ export default function MainDetailPage({ ...props }: detailProps) {
   return (
     <div>
       <NavigationMovie />
-      <div className="w-[100svh] h-[80svh]">
+      <div className="w-[100svh] h-[80svh] animate-wiggle">
         <ReactPlayer
           url={props.trailer}
           playing
@@ -189,7 +189,7 @@ export default function MainDetailPage({ ...props }: detailProps) {
         />
       </div>
 
-      <div className="flex justify-center items-start my-8">
+      <div className="flex justify-center items-start my-8 animate-wiggle">
         <div
           style={{
             boxShadow: "0px -240px 44px -215px rgba(0,0,0,1) inset",

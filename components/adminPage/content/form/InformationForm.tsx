@@ -258,7 +258,7 @@ const InformationForm = ({
     return filteredData;
   };
 
-  const onFinish = (values: ValueFormType) => {
+  const onFinish = async (values: ValueFormType) => {
     const postMovie = async () => {
       const data = {
         Categories: values.Category,
