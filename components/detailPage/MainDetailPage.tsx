@@ -64,7 +64,6 @@ interface episodeProps {
 export default function MainDetailPage({ ...props }: detailProps) {
   const dispatch = useDispatch();
 
-  const [tabItem, setTabItem] = useState<any>([]);
   const [isEpisodeModalOpen, setIsEpisodeModalOpen] = useState<boolean>(false);
   const [isWatchModalOpen, setIsWatchModalOpen] = useState<boolean>(false);
   const [watchMovie, setWatchMovie] = useState<seasonProps>({
@@ -133,49 +132,6 @@ export default function MainDetailPage({ ...props }: detailProps) {
     iframeVideo.src = "";
   };
 
-  //   useEffect(() => {
-  //     const fetchAPI = async () => {
-  //       try {
-  //         const res = await Axios("Movie/89da8cea-9335-4ed5-88ef-19ec73c20840");
-  //         console.log(res.props);
-
-  //         setprops(res.props);
-  //         setTabItem([
-  //           {
-  //             key: "Description",
-  //             label: "Description",
-  //             children: res.props.description,
-  //           },
-  //           {
-  //             key: "Actors",
-  //             label: "Actors",
-  //             children: <Actor castCharacteries={res.props.castCharacteries} />,
-  //           },
-  //         ]);
-  //         setLoading(false);
-  //       } catch (error) {
-  //         console.log(error);
-  //         setIsError(true);
-  //       }
-  //     };
-  //     fetchAPI();
-  //   }, []);
-
-  useEffect(() => {
-    setTabItem([
-      {
-        key: "Description",
-        label: "Description",
-        children: props.description,
-      },
-      {
-        key: "Actors",
-        label: "Actors",
-        children: <Actor castCharacteries={props.castCharacteries} />,
-      },
-    ]);
-  }, []);
-
   return (
     <div>
       <NavigationMovie />
@@ -232,7 +188,22 @@ export default function MainDetailPage({ ...props }: detailProps) {
               )}
             </ul>
           </div>
-          <Tabs type="card" defaultActiveKey="Description" items={tabItem} />
+          <Tabs
+            type="card"
+            defaultActiveKey="Description"
+            items={[
+              {
+                key: "Description",
+                label: "Description",
+                children: props.description,
+              },
+              {
+                key: "Actors",
+                label: "Actors",
+                children: <Actor castCharacteries={props.castCharacteries} />,
+              },
+            ]}
+          />
           <div className="mt-10 flex">
             <button
               onClick={showModal}

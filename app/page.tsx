@@ -1,13 +1,7 @@
 import CardSlider from "@/components/homePage/cardSlider/CardSlider";
-import { Introduction } from "@/components/introduction/Introduction";
 import NavigationMovie from "@/components/homePage/navigationMovie/NavigationMovie";
 import TopPageMovie from "@/components/homePage/topPageMovie/TopPageMovie";
 import Axios from "@/utils/axios";
-import { Button, Result } from "antd";
-
-// Import Swiper styles
-import "swiper/css";
-import { error } from "console";
 
 export default async function Home() {
   const res = await Promise.all([
