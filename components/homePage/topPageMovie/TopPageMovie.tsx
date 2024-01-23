@@ -1,8 +1,7 @@
 import Axios from "@/utils/axios";
-import { CaretRightFilled, InfoCircleOutlined } from "@ant-design/icons";
 import { Rubik_Dirt } from "@next/font/google";
 import Link from "next/link";
-import { Skeleton } from "antd";
+import { Button } from "antd";
 import VideoPlayer from "./component/VideoPlayer";
 
 interface previewMovieProps {
@@ -34,34 +33,27 @@ const TopPageMovie = async () => {
         }}
         className="text-[#D1D0CF] absolute z-9 top-1/2 translate-y-[-50%] z-0 h-[80vh] w-screen px-12 flex flex-col justify-center"
       >
-        {!previewMovie ? (
-          <Skeleton
-            active
-            paragraph={{
-              rows: 3,
-              style: { width: "50%" },
-            }}
-            title={{ style: { height: "50px" } }}
-          />
-        ) : (
-          <>
-            <h1
-              className={`${rubik.className} text-7xl my-4 tracking-wider [word-spacing:5px] animate-wiggle w-2/3`}
-            >
-              {previewMovie?.englishName}
-            </h1>
-            <p className="w-2/5 mb-4 max-h-[148px] break-words line-clamp-[3] text-ellipsis overflow-hidden animate-wiggle">
-              {previewMovie?.description}
-            </p>
-          </>
-        )}
+        <h1
+          className={`${rubik.className} text-7xl my-4 tracking-wider [word-spacing:5px] animate-wiggle w-2/3`}
+        >
+          {previewMovie?.englishName}
+        </h1>
+        <p className="w-2/5 mb-4 max-h-[148px] break-words line-clamp-[3] text-ellipsis overflow-hidden animate-wiggle">
+          {previewMovie?.description}
+        </p>
         <div className="mt-5 flex animate-wiggle">
-          <button className="w-44 px-6 py-3 bg-[#E50914] hover:bg-red-800 rounded text-sm font-semibold text-white transition-colors flex justify-center items-center">
-            <CaretRightFilled className="text-xl mr-2" />
-            <Link href={`/detail?id=${previewMovie?.movieId}`}>
-              <span>Watch</span>
-            </Link>
-          </button>
+          <Link href={`/detail?id=${previewMovie?.movieId}`}>
+            <Button
+              type="default"
+              size="large"
+              style={{
+                width: "120px",
+                height: "40px",
+              }}
+            >
+              Detail
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
