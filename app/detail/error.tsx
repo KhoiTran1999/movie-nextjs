@@ -20,7 +20,9 @@ export default function Error({
       <Result
         status="500"
         title="500"
-        subTitle="Sorry, something went wrong."
+        subTitle={
+          <span className="text-white">Sorry, something went wrong.</span>
+        }
         extra={
           <Button onClick={() => reset()} type="primary">
             Reload page

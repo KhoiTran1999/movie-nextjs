@@ -102,6 +102,8 @@ const CardSlider = ({ title, movieList = [] }: cardSliderProps) => {
                         {val.vietnamName}
                       </span>
                     }
+                    color="red"
+                    placement="topLeft"
                   >
                     <div className="w-full p-1 z-50">
                       <h3 className="text-left font-bold text-base whitespace-nowrap overflow-hidden overflow-ellipsis">

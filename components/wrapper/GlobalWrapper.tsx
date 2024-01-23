@@ -25,6 +25,24 @@ const GlobalWrapper = ({ children }: { children: React.ReactNode }) => {
             Button: {
               colorBgContainer: "transparent",
             },
+            Input: {
+              colorBgContainer: "transparent",
+              colorTextPlaceholder: "#7f7f7f",
+            },
+            InputNumber: {
+              colorBgContainer: "transparent",
+              colorTextPlaceholder: "#7f7f7f",
+              handleBg: "white",
+            },
+            DatePicker: {
+              colorBgContainer: "transparent",
+              colorTextPlaceholder: "#7f7f7f",
+              colorTextDisabled: "#494848",
+              colorIcon: "#494848",
+            },
+            Select: {
+              multipleItemBg: "#494848",
+            },
           },
         }}
       >

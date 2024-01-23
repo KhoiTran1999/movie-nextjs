@@ -11,6 +11,7 @@ import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { MovieAntdTableType } from "@/types";
 import { deleteMovieAction } from "@/components/actions";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 interface IProps {
   movieList: MovieAntdTableType[] | [];
@@ -121,11 +122,17 @@ const ManageMovies = (props: IProps) => {
           dataIndex="thumbnail"
           key="thumbnail"
           render={(image: string, _, idx) => (
-            <img
-              src={image}
-              alt="thumbnail"
-              className="w-[100px] h-[160px] object-contain"
+            <LazyLoadImage
               key={idx}
+              alt="Thumbnail"
+              src={image}
+              effect="blur"
+              loading="lazy"
+              className="h-[160px] rounded-md object-contain"
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = "/errorThumbnail.png";
+              }}
             />
           )}
         />

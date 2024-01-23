@@ -50,7 +50,7 @@ export default async function Home() {
     <main>
       <NavigationMovie />
       <TopPageMovie />
-      <div className="px-12">
+      <div className="px-12 w-full h-full absolute top-[70%]">
         <CardSlider title="New Movies" movieList={newMovieList} />
         <CardSlider title="Standalone Movies" movieList={standaloneMovieList} />
         <CardSlider title="Cinema Movies" movieList={cinemaMovieList} />
