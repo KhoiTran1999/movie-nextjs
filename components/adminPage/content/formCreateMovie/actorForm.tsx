@@ -197,14 +197,6 @@ const ActorForm = ({
     }
   };
 
-  //-----------------------------------------
-  // useEffect(() => {
-  //   if (current === 3) {
-  //     dispatch(setMovieId(""))
-  //     form.resetFields;
-  //   }
-  // }, [current]);
-
   useEffect(() => {
     form.resetFields();
     setSearchText("");

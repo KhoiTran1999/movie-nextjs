@@ -30,26 +30,20 @@ const VideoForm = ({
 
   const [messageApi, contextHolder] = message.useMessage();
 
-  //Message when created movie
-  const success = (text: any) => {
-    messageApi.open({
-      type: "success",
-      content: text,
-    });
-  };
-
-  const errorRes = (error: any) => {
-    messageApi.open({
-      type: "error",
-      content: error,
-    });
-  };
-
   useEffect(() => {
     form.resetFields();
   }, [isCancelButtonModal]);
 
   const handleOnFinish = async (values: any) => {
+    if (!values.seasonList) {
+      return setCurrent((prev: number) => prev + 1);
+    }
+
+    if (values.seasonList.length === 1 && !values.seasonList[0].episode) {
+      setCurrent((prev: number) => prev + 1);
+      return form.resetFields();
+    }
+
     if (movieId && values.seasonList) {
       setIsLoadingNextButton(true);
       values.seasonList.forEach(async (season: any) => {
@@ -74,19 +68,19 @@ const VideoForm = ({
               console.log(error);
             }
 
-            success("Create Episode succesfully");
+            message.success("Create Episode succesfully");
             setTimeout(() => {
               setIsLoadingNextButton(false);
               setCurrent((prev: number) => prev + 1);
             }, 2000);
           } catch (error) {
             console.log(error);
-            errorRes("Failed to add Episode");
+            message.error("Failed to add Episode");
             setIsLoadingNextButton(false);
           }
         } catch (error) {
           console.log(error);
-          errorRes("Failed to add Season");
+          message.error("Failed to add Season");
           setIsLoadingNextButton(false);
           return;
         }

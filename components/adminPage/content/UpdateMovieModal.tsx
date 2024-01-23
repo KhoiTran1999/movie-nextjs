@@ -88,6 +88,7 @@ const UpdateMovieModal = ({
             handleCancelUpdateModal();
             dispath(setIsCancelButtonModal());
             setCurrent(0);
+            setClickAIButton(0);
             dispath(setMovieId(""));
           }}
         >
@@ -110,6 +111,7 @@ const UpdateMovieModal = ({
               return setTimeout(() => {
                 handleOkUpdateModal();
                 setCurrent(0);
+                setClickAIButton(0);
               }, 2000);
             }
           }}

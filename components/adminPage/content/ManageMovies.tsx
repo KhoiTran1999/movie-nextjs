@@ -187,7 +187,7 @@ const ManageMovies = (props: IProps) => {
           key="deletedButton"
           render={(val, _, idx) => (
             <div className="flex items-center" key={idx}>
-              <Tooltip title="Update">
+              <Tooltip title="Update" placement="bottom">
                 <Button type="text" onClick={() => handleUpdateModalOpen(val)}>
                   <i className="fa-solid fa-pen-to-square text-2xl"></i>
                 </Button>
@@ -197,7 +197,7 @@ const ManageMovies = (props: IProps) => {
                 description="Are you sure to delete this movie?"
                 onConfirm={() => handleDelete(val)}
               >
-                <Tooltip title="Delete">
+                <Tooltip title="Delete" placement="bottom">
                   <Button type="text" loading={deleteLoadingState[val]}>
                     <i className="fa-solid fa-trash text-[22px]"></i>
                   </Button>

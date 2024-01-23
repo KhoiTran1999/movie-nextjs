@@ -257,27 +257,6 @@ const InformationForm = ({
   );
   //-------------------------------------------------
 
-  const filterData = (arr: []) => {
-    const filteredData = arr.map((val: ApiType) => {
-      const feature = val.feature.name;
-      const categories = val.categories.map((val: categoryType) => val.name);
-      const newObj = {
-        movieId: val.movieId,
-        thumbnail: val.thumbnail,
-        englishName: val.englishName,
-        time: val.time,
-        mark: val.mark,
-        status: val.status,
-        feature,
-        categories,
-        producedDate: val.producedDate,
-        deletedButton: val.movieId,
-      };
-      return newObj;
-    });
-    return filteredData;
-  };
-
   const onFinish = async (values: ValueFormType) => {
     const data = {
       Categories: values.Category,
@@ -300,7 +279,6 @@ const InformationForm = ({
 
       form.resetFields();
       setImageUrl(null);
-      setIsLoadingNextButton(false);
       setCurrent((prev: number) => prev + 1);
     } catch (error) {
       try {
@@ -311,11 +289,15 @@ const InformationForm = ({
           },
         });
 
-        dispatch(setMovieId(movieId));
-
+        await revalidateTagMovieListAction();
         message.success("Movie have been updated successfully!");
-        setTimeout(async () => {
-          await revalidateTagMovieListAction();
+
+        setTimeout(() => {
+          form.resetFields();
+          setImageUrl(null);
+          setIsLoadingNextButton(false);
+          setCurrent((prev: number) => prev + 1);
+          dispatch(setMovieId(movieId));
         }, 2000);
       } catch (error) {
         console.log(error);
