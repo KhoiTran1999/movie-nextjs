@@ -30,70 +30,72 @@ const VideoForm = ({
 
   const [messageApi, contextHolder] = message.useMessage();
 
-  //Message when created movie
-  const success = (text: any) => {
-    messageApi.open({
-      type: "success",
-      content: text,
-    });
-  };
-
-  const errorRes = (error: any) => {
-    messageApi.open({
-      type: "error",
-      content: error,
-    });
-  };
-
   useEffect(() => {
     form.resetFields();
   }, [isCancelButtonModal]);
 
+  //Add first render value -----------------------
+  useEffect(() => {
+    const fetchApi = async () => {};
+    fetchApi();
+  }, []);
+
+  //----------------------------------------------
   const handleOnFinish = async (values: any) => {
-    if (movieId && values.seasonList) {
-      setIsLoadingNextButton(true);
-      values.seasonList.forEach(async (season: any) => {
-        try {
-          const seasonId = await Axios.post("Seasons", {
-            movieId: movieId.data,
-            name: season.seasonName,
-          });
-
-          try {
-            await Axios.post("episode", season.episode, {
-              params: { seasonId: seasonId.data },
-            });
-
-            try {
-              Axios.patch(
-                `Movie/${movieId}`,
-                {},
-                { params: { status: "Release" } }
-              );
-            } catch (error) {
-              console.log(error);
-            }
-
-            success("Create Episode succesfully");
-            setTimeout(() => {
-              setIsLoadingNextButton(false);
-              setCurrent((prev: number) => prev + 1);
-            }, 2000);
-          } catch (error) {
-            console.log(error);
-            errorRes("Failed to add Episode");
-            setIsLoadingNextButton(false);
-          }
-        } catch (error) {
-          console.log(error);
-          errorRes("Failed to add Season");
-          setIsLoadingNextButton(false);
-          return;
-        }
-      });
-    } else {
-      setCurrent((prev: number) => prev + 1);
+    console.log(values);
+    if (!values.seasonList) {
+      return setCurrent((prev: number) => prev + 1);
     }
+
+    if (values.seasonList.length === 1 && !values.seasonList[0].episode) {
+      setCurrent((prev: number) => prev + 1);
+      return form.resetFields();
+    }
+
+    // if (movieId && values.seasonList) {
+    //   setIsLoadingNextButton(true);
+    //   values.seasonList.forEach(async (season: any) => {
+    //     try {
+    //       const seasonId = await Axios.post("Seasons", {
+    //         movieId: movieId.data,
+    //         name: season.seasonName,
+    //       });
+
+    //       try {
+    //         await Axios.post("episode", season.episode, {
+    //           params: { seasonId: seasonId.data },
+    //         });
+
+    //         try {
+    //           Axios.patch(
+    //             `Movie/${movieId}`,
+    //             {},
+    //             { params: { status: "Release" } }
+    //           );
+    //         } catch (error) {
+    //           console.log(error);
+    //         }
+
+    //         message.success("Create Episode succesfully");
+    //         setTimeout(() => {
+    //           setIsLoadingNextButton(false);
+    //           setCurrent((prev: number) => prev + 1);
+    //         }, 2000);
+    //       } catch (error) {
+    //         console.log(error);
+    //         message.error("Failed to add Episode");
+    //         setIsLoadingNextButton(false);
+    //       }
+    //     } catch (error) {
+    //       console.log(error);
+    //       message.error("Failed to add Season");
+    //       setIsLoadingNextButton(false);
+    //       return;
+    //     }
+    //   });
+    // } else {
+    //   setCurrent((prev: number) => prev + 1);
+    // }
   };
 
   return (
@@ -103,7 +105,7 @@ const VideoForm = ({
         form={form}
         layout="horizontal"
         style={{ width: "100%" }}
-        id="createMovie"
+        id="updateMovie"
         onFinish={handleOnFinish}
       >
         <Form.List name="seasonList">

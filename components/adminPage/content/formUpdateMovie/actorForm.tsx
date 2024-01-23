@@ -255,7 +255,7 @@ const ActorForm = ({
               </Tooltip>
             )}
           </div>
-          <Form id="createMovie" onFinish={handleOnFinish}>
+          <Form id="updateMovie" onFinish={handleOnFinish}>
             <Form.Item name={""}>
               <Table
                 className="w-[642px]"
