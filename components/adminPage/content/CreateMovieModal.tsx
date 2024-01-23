@@ -1,11 +1,11 @@
 import { Form, Input, Button, Modal, Popconfirm, Tooltip, Steps } from "antd";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import InformationForm from "./form/InformationForm";
-import VideoForm from "./form/videoForm";
+import InformationForm from "./formCreateMovie/InformationForm";
+import VideoForm from "./formCreateMovie/videoForm";
 import { isLoadingAIButtonSelector } from "@/utils/redux/selector";
 import { setIsCancelButtonModal } from "@/utils/redux/slices/toggle/IsCancelButtonModalSlice";
-import ActorForm from "./form/actorForm";
+import ActorForm from "./formCreateMovie/actorForm";
 import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
 
 interface CreateMovieModalType {
@@ -61,7 +61,7 @@ const CreateMovieModal = ({
               key={"AICreateMovie"}
               title={
                 <p>
-                  AI will help you create a movie.
+                  AI will help you to create a movie.
                   <br /> *English Name: required
                   <br />
                   *Nation: optional. It will help the result more exactly

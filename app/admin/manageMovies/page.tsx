@@ -1,6 +1,5 @@
 import ManageMovies from "@/components/adminPage/content/ManageMovies";
 import { CategoryType, MovieAntdTableType, MovieType } from "@/types";
-import Axios from "@/utils/axios";
 
 export default async function page(props: any) {
   const LIMIT = 5;
@@ -28,18 +27,17 @@ export default async function page(props: any) {
     return filteredData;
   };
 
-  const res = await Axios("/Movies", {
-    params: {
-      page,
-      eachPage: LIMIT,
-    },
-  });
+  const res = await fetch(
+    `${process.env.API_URL}/Movies?sortBy=createddate&page=${page}&eachPage=${LIMIT}`,
+    { next: { tags: ["movie-list"] } }
+  );
 
-  const totalItems = res.headers["x-total-element"];
+  const data = await res.json();
+  const totalItems = Number(res.headers.get("x-total-element"));
 
   return (
     <ManageMovies
-      movieList={filterData(res.data)}
+      movieList={filterData(data)}
       meta={{ current: page, pageSize: LIMIT, total: totalItems }}
     />
   );

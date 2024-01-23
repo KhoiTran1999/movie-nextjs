@@ -73,32 +73,37 @@ const CardSlider = ({ title, movieList = [] }: cardSliderProps) => {
           loop
         >
           {movieList.map((val: movieProps, idx: number) => (
-            <SwiperSlide key={idx}>
+            <SwiperSlide key={idx} className="group/card">
               <Link href={`/detail?id=${val.movieId}`}>
                 <div
-                  className={`flex flex-col justify-center items-center relative cursor-pointer`}
+                  className={` flex flex-col justify-center items-center relative cursor-pointer`}
                 >
-                  <LazyLoadImage
-                    alt="Thumbnail"
-                    src={val.thumbnail}
-                    effect="blur"
-                    loading="lazy"
-                    className="h-[330px] object-contain rounded-md"
-                    onError={(e) => {
-                      e.currentTarget.onerror = null;
-                      e.currentTarget.src = "/errorThumbnail.png";
-                    }}
-                  />
+                  <div className="overflow-hidden rounded-md">
+                    <div className="scale-100 group-hover/card:scale-105 transition-all">
+                      <LazyLoadImage
+                        alt="Thumbnail"
+                        src={val.thumbnail}
+                        effect="blur"
+                        loading="lazy"
+                        className="h-[330px] rounded-md object-contain"
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = "/errorThumbnail.png";
+                        }}
+                      />
+                    </div>
+                  </div>
+
                   <Tooltip
                     title={
                       <span>
-                        {val.englishName}
+                        <b>{val.englishName}</b>
                         <br />
                         {val.vietnamName}
                       </span>
                     }
                   >
-                    <div className="w-full p-1">
+                    <div className="w-full p-1 z-50">
                       <h3 className="text-left font-bold text-base whitespace-nowrap overflow-hidden overflow-ellipsis">
                         {val.englishName}
                       </h3>

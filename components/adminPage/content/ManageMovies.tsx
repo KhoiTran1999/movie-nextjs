@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Table, Tag, Popconfirm, message } from "antd";
+import { Button, Table, Tag, Popconfirm, message, Tooltip } from "antd";
 import { useEffect, useState } from "react";
 
 import { categoryItems } from "@/constant/categories";
@@ -10,6 +10,7 @@ import UpdateMovieModal from "./UpdateMovieModal";
 import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { MovieAntdTableType } from "@/types";
+import { deleteMovieAction } from "@/components/actions";
 
 interface IProps {
   movieList: MovieAntdTableType[] | [];
@@ -66,21 +67,6 @@ const ManageMovies = (props: IProps) => {
     setIsUpdateModalOpen(false);
   };
 
-  //Message when created movie
-  const success = () => {
-    messageApi.open({
-      type: "success",
-      content: "Deleted successfully!",
-    });
-  };
-
-  const errorRes = (error: any) => {
-    messageApi.open({
-      type: "error",
-      content: error,
-    });
-  };
-
   const handleUpdateModalOpen = async (movieId: any) => {
     dispatch(setMovieId(movieId));
     setIsUpdateModalOpen(true);
@@ -98,6 +84,14 @@ const ManageMovies = (props: IProps) => {
       replace(`${pathname}?${params.toString()}`);
       setIsFetching(true);
     }
+  };
+
+  const handleDelete = async (value: any) => {
+    setDeleteLoadingState((prev) => ({ ...prev, [value]: true }));
+    const res = await deleteMovieAction(value);
+    setDeleteLoadingState((prev) => ({ ...prev, [value]: false }));
+    if (res) return message.success("Movie deleted successfully!");
+    message.error("Failed to delete movie!");
   };
 
   return (
@@ -188,25 +182,26 @@ const ManageMovies = (props: IProps) => {
           )}
         />
         <Column
-          title="Operation"
+          title="Action"
           dataIndex="deletedButton"
           key="deletedButton"
           render={(val, _, idx) => (
             <div className="flex items-center" key={idx}>
-              <Button
-                className="mr-3"
-                onClick={() => handleUpdateModalOpen(val)}
-              >
-                Update
-              </Button>
+              <Tooltip title="Update">
+                <Button type="text" onClick={() => handleUpdateModalOpen(val)}>
+                  <i className="fa-solid fa-pen-to-square text-2xl"></i>
+                </Button>
+              </Tooltip>
               <Popconfirm
                 title="Delete movie"
                 description="Are you sure to delete this movie?"
-                // onConfirm={() => handleDelete(val)}
+                onConfirm={() => handleDelete(val)}
               >
-                <Button type="primary" danger loading={deleteLoadingState[val]}>
-                  Delete
-                </Button>
+                <Tooltip title="Delete">
+                  <Button type="text" loading={deleteLoadingState[val]}>
+                    <i className="fa-solid fa-trash text-[22px]"></i>
+                  </Button>
+                </Tooltip>
               </Popconfirm>
             </div>
           )}

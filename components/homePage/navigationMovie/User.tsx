@@ -18,7 +18,9 @@ const items: MenuProps["items"] = [
     key: "1",
     label: (
       <div>
-        <Link href="/admin">My Account</Link>
+        <Link style={{ color: "#D1D0CF" }} href="/admin">
+          My Account
+        </Link>
       </div>
     ),
     icon: <UserOutlined />,
@@ -27,7 +29,9 @@ const items: MenuProps["items"] = [
     key: "2",
     label: (
       <div>
-        <Link href="/watchList">Watchlist</Link>
+        <Link style={{ color: "#D1D0CF" }} href="/watchList">
+          Watchlist
+        </Link>
       </div>
     ),
     icon: <PlusOutlined />,
@@ -36,7 +40,9 @@ const items: MenuProps["items"] = [
     key: "3",
     label: (
       <div>
-        <Link href="/subscription">Subscription</Link>
+        <Link style={{ color: "#D1D0CF" }} href="/subscription">
+          Subscription
+        </Link>
       </div>
     ),
     icon: <StarOutlined />,
@@ -77,9 +83,11 @@ const User = () => {
             style={{ margin: "10px 0px" }}
             className="border-gray-500 border-1"
           />
-          <div className="flex justify-center items-center cursor-pointer">
-            <LogoutOutlined className="text-lg mr-2" />
-            <span className="hover:text-[#E50914] font-medium">Logout</span>
+          <div className="group flex justify-center items-center cursor-pointer">
+            <i className="fa-regular fa-arrow-right-from-bracket group-hover:text-[#E50914] text-lg mr-2"></i>
+            <span className="group-hover:text-[#E50914] font-medium">
+              Logout
+            </span>
           </div>
         </div>
       )}

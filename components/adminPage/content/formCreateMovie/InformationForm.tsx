@@ -33,6 +33,7 @@ import {
   isLoadingAIButtonSelector,
 } from "@/utils/redux/selector";
 import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
+import { revalidateTagMovieListAction } from "@/components/actions";
 const { TextArea } = Input;
 
 type FieldType = {
@@ -259,58 +260,44 @@ const InformationForm = ({
   };
 
   const onFinish = async (values: ValueFormType) => {
-    const postMovie = async () => {
-      const data = {
-        Categories: values.Category,
-        ProducedDate: values.ProducedDate,
-        Description: values.Description,
-        Time: values.Duration,
-        EnglishName: values.EnglishName,
-        VietnamName: values.VietnamName,
-        FeatureId: values.Feature,
-        Mark: values.Mark,
-        NationId: values.Nation,
-        Thumbnail: values.Thumbnail?.file,
-        Trailer: values.Trailer,
-        Viewer: values.Viewer,
-      };
-      try {
-        setIsLoadingNextButton(true);
-        const movieId = await Axios.post("Movie", data, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
-
-        dispatch(setMovieId(movieId));
-
-        const movieList = await Axios("Movies", {
-          params: { page: 1, eachPage: 5 },
-        });
-
-        try {
-          const res = await Axios("Admin/Statistics");
-          dispatch(setStatistics(res.data));
-        } catch (error) {
-          console.log(error);
-        }
-
-        success("Movie have been created successfully!");
-        setTimeout(() => {
-          form.resetFields();
-          dispatch(setmovieList(filterData(movieList.data)));
-          setImageUrl(null);
-          setIsLoadingNextButton(false);
-          setCurrent((prev: number) => prev + 1);
-        }, 2000);
-      } catch (error) {
-        console.log(error);
-        errorRes("Movie already exists!");
-        movieNameRef.current?.focus();
-        setIsLoadingNextButton(false);
-      }
+    const data = {
+      Categories: values.Category,
+      ProducedDate: values.ProducedDate,
+      Description: values.Description,
+      Time: values.Duration,
+      EnglishName: values.EnglishName,
+      VietnamName: values.VietnamName,
+      FeatureId: values.Feature,
+      Mark: values.Mark,
+      NationId: values.Nation,
+      Thumbnail: values.Thumbnail?.file,
+      Trailer: values.Trailer,
+      Viewer: values.Viewer,
     };
-    postMovie();
+    try {
+      setIsLoadingNextButton(true);
+      const movieId = await Axios.post("Movie", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      dispatch(setMovieId(movieId));
+
+      success("Movie have been created successfully!");
+      setTimeout(async () => {
+        form.resetFields();
+        setImageUrl(null);
+        setIsLoadingNextButton(false);
+        setCurrent((prev: number) => prev + 1);
+        await revalidateTagMovieListAction();
+      }, 2000);
+    } catch (error) {
+      console.log(error);
+      errorRes("Movie already exists!");
+      movieNameRef.current?.focus();
+      setIsLoadingNextButton(false);
+    }
   };
 
   //AI Create Information --------------------------------
@@ -487,12 +474,9 @@ const InformationForm = ({
           validateDebounce={1000}
           label="Duration"
           name="Duration"
-          // wrapperCol={{ span: 9 }}
         >
           <InputNumber
-            min={20}
-            max={240}
-            placeholder="from 20-240"
+            placeholder="Duration"
             addonAfter="Minutes"
             className="inputCustom"
             disabled={isLoadingNextButton || isLoadingAIButton}
