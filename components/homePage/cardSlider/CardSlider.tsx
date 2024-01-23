@@ -9,6 +9,8 @@ import "swiper/css/navigation";
 import "swiper/css/scrollbar";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
+import { Tooltip } from "antd";
+import Link from "next/link";
 
 type cardSliderProps = {
   title: string;
@@ -40,9 +42,15 @@ const CardSlider = ({ title, movieList = [] }: cardSliderProps) => {
 
   return (
     <div className="mb-10">
-      <div className="mb-2">
+      <div
+        className="mb-2"
+        onMouseEnter={() => setSeeAll(true)}
+        onMouseLeave={() => setSeeAll(false)}
+      >
         <div className="cursor-pointer inline-flex items-center">
-          <h2 className="text-xl hover:text-[#D1D0CF]">{title}</h2>
+          <h2 className="font-semibold text-xl hover:text-[#D1D0CF]">
+            {title}
+          </h2>
           <div
             className={`${
               seeAll
@@ -66,37 +74,48 @@ const CardSlider = ({ title, movieList = [] }: cardSliderProps) => {
         >
           {movieList.map((val: movieProps, idx: number) => (
             <SwiperSlide key={idx}>
-              <div
-                className={`flex flex-col justify-center items-center relative cursor-pointer`}
-              >
-                <LazyLoadImage
-                  alt="Thumbnail"
-                  src={val.thumbnail}
-                  effect="blur"
-                  loading="lazy"
-                  placeholderSrc="/blurImage.jpg"
-                  className="h-[330px] object-contain rounded-md"
-                  onError={(e) => {
-                    e.currentTarget.onerror = null;
-                    e.currentTarget.src = "/errorThumbnail.png";
-                  }}
-                />
-                <div className="w-full p-1">
-                  <h3 className="text-left font-bold text-base whitespace-nowrap overflow-hidden overflow-ellipsis">
-                    {val.englishName}
-                  </h3>
-                  <h4 className="text-left text-gray-400 text-sm whitespace-nowrap overflow-hidden overflow-ellipsis">
-                    {val.vietnamName}
-                  </h4>
+              <Link href={`/detail?id=${val.movieId}`}>
+                <div
+                  className={`flex flex-col justify-center items-center relative cursor-pointer`}
+                >
+                  <LazyLoadImage
+                    alt="Thumbnail"
+                    src={val.thumbnail}
+                    effect="blur"
+                    loading="lazy"
+                    className="h-[330px] object-contain rounded-md"
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = "/errorThumbnail.png";
+                    }}
+                  />
+                  <Tooltip
+                    title={
+                      <span>
+                        {val.englishName}
+                        <br />
+                        {val.vietnamName}
+                      </span>
+                    }
+                  >
+                    <div className="w-full p-1">
+                      <h3 className="text-left font-bold text-base whitespace-nowrap overflow-hidden overflow-ellipsis">
+                        {val.englishName}
+                      </h3>
+                      <h4 className="text-left text-gray-400 text-sm whitespace-nowrap overflow-hidden overflow-ellipsis">
+                        {val.vietnamName}
+                      </h4>
+                    </div>
+                  </Tooltip>
                 </div>
-              </div>
-              <div className="inline-block text-xs font-semibold px-2 py-1 bg-[red] rounded absolute top-2 right-2">
-                {val.totalSeasons > 1
-                  ? `${val.totalSeasons} Seasons`
-                  : val.totalEpisodes > 1
-                  ? `${val.totalEpisodes} Episodes`
-                  : `${val.time} minutes`}
-              </div>
+                <div className="inline-block text-xs font-semibold px-2 py-1 bg-[red] rounded absolute top-2 right-2">
+                  {val.totalSeasons > 1
+                    ? `${val.totalSeasons} Seasons`
+                    : val.totalEpisodes > 1
+                    ? `${val.totalEpisodes} Episodes`
+                    : `${val.time} minutes`}
+                </div>
+              </Link>
             </SwiperSlide>
           ))}
         </Swiper>

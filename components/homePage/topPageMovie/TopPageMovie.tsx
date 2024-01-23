@@ -21,25 +21,6 @@ const rubik = Rubik_Dirt({
 });
 
 const TopPageMovie = async () => {
-  // const [previewMovie, setPreviewMovie] = useState<previewMovieProps>();
-  // const [loading, setLoading] = useState<boolean>(true);
-  // const [isVideoReady, setIsVideoReady] = useState<boolean>(false);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       setLoading(true);
-  //       const res = await Axios("/Movies/Newest");
-  //       setPreviewMovie(res.data);
-  //       setLoading(false);
-  //     } catch (error) {
-  //       console.log(error);
-  //       setLoading(false);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
-
   const res = await Axios("/Movies/Newest");
   const previewMovie: previewMovieProps = res.data;
 
@@ -74,15 +55,11 @@ const TopPageMovie = async () => {
             </p>
           </>
         )}
-        <div className="mt-5 flex">
-          <button className="w-44 px-6 py-3 mr-8 bg-[#E50914] hover:bg-red-800 rounded text-sm font-semibold text-white transition-colors flex justify-center items-center">
+        <div className="mt-5 flex animate-wiggle">
+          <button className="w-44 px-6 py-3 bg-[#E50914] hover:bg-red-800 rounded text-sm font-semibold text-white transition-colors flex justify-center items-center">
             <CaretRightFilled className="text-xl" />
-            <span>Play Now</span>
-          </button>
-          <button className="w-44 px-6 py-3 bg-gray-600/20 hover:bg-gray-600/60 rounded text-sm font-semibold text-white transition-colors flex justify-center items-center">
-            <InfoCircleOutlined className="text-xl mr-2" />
-            <Link href={"/detail/2"}>
-              <span>Information</span>
+            <Link href={`/detail?id=${previewMovie?.movieId}`}>
+              <span>Play Now</span>
             </Link>
           </button>
         </div>

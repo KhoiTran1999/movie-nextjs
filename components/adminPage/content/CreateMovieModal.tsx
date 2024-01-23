@@ -31,16 +31,19 @@ const CreateMovieModal = ({
     <Modal
       width={current >= 2 ? "800px" : "530px"}
       title={
-        <Steps current={current}>
+        <Steps current={current} key={"step"}>
           <Steps.Step
+            key={"Information"}
             title="Information"
             icon={<i className="fa-regular fa-circle-info"></i>}
           />
           <Steps.Step
+            key={"Video"}
             title="Video"
             icon={<i className="fa-light fa-clapperboard-play"></i>}
           />
           <Steps.Step
+            key={"Actor"}
             title="Actor"
             icon={<i className="fa-light fa-user"></i>}
           />

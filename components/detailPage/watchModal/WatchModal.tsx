@@ -1,4 +1,3 @@
-"use client";
 type movieProps = {
   seasonNumber: number;
   episodeNumber: number;
@@ -15,7 +14,7 @@ export const WatchModal = ({
   return (
     <div className="h-[70svh]">
       <iframe
-        src="https://drive.google.com/file/d/1fkIDULvQG5J4iP3GzTzRrXOMeGWZKft-/preview"
+        src={`https://drive.google.com/file/d/${video}/preview`}
         width="100%"
         height="100%"
         frameBorder="100"

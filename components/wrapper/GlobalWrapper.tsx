@@ -20,6 +20,10 @@ const GlobalWrapper = ({ children }: { children: React.ReactNode }) => {
           components: {
             Table: {
               rowHoverBg: "#e0dfdf26",
+              colorBgContainer: "transparent",
+            },
+            Button: {
+              colorBgContainer: "transparent",
             },
           },
         }}
