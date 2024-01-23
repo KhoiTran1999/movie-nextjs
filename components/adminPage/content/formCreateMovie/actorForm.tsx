@@ -9,7 +9,7 @@ import {
   Tooltip,
   message,
 } from "antd";
-import type { InputRef, TableColumnType, TableColumnsType } from "antd";
+import type { InputRef } from "antd";
 import Column from "antd/es/table/Column";
 import { FilterDropdownProps } from "antd/es/table/interface";
 import { SearchOutlined } from "@ant-design/icons";
@@ -23,7 +23,6 @@ import {
 } from "@/utils/redux/selector";
 import CreatePersonModal from "./createPersonModal";
 import { setPersonList } from "@/utils/redux/slices/data/personListSlice";
-import { current } from "@reduxjs/toolkit";
 import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
 
 interface DataType {

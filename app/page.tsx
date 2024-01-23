@@ -56,7 +56,6 @@ export default async function Home() {
         <CardSlider title="Cinema Movies" movieList={cinemaMovieList} />
         <CardSlider title="TV Series Movies" movieList={TVSeriesMovieList} />
       </div>
-      <div className="h-[200px] w-full">Footer</div>
     </main>
   );
 }
