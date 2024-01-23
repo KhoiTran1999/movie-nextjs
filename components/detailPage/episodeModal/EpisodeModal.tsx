@@ -155,8 +155,7 @@ export const EpisodeModal = ({
               centered
               width={"70svw"}
               onCancel={handleCancelWatch}
-              okButtonProps={{ hidden: true }}
-              cancelButtonProps={{ hidden: true }}
+              footer={null}
               styles={{ body: { paddingTop: "20px", paddingBottom: "10px" } }}
               afterClose={handleAfterClose}
               title={`${

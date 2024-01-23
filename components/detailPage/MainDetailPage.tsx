@@ -4,9 +4,9 @@ import NavigationMovie from "@/components/homePage/navigationMovie/NavigationMov
 import dynamic from "next/dynamic";
 import { Rubik_Dirt } from "@next/font/google";
 import { StarFilled, FireFilled } from "@ant-design/icons";
-import { Tabs, Tooltip, Modal, Button, Result } from "antd";
+import { Tabs, Tooltip, Modal, message, Button } from "antd";
 import { Actor } from "@/components/detailPage/actorList/Actor";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Axios from "@/utils/axios";
 import { Introduction } from "@/components/introduction/Introduction";
 import { EpisodeModal } from "@/components/detailPage/episodeModal/EpisodeModal";
@@ -17,6 +17,7 @@ import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
 const ReactPlayer = dynamic(() => import("react-player/youtube"), {
   ssr: false,
 });
+import ReactPlayerTest from "react-player/youtube";
 
 const rubik = Rubik_Dirt({
   subsets: ["latin"],
@@ -64,8 +65,10 @@ interface episodeProps {
 export default function MainDetailPage({ ...props }: detailProps) {
   const dispatch = useDispatch();
 
+  const [loadingMovie, setLoadingMovie] = useState<boolean>(false);
   const [isEpisodeModalOpen, setIsEpisodeModalOpen] = useState<boolean>(false);
   const [isWatchModalOpen, setIsWatchModalOpen] = useState<boolean>(false);
+  const [isTrailerError, setIsTrailerError] = useState<boolean>(false);
   const [watchMovie, setWatchMovie] = useState<seasonProps>({
     seasonId: "",
     seasonNumber: 1,
@@ -84,9 +87,31 @@ export default function MainDetailPage({ ...props }: detailProps) {
 
   const iframeVideoRef = useRef<any>();
 
-  const showModal = () => {
-    if (props.totalEpisodes > 1 || props.totalSeasons > 1)
+  const showModal = async () => {
+    setLoadingMovie(true);
+    if (props.totalEpisodes > 1 || props.totalSeasons > 1) {
+      setLoadingMovie(false);
       return setIsEpisodeModalOpen(true);
+    }
+
+    try {
+      const res = await Axios("Seasons", {
+        params: {
+          movieId: props.movieId,
+          seasonNumber: 1,
+        },
+      });
+      if (!res.data || res.data.length === 0) {
+        setLoadingMovie(false);
+        message.error("Movie is not ready!");
+        return;
+      }
+      setWatchMovie({ ...res.data[0] });
+      setLoadingMovie(false);
+    } catch (error) {
+      console.log(error);
+      setLoadingMovie(false);
+    }
 
     setIsWatchModalOpen(true);
 
@@ -95,21 +120,7 @@ export default function MainDetailPage({ ...props }: detailProps) {
       "iframeVideo"
     ) as HTMLIFrameElement;
     if (iframeVideo) iframeVideo.src = iframeVideoRef.current;
-
-    const fetchAPI = async () => {
-      try {
-        const res = await Axios("Seasons", {
-          params: {
-            movieId: props.movieId,
-            seasonNumber: 1,
-          },
-        });
-        setWatchMovie(res.data[0]);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchAPI();
+    setLoadingMovie(false);
   };
 
   const handleCancel = () => {
@@ -132,20 +143,32 @@ export default function MainDetailPage({ ...props }: detailProps) {
     iframeVideo.src = "";
   };
 
+  useEffect(() => {
+    const canPlay = ReactPlayerTest.canPlay(props.trailer);
+    if (!canPlay) setIsTrailerError(true);
+  }, []);
+
   return (
     <div>
       <NavigationMovie />
-      <div className="w-[100svh] h-[80svh] animate-wiggle">
-        <ReactPlayer
-          url={props.trailer}
-          playing
-          controls
-          width={"100svw"}
-          height={"80svh"}
-        />
-      </div>
+      {!isTrailerError && (
+        <div className="animate-wiggle">
+          <ReactPlayer
+            url={props.trailer}
+            playing
+            muted
+            controls
+            width={"100svw"}
+            height={"80svh"}
+          />
+        </div>
+      )}
 
-      <div className="flex justify-center items-start my-8 animate-wiggle">
+      <div
+        className={`${
+          isTrailerError ? "!mt-24" : ""
+        } flex justify-center items-start my-8 animate-wiggle`}
+      >
         <div
           style={{
             boxShadow: "0px -240px 44px -215px rgba(0,0,0,1) inset",
@@ -204,14 +227,17 @@ export default function MainDetailPage({ ...props }: detailProps) {
               },
             ]}
           />
-          <div className="mt-10 flex">
-            <button
+          <div className="mt-10 flex justify-start items-center">
+            <Button
+              size="large"
               onClick={showModal}
-              className="w-44 px-6 py-3 mr-8 bg-[#E50914] hover:bg-red-800 rounded text-sm font-semibold text-white transition-colors flex justify-center items-center"
+              loading={loadingMovie}
+              type="primary"
+              className="mr-3"
             >
               <i className="fa-duotone fa-play text-xl mr-2"></i>
               <span>Play Now</span>
-            </button>
+            </Button>
             <Tooltip color="grey" title="Add watch list">
               <span
                 className={`transition-all hover:scale-110 hover:bg-gray-700/60 bg-gray-700/90 w-11 h-11 p-3 rounded-full  flex justify-center items-center cursor-pointer`}
@@ -248,8 +274,7 @@ export default function MainDetailPage({ ...props }: detailProps) {
         centered
         open={isEpisodeModalOpen}
         onCancel={handleCancel}
-        okButtonProps={{ hidden: true }}
-        cancelButtonProps={{ hidden: true }}
+        footer={null}
       >
         <EpisodeModal
           movieId={props.movieId}
@@ -262,16 +287,16 @@ export default function MainDetailPage({ ...props }: detailProps) {
         centered
         width={"70svw"}
         onCancel={handleCancelWatch}
-        okButtonProps={{ hidden: true }}
-        cancelButtonProps={{ hidden: true }}
+        footer={null}
         styles={{ body: { paddingTop: "20px", paddingBottom: "10px" } }}
         afterClose={handleAfterClose}
+        title={props.englishName}
       >
         <WatchModal
-          episodeNumber={watchMovie?.episodes[0].episodeNumber}
+          episodeNumber={watchMovie?.episodes[0]?.episodeNumber}
           seasonNumber={watchMovie?.seasonNumber}
-          name={watchMovie?.episodes[0].name}
-          video={watchMovie?.episodes[0].video}
+          name={watchMovie?.episodes[0]?.name}
+          video={watchMovie?.episodes[0]?.video}
         />
       </Modal>
     </div>
