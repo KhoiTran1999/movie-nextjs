@@ -35,11 +35,9 @@ const ManageMovies = (props: IProps) => {
   const pathname = usePathname();
   const { replace } = useRouter();
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
-  const [deleteLoadingState, setDeleteLoadingState] = useState<
-    Record<string, boolean>
-  >({});
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState<boolean>(false);
+  const [deleteLoadingState, setDeleteLoadingState] = useState<boolean>(false);
   const [isFetching, setIsFetching] = useState<boolean>(false);
 
   useEffect(() => {
@@ -88,9 +86,9 @@ const ManageMovies = (props: IProps) => {
   };
 
   const handleDelete = async (value: any) => {
-    setDeleteLoadingState((prev) => ({ ...prev, [value]: true }));
+    setDeleteLoadingState(true);
     const res = await deleteMovieAction(value);
-    setDeleteLoadingState((prev) => ({ ...prev, [value]: false }));
+    setDeleteLoadingState(false);
     if (res) return message.success("Movie deleted successfully!");
     message.error("Failed to delete movie!");
   };
@@ -195,7 +193,11 @@ const ManageMovies = (props: IProps) => {
           render={(val, _, idx) => (
             <div className="flex items-center" key={idx}>
               <Tooltip title="Update" placement="bottom">
-                <Button type="text" onClick={() => handleUpdateModalOpen(val)}>
+                <Button
+                  type="text"
+                  disabled={deleteLoadingState}
+                  onClick={() => handleUpdateModalOpen(val)}
+                >
                   <i className="fa-solid fa-pen-to-square text-2xl"></i>
                 </Button>
               </Tooltip>
@@ -205,7 +207,7 @@ const ManageMovies = (props: IProps) => {
                 onConfirm={() => handleDelete(val)}
               >
                 <Tooltip title="Delete" placement="bottom">
-                  <Button type="text" loading={deleteLoadingState[val]}>
+                  <Button type="text" disabled={deleteLoadingState}>
                     <i className="fa-solid fa-trash text-[22px]"></i>
                   </Button>
                 </Tooltip>

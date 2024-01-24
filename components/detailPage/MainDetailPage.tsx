@@ -4,7 +4,7 @@ import NavigationMovie from "@/components/homePage/navigationMovie/NavigationMov
 import dynamic from "next/dynamic";
 import { Rubik_Dirt } from "@next/font/google";
 import { StarFilled, FireFilled } from "@ant-design/icons";
-import { Tabs, Tooltip, Modal, message, Button } from "antd";
+import { Tabs, Tooltip, Modal, message, Button, Result } from "antd";
 import { Actor } from "@/components/detailPage/actorList/Actor";
 import { useEffect, useRef, useState } from "react";
 import { EpisodeModal } from "@/components/detailPage/episodeModal/EpisodeModal";
@@ -146,22 +146,28 @@ export default function MainDetailPage({ ...props }: detailProps) {
   return (
     <div>
       <NavigationMovie />
-      {!isTrailerError && (
-        <div>
-          <ReactPlayer
-            url={props.trailer}
-            playing
-            muted
-            controls
-            width={"100svw"}
-            height={"80svh"}
-          />
-        </div>
+
+      {isTrailerError ? (
+        <Result
+          status="404"
+          title="Something went wrong with Trailer"
+          subTitle="Sorry, We will update later."
+          className="mt-11"
+        />
+      ) : (
+        <ReactPlayer
+          url={props.trailer}
+          playing
+          muted
+          controls
+          width={"100svw"}
+          height={"80svh"}
+        />
       )}
 
       <div
         className={`${
-          isTrailerError ? "!mt-24" : ""
+          isTrailerError ? "!mt-16" : ""
         } flex justify-center items-start my-8 `}
       >
         <div

@@ -21,7 +21,6 @@ const TopPageMovie = async () => {
   const res = await fetch(`${process.env.API_URL}/Movies/Newest`, {
     next: { tags: ["newest-movie"] },
   });
-  console.log("=====> Fetch Newst Movie");
 
   const previewMovie: previewMovieProps = await res.json();
 

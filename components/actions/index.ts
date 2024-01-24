@@ -11,6 +11,8 @@ export const deleteMovieAction = async(movieId: string)=>{
     try {
         await fetch(`${process.env.API_URL}/Movie/${movieId}`, {method: "DELETE"});
         revalidateTag("movie-list");
+        revalidateTag("newest-movie");
+        revalidateTag("slider-movie");
         return true;
     } catch (error) {
         return false

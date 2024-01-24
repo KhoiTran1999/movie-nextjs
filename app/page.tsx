@@ -25,7 +25,6 @@ export default async function Home() {
     console.log(error);
     throw new Error("Failed to fetch Movie List");
   });
-  console.log("==================>>>>>>>> Fetch");
 
   const newMovieList = await res[0].json();
   const standaloneMovieList = await res[1].json();
