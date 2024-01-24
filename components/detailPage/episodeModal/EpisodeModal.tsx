@@ -1,4 +1,3 @@
-import Axios from "@/utils/axios";
 import { useEffect, useRef, useState } from "react";
 import { Select, Spin, Modal } from "antd";
 import { CaretRightFilled } from "@ant-design/icons";
@@ -70,13 +69,11 @@ export const EpisodeModal = ({
   useEffect(() => {
     const fetchAPI = async () => {
       setIsLoading(true);
-      const res = await Axios("Seasons", {
-        params: {
-          movieId,
-          seasonNumber,
-        },
-      });
-      setSeason(res.data[0]);
+      const res = await fetch(
+        `${process.env.API_URL}/Seasons?movieId=${movieId}&seasonNumber=${seasonNumber}`
+      );
+      const data = await res.json();
+      setSeason(data[0]);
       setIsLoading(false);
     };
     fetchAPI();

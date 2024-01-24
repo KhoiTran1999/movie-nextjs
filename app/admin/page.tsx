@@ -1,11 +1,10 @@
 import Dashboard from "@/components/adminPage/content/Dashboard";
-import Axios from "@/utils/axios";
 
 export default async function page() {
   let data;
   try {
-    const res = await Axios("Admin/Statistics");
-    data = res.data;
+    const res = await fetch(`${process.env.API_URL}/Admin/Statistics`);
+    data = await res.json();
   } catch (error) {
     console.log(error);
     throw new Error("Failed to fetch Statistics");

@@ -6,26 +6,13 @@ import {
   message,
   Upload,
   Select,
-  Button,
-  Divider,
-  Modal,
-  Popconfirm,
   InputRef,
-  Tooltip,
-  Steps,
 } from "antd";
 import type { RcFile } from "antd/es/upload/interface";
-import {
-  LoadingOutlined,
-  PlusOutlined,
-  MinusCircleOutlined,
-} from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 import moment from "moment";
 import { useEffect, useRef, useState } from "react";
-import Axios from "@/utils/axios";
 import { useDispatch, useSelector } from "react-redux";
-import { setmovieList } from "@/utils/redux/slices/data/movieListSlice";
-import { setStatistics } from "@/utils/redux/slices/data/statisticSlice";
 import dayjs from "dayjs";
 import { setIsLoadingAIButton } from "@/utils/redux/slices/toggle/IsLoadingAIButtonSlice";
 import {
@@ -33,7 +20,12 @@ import {
   isLoadingAIButtonSelector,
 } from "@/utils/redux/selector";
 import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
-import { revalidateTagMovieListAction } from "@/components/actions";
+import {
+  revalidateTagCardSliderListAction,
+  revalidateTagMovieListAction,
+  revalidateTagNewestMovieAction,
+} from "@/components/actions";
+import Axios from "@/utils/axios";
 const { TextArea } = Input;
 
 type FieldType = {
@@ -157,21 +149,6 @@ const InformationForm = ({
 
   const [messageApi, contextHolder] = message.useMessage();
 
-  //Message when created movie
-  const success = (text: any) => {
-    messageApi.open({
-      type: "success",
-      content: text,
-    });
-  };
-
-  const errorRes = (error: any) => {
-    messageApi.open({
-      type: "error",
-      content: error,
-    });
-  };
-
   //Turn of the day of the future when choose Produced Date
   const disabledDate = (current: any) => {
     // Disable dates before today
@@ -182,19 +159,22 @@ const InformationForm = ({
   useEffect(() => {
     const fetchApi = async () => {
       const res = await Promise.all([
-        Axios("Features"),
-        Axios("Categories"),
-        Axios("nations", { params: { page: 0 } }),
+        fetch(`${process.env.API_URL}/Features`),
+        fetch(`${process.env.API_URL}/Categories`),
+        fetch(`${process.env.API_URL}/nations?page=0`),
       ]);
-      const newFeatureOption = res[0].data.map((val: FeatureType) => ({
+      const feature = await res[0].json();
+      const categories = await res[1].json();
+      const nations = await res[2].json();
+      const newFeatureOption = feature.map((val: FeatureType) => ({
         value: val.featureId,
         label: val.name,
       }));
-      const newCategoryOption = res[1].data.map((val: CategoryType) => ({
+      const newCategoryOption = categories.map((val: CategoryType) => ({
         value: val.categoryId,
         label: val.name,
       }));
-      const newNationOption = res[2].data.map((val: NationType) => ({
+      const newNationOption = nations.map((val: NationType) => ({
         value: val.nationId,
         label: val.name,
       }));
@@ -262,18 +242,21 @@ const InformationForm = ({
       });
 
       await revalidateTagMovieListAction();
-      success("Movie have been created successfully!");
+      await revalidateTagNewestMovieAction();
+      await revalidateTagCardSliderListAction();
+      message.success("Movie have been created successfully!");
+
+      dispatch(setMovieId(movieId.data));
 
       setTimeout(async () => {
         form.resetFields();
         setImageUrl(null);
         setIsLoadingNextButton(false);
         setCurrent((prev: number) => prev + 1);
-        dispatch(setMovieId(movieId));
       }, 2000);
     } catch (error) {
       console.log(error);
-      errorRes("Movie already exists!");
+      message.error("Movie already exists!");
       movieNameRef.current?.focus();
       setIsLoadingNextButton(false);
     }
@@ -287,7 +270,7 @@ const InformationForm = ({
         const englishName = form.getFieldValue("EnglishName");
         if (!englishName) {
           movieNameRef.current?.focus();
-          return errorRes("Required input English Name");
+          return message.error("Required input English Name");
         }
 
         if (englishName.length < 2) {
@@ -295,30 +278,31 @@ const InformationForm = ({
         }
 
         const nation = form.getFieldValue("Nation");
-
+        const paramNation = nation ? `nation=${nation}` : "";
         try {
           dispatch(setIsLoadingAIButton(true));
-          const res = await Axios("Chat", {
-            params: { content: englishName, nation },
-          });
+          const res = await fetch(
+            `${process.env.API_URL}/Chat?content=${englishName}&${paramNation}`
+          );
+          const movie = await res.json();
 
           form.setFieldsValue({
-            Category: res.data.Categories,
-            ProducedDate: dayjs(res.data.ProducedDate, "YYYY/MM/DD"),
-            Description: res.data.Description,
-            Feature: res.data.FeatureId > 4 ? null : res.data.FeatureId,
-            Mark: res.data.Mark,
-            Nation: res.data.NationId,
-            Duration: res.data.Time,
-            Viewer: res.data.Viewer,
+            Category: movie.Categories,
+            ProducedDate: dayjs(movie.ProducedDate, "YYYY/MM/DD"),
+            Description: movie.Description,
+            Feature: movie.FeatureId > 4 ? null : movie.FeatureId,
+            Mark: movie.Mark,
+            Nation: movie.NationId,
+            Duration: movie.Time,
+            Viewer: movie.Viewer,
           });
           dispatch(setIsLoadingAIButton(false));
-          success(
+          message.success(
             `AI have created the movie information, Click button "AI Create" again if you have unexpected result`
           );
         } catch (error) {
           console.log(error);
-          errorRes(`${englishName} Not Found`);
+          message.error(`${englishName} Not Found`);
           dispatch(setIsLoadingAIButton(false));
           movieNameRef.current?.focus();
         }

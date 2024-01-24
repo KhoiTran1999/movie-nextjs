@@ -1,7 +1,5 @@
-import Axios from "@/utils/axios";
 import { Rubik_Dirt } from "@next/font/google";
 import Link from "next/link";
-import { Button } from "antd";
 import VideoPlayer from "./component/VideoPlayer";
 
 interface previewMovieProps {
@@ -20,8 +18,12 @@ const rubik = Rubik_Dirt({
 });
 
 const TopPageMovie = async () => {
-  const res = await Axios("/Movies/Newest");
-  const previewMovie: previewMovieProps = res.data;
+  const res = await fetch(`${process.env.API_URL}/Movies/Newest`, {
+    next: { tags: ["newest-movie"] },
+  });
+  console.log("=====> Fetch Newst Movie");
+
+  const previewMovie: previewMovieProps = await res.json();
 
   return (
     <div className="text-white overflow-hidden relative h-[80vh] w-screen">
@@ -43,16 +45,9 @@ const TopPageMovie = async () => {
         </p>
         <div className="mt-5 flex animate-wiggle">
           <Link href={`/detail?id=${previewMovie?.movieId}`}>
-            <Button
-              type="default"
-              size="large"
-              style={{
-                width: "120px",
-                height: "40px",
-              }}
-            >
+            <button className="w-32 h-10 text-white rounded-md bg-[#b2afaf94] hover:bg-[#adaaaa64] transition-colors">
               Detail
-            </Button>
+            </button>
           </Link>
         </div>
       </div>

@@ -1,50 +1,36 @@
+import { revalidateTagMovieListAction } from "@/components/actions";
 import CardSlider from "@/components/homePage/cardSlider/CardSlider";
 import NavigationMovie from "@/components/homePage/navigationMovie/NavigationMovie";
 import TopPageMovie from "@/components/homePage/topPageMovie/TopPageMovie";
-import Axios from "@/utils/axios";
 
 export default async function Home() {
   const res = await Promise.all([
-    Axios("Movies", {
-      params: {
-        sortBy: "produceddate",
-        page: 1,
-        eachPage: 15,
-      },
-    }),
-    Axios("Movies", {
-      params: {
-        filterBy: "feature",
-        key: 1,
-        page: 1,
-        eachPage: 15,
-      },
-    }),
-    Axios("Movies", {
-      params: {
-        filterBy: "feature",
-        key: 2,
-        page: 1,
-        eachPage: 15,
-      },
-    }),
-    Axios("Movies", {
-      params: {
-        filterBy: "feature",
-        key: 3,
-        page: 1,
-        eachPage: 15,
-      },
-    }),
+    fetch(
+      `${process.env.API_URL}/Movies?sortBy=produceddate&page=1&eachPage=10`,
+      { next: { tags: ["slider-movie"] } }
+    ),
+    fetch(
+      `${process.env.API_URL}/Movies?filterBy=feature&key=1&sortBy=produceddate&page=1&eachPage=10`,
+      { next: { tags: ["slider-movie"] } }
+    ),
+    fetch(
+      `${process.env.API_URL}/Movies?filterBy=feature&key=2&sortBy=produceddate&page=1&eachPage=10`,
+      { next: { tags: ["slider-movie"] } }
+    ),
+    fetch(
+      `${process.env.API_URL}/Movies?filterBy=feature&key=3&sortBy=produceddate&page=1&eachPage=10`,
+      { next: { tags: ["slider-movie"] } }
+    ),
   ]).catch((error) => {
     console.log(error);
     throw new Error("Failed to fetch Movie List");
   });
+  console.log("==================>>>>>>>> Fetch");
 
-  const newMovieList = res[0].data;
-  const standaloneMovieList = res[1].data;
-  const cinemaMovieList = res[2].data;
-  const TVSeriesMovieList = res[3].data;
+  const newMovieList = await res[0].json();
+  const standaloneMovieList = await res[1].json();
+  const cinemaMovieList = await res[2].json();
+  const TVSeriesMovieList = await res[3].json();
 
   return (
     <main>

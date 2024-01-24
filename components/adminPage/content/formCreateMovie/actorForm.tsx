@@ -14,7 +14,6 @@ import Column from "antd/es/table/Column";
 import { FilterDropdownProps } from "antd/es/table/interface";
 import { SearchOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
-import Axios from "@/utils/axios";
 import { useDispatch, useSelector } from "react-redux";
 import {
   isCancelButtonModalSelector,
@@ -24,6 +23,7 @@ import {
 import CreatePersonModal from "./createPersonModal";
 import { setPersonList } from "@/utils/redux/slices/data/personListSlice";
 import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
+import Axios from "@/utils/axios";
 
 interface DataType {
   key: React.Key;
@@ -78,31 +78,17 @@ const ActorForm = ({
 
   const [messageApi, contextHolder] = message.useMessage();
 
-  //Message when created movie
-  const success = (text: any) => {
-    messageApi.open({
-      type: "success",
-      content: text,
-    });
-  };
-
-  const errorRes = (error: any) => {
-    messageApi.open({
-      type: "error",
-      content: error,
-    });
-  };
-
   useEffect(() => {
     const fetchApi = async () => {
       try {
         setLoading(true);
-        const res = await Axios("Persons", {
-          params: { sortBy: "CreatedDate", page: 0 },
-        });
+        const res = await fetch(
+          `${process.env.API_URL}/Persons?sortBy=CreatedDate&page=0`
+        );
+        const data = await res.json();
         dispatch(
           setPersonList(
-            res.data.map((val: PersonType, idx: number) => ({
+            data.map((val: PersonType, idx: number) => ({
               ...val,
               key: idx,
             }))
@@ -158,7 +144,7 @@ const ActorForm = ({
 
   const handleOnFinish = async (values: any) => {
     if (selectedRowKeys.length === 0) {
-      success("Finish!");
+      message.success("Finish!");
       return;
     }
 
@@ -177,22 +163,19 @@ const ActorForm = ({
 
     try {
       setIsLoadingNextButton(true);
-      await Axios.post("Cast", selectedPersons, {
-        params: { movieId: movieId.data },
-      });
+      await Axios.post(`Cast/${movieId}`, selectedPersons);
 
-      success("Add actors successfully!");
+      message.success("Add actors successfully!");
       setTimeout(() => {
         setIsLoadingNextButton(false);
         form.resetFields();
         setSearchText("");
         setSearchedColumn("");
         setSelectedRowKeys([]);
-        dispatch(setMovieId(""));
       }, 2000);
     } catch (error) {
       console.log(error);
-      errorRes("Failed to add actors!");
+      message.error("Failed to add actors!");
       setIsLoadingNextButton(false);
     }
   };
@@ -202,7 +185,6 @@ const ActorForm = ({
     setSearchText("");
     setSearchedColumn("");
     setSelectedRowKeys([]);
-    dispatch(setMovieId(""));
   }, [isCancelButtonModal]);
 
   return (
@@ -288,7 +270,7 @@ const ActorForm = ({
                     close,
                   }) => (
                     <div
-                      style={{ padding: 8 }}
+                      style={{ padding: 8, backgroundColor: "#2d2c2d" }}
                       onKeyDown={(e) => e.stopPropagation()}
                     >
                       <Input

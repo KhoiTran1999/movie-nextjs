@@ -20,3 +20,11 @@ export const deleteMovieAction = async(movieId: string)=>{
 export const revalidateTagMovieListAction = async()=>{
     revalidateTag("movie-list");
 }
+
+export const revalidateTagNewestMovieAction = async()=>{
+    revalidateTag("newest-movie");
+}
+
+export const revalidateTagCardSliderListAction = async()=>{
+    revalidateTag("slider-movie");
+}

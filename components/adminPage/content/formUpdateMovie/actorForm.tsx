@@ -14,7 +14,6 @@ import Column from "antd/es/table/Column";
 import { FilterDropdownProps } from "antd/es/table/interface";
 import { SearchOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
-import Axios from "@/utils/axios";
 import { useDispatch, useSelector } from "react-redux";
 import {
   isCancelButtonModalSelector,
@@ -24,6 +23,7 @@ import {
 import CreatePersonModal from "./createPersonModal";
 import { setPersonList } from "@/utils/redux/slices/data/personListSlice";
 import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
+import Axios from "@/utils/axios";
 
 interface DataType {
   key: React.Key;
@@ -97,12 +97,13 @@ const ActorForm = ({
     const fetchApi = async () => {
       try {
         setLoading(true);
-        const res = await Axios("Persons", {
-          params: { sortBy: "CreatedDate", page: 0 },
-        });
+        const res = await fetch(
+          `${process.env.API_URL}/Persons?sortBy=CreatedDate&page=0`
+        );
+        const data = await res.json();
         dispatch(
           setPersonList(
-            res.data.map((val: PersonType, idx: number) => ({
+            data.map((val: PersonType, idx: number) => ({
               ...val,
               key: idx,
             }))

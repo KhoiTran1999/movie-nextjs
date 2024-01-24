@@ -12,7 +12,6 @@ import type { RcFile } from "antd/es/upload/interface";
 import { PlusOutlined } from "@ant-design/icons";
 import moment from "moment";
 import { useEffect, useRef, useState } from "react";
-import Axios from "@/utils/axios";
 import { useDispatch, useSelector } from "react-redux";
 import dayjs from "dayjs";
 import { setIsLoadingAIButton } from "@/utils/redux/slices/toggle/IsLoadingAIButtonSlice";
@@ -24,6 +23,7 @@ import {
 import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
 import { revalidateTagMovieListAction } from "@/components/actions";
 import { deepEqual } from "assert";
+import Axios from "@/utils/axios";
 
 const { TextArea } = Input;
 
@@ -160,19 +160,22 @@ const InformationForm = ({
   useEffect(() => {
     const fetchApi = async () => {
       const res = await Promise.all([
-        Axios("Features"),
-        Axios("Categories"),
-        Axios("nations", { params: { page: 0 } }),
+        fetch(`${process.env.API_URL}/Features`),
+        fetch(`${process.env.API_URL}/Categories`),
+        fetch(`${process.env.API_URL}/nations?page=0`),
       ]);
-      const newFeatureOption = res[0].data.map((val: FeatureType) => ({
+      const feature = await res[0].json();
+      const categories = await res[1].json();
+      const nations = await res[2].json();
+      const newFeatureOption = feature.map((val: FeatureType) => ({
         value: val.featureId,
         label: val.name,
       }));
-      const newCategoryOption = res[1].data.map((val: CategoryType) => ({
+      const newCategoryOption = categories.map((val: CategoryType) => ({
         value: val.categoryId,
         label: val.name,
       }));
-      const newNationOption = res[2].data.map((val: NationType) => ({
+      const newNationOption = nations.map((val: NationType) => ({
         value: val.nationId,
         label: val.name,
       }));
@@ -188,8 +191,8 @@ const InformationForm = ({
     const fetchApi = async () => {
       try {
         setIsLoadingNextButton(true);
-        const res = await Axios(`Movie/${movieId}`);
-        const movie = res.data;
+        const res = await fetch(`${process.env.API_URL}/Movie/${movieId}`);
+        const movie = await res.json();
 
         //Add value into form
         const filterCategories = movie.categories.map(
@@ -283,7 +286,7 @@ const InformationForm = ({
     } catch (error) {
       try {
         setIsLoadingNextButton(true);
-        const movieId = await Axios.patch("Movie", data, {
+        const movieId = await Axios.post("Movie", data, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -297,7 +300,7 @@ const InformationForm = ({
           setImageUrl(null);
           setIsLoadingNextButton(false);
           setCurrent((prev: number) => prev + 1);
-          dispatch(setMovieId(movieId));
+          dispatch(setMovieId(movieId.data));
         }, 2000);
       } catch (error) {
         console.log(error);
@@ -327,10 +330,10 @@ const InformationForm = ({
 
         try {
           dispatch(setIsLoadingAIButton(true));
-          const res = await Axios("Chat", {
-            params: { content: englishName, nation },
-          });
-          const movie = res.data;
+          const res = await fetch(
+            `${process.env.API_URL}/Chat?content=${englishName}&nation=${nation}`
+          );
+          const movie = await res.json();
 
           form.setFieldsValue({
             Category: movie.Categories,

@@ -7,10 +7,7 @@ import { StarFilled, FireFilled } from "@ant-design/icons";
 import { Tabs, Tooltip, Modal, message, Button } from "antd";
 import { Actor } from "@/components/detailPage/actorList/Actor";
 import { useEffect, useRef, useState } from "react";
-import Axios from "@/utils/axios";
-import { Introduction } from "@/components/introduction/Introduction";
 import { EpisodeModal } from "@/components/detailPage/episodeModal/EpisodeModal";
-import { useRouter } from "next/navigation";
 import { WatchModal } from "@/components/detailPage/watchModal/WatchModal";
 import { useDispatch } from "react-redux";
 import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
@@ -95,18 +92,16 @@ export default function MainDetailPage({ ...props }: detailProps) {
     }
 
     try {
-      const res = await Axios("Seasons", {
-        params: {
-          movieId: props.movieId,
-          seasonNumber: 1,
-        },
-      });
-      if (!res.data || res.data.length === 0) {
+      const res = await fetch(
+        `${process.env.API_URL}/Seasons?movieId=${props.movieId}&seasonNumber=1`
+      );
+      const data = await res.json();
+      if (!data || data.length === 0) {
         setLoadingMovie(false);
         message.error("Movie is not ready!");
         return;
       }
-      setWatchMovie({ ...res.data[0] });
+      setWatchMovie({ ...data[0] });
       setLoadingMovie(false);
     } catch (error) {
       console.log(error);

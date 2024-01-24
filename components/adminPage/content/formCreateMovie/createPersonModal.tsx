@@ -12,7 +12,6 @@ import {
 import type { RcFile } from "antd/es/upload/interface";
 import { PlusOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
-import Axios from "@/utils/axios";
 import moment from "moment";
 import { useDispatch } from "react-redux";
 import { setPersonList } from "@/utils/redux/slices/data/personListSlice";
@@ -53,8 +52,9 @@ const CreatePersonModal = ({
   //Call Api Feature, Category-----------------------
   useEffect(() => {
     const fetchApi = async () => {
-      const res = await Axios("nations", { params: { page: 0 } });
-      const newNationOption = res.data.map((val: NationType) => ({
+      const res = await fetch(`${process.env.API_URL}nations?page=0`);
+      const data = await res.json();
+      const newNationOption = data.map((val: NationType) => ({
         value: val.nationId,
         label: val.name,
       }));
@@ -129,20 +129,21 @@ const CreatePersonModal = ({
     try {
       setIsLoadingCreateButton(true);
 
-      await Axios.post("Person", data, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+      await fetch(`${process.env.API_URL}/Person`, {
+        method: "POST",
+        headers: { "Content-Type": "multipart/form-data" },
+        body: JSON.stringify(data),
       });
 
       try {
         //update personList
-        const res = await Axios("Persons", {
-          params: { sortBy: "CreatedDate", page: 0 },
-        });
+        const res = await fetch(
+          `${process.env.API_URL}/Persons?sortBy=CreatedDate&page=0`
+        );
+        const data = await res.json();
         dispatch(
           setPersonList(
-            res.data.map((val: any, idx: number) => ({
+            data.map((val: any, idx: number) => ({
               ...val,
               key: idx,
             }))
