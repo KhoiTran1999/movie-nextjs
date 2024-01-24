@@ -149,10 +149,14 @@ export default function MainDetailPage({ ...props }: detailProps) {
 
       {isTrailerError ? (
         <Result
-          status="404"
+          status="error"
           title="Something went wrong with Trailer"
-          subTitle="Sorry, We will update later."
-          className="mt-11"
+          subTitle={
+            <span className="text-white text-lg">
+              Sorry, We will update later.
+            </span>
+          }
+          className="mt-20"
         />
       ) : (
         <ReactPlayer
