@@ -147,7 +147,7 @@ export default function MainDetailPage({ ...props }: detailProps) {
     <div>
       <NavigationMovie />
       {!isTrailerError && (
-        <div className="animate-wiggle">
+        <div>
           <ReactPlayer
             url={props.trailer}
             playing
@@ -162,7 +162,7 @@ export default function MainDetailPage({ ...props }: detailProps) {
       <div
         className={`${
           isTrailerError ? "!mt-24" : ""
-        } flex justify-center items-start my-8 animate-wiggle`}
+        } flex justify-center items-start my-8 `}
       >
         <div
           style={{
@@ -171,7 +171,7 @@ export default function MainDetailPage({ ...props }: detailProps) {
           className="w-1/2 mr-2 text-[#D1D0CF] flex flex-col justify-center"
         >
           <h1
-            className={`${rubik.className} text-7xl my-4 tracking-wider [word-spacing:5px] animate-wiggle w-full`}
+            className={`${rubik.className} text-7xl my-4 tracking-wider [word-spacing:5px]  w-full`}
           >
             {props.englishName}
           </h1>
