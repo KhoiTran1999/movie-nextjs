@@ -59,6 +59,9 @@ const GlobalWrapper = ({ children }: { children: React.ReactNode }) => {
             colorTextDisabled: "white",
             colorTextDescription: "white",
           },
+          Message: {
+            colorText: "white",
+          },
         },
       }}
     >

@@ -97,7 +97,7 @@ const CardSlider = ({ title, movieList = [] }: cardSliderProps) => {
                   <Tooltip
                     title={
                       <span>
-                        <b>{val.englishName}</b>
+                        <b className="tracking-wide">{val.englishName}</b>
                         <br />
                         {val.vietnamName}
                       </span>
@@ -106,7 +106,7 @@ const CardSlider = ({ title, movieList = [] }: cardSliderProps) => {
                     placement="topLeft"
                   >
                     <div className="w-full p-1 z-50">
-                      <h3 className="text-left font-bold text-base whitespace-nowrap overflow-hidden overflow-ellipsis">
+                      <h3 className="tracking-wide text-left font-bold text-base whitespace-nowrap overflow-hidden overflow-ellipsis">
                         {val.englishName}
                       </h3>
                       <h4 className="text-left text-gray-400 text-sm whitespace-nowrap overflow-hidden overflow-ellipsis">

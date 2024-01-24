@@ -147,18 +147,14 @@ const VideoForm = ({
                                       required: true,
                                       whitespace: true,
                                       message:
-                                        "Please input Link Video or delete this field.",
-                                    },
-                                    {
-                                      type: "url",
-                                      warningOnly: true,
+                                        "Please input ID Video or delete this field.",
                                     },
                                   ]}
                                   noStyle
                                 >
                                   <Input
                                     className="bg-transparent placeholder:text-[#5d5d5d]"
-                                    placeholder="https://example.com"
+                                    placeholder="1MEcf3..."
                                     disabled={isLoadingNextButton}
                                     style={{ marginRight: "20px", flex: 2 }}
                                   />

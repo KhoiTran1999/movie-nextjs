@@ -21,7 +21,11 @@ import {
   movieIdSelector,
 } from "@/utils/redux/selector";
 import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
-import { revalidateTagMovieListAction } from "@/components/actions";
+import {
+  revalidateTagCardSliderListAction,
+  revalidateTagMovieListAction,
+  revalidateTagNewestMovieAction,
+} from "@/components/actions";
 import { deepEqual } from "assert";
 import Axios from "@/utils/axios";
 
@@ -211,9 +215,11 @@ const InformationForm = ({
           Nation: movie.nation.nationId,
           Feature: movie.feature.featureId,
           Category: filterCategories,
+          Thumbnail: undefined,
+          MovieId: movieId,
         };
 
-        setOldMovie({ ...filterdData, Thumbnail: undefined });
+        setOldMovie(filterdData);
 
         form.setFieldsValue(filterdData);
         setIsLoadingNextButton(false);
@@ -262,6 +268,7 @@ const InformationForm = ({
 
   const onFinish = async (values: ValueFormType) => {
     const data = {
+      MovieId: movieId,
       Categories: values.Category,
       ProducedDate: values.ProducedDate,
       Description: values.Description,
@@ -278,7 +285,7 @@ const InformationForm = ({
 
     try {
       //Compare Old values and New value
-      deepEqual(values, oldMovie, "not same");
+      deepEqual({ ...values, MovieId: movieId }, oldMovie, "not same");
 
       form.resetFields();
       setImageUrl(null);
@@ -286,13 +293,15 @@ const InformationForm = ({
     } catch (error) {
       try {
         setIsLoadingNextButton(true);
-        const movieId = await Axios.post("Movie", data, {
+        await Axios.put("Movie", data, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
 
         await revalidateTagMovieListAction();
+        await revalidateTagNewestMovieAction();
+        await revalidateTagCardSliderListAction();
         message.success("Movie have been updated successfully!");
 
         setTimeout(() => {
@@ -300,7 +309,6 @@ const InformationForm = ({
           setImageUrl(null);
           setIsLoadingNextButton(false);
           setCurrent((prev: number) => prev + 1);
-          dispatch(setMovieId(movieId.data));
         }, 2000);
       } catch (error) {
         console.log(error);

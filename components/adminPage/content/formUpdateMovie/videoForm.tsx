@@ -11,6 +11,7 @@ import {
   movieIdSelector,
 } from "@/utils/redux/selector";
 import Axios from "@/utils/axios";
+import { SeasonType } from "@/types";
 
 interface VideoFormType {
   setCurrent: Function;
@@ -30,19 +31,41 @@ const VideoForm = ({
 
   const [messageApi, contextHolder] = message.useMessage();
 
+  const [oldSeason, setOldSeason] = useState([]);
+  const [fetchedSeason, setFetchedSeason] = useState<SeasonType[]>([]);
+
   useEffect(() => {
     form.resetFields();
   }, [isCancelButtonModal]);
 
   //Add first render value -----------------------
   useEffect(() => {
-    const fetchApi = async () => {};
+    const fetchApi = async () => {
+      setIsLoadingNextButton(true);
+      const res = await fetch(
+        `${process.env.API_URL}/Seasons?movieId=${movieId}`
+      );
+      const seasonList = await res.json();
+      setFetchedSeason(seasonList);
+
+      const filterdSeasonList = seasonList.map((season: any) => {
+        const filterdEpisodes = season.episodes.map((episode: any) => ({
+          video: episode.video,
+          name: episode.name,
+        }));
+        return { seasonName: season.name, episode: filterdEpisodes };
+      });
+
+      form.setFieldValue("seasonList", filterdSeasonList);
+      setOldSeason(filterdSeasonList);
+
+      setIsLoadingNextButton(false);
+    };
     fetchApi();
   }, []);
 
   //----------------------------------------------
   const handleOnFinish = async (values: any) => {
-    console.log(values);
     if (!values.seasonList) {
       return setCurrent((prev: number) => prev + 1);
     }
@@ -51,51 +74,50 @@ const VideoForm = ({
       setCurrent((prev: number) => prev + 1);
       return form.resetFields();
     }
+    console.log("New season: ", values.seasonList);
 
-    // if (movieId && values.seasonList) {
-    //   setIsLoadingNextButton(true);
-    //   values.seasonList.forEach(async (season: any) => {
-    //     try {
-    //       const seasonId = await Axios.post("Seasons", {
-    //         movieId: movieId.data,
-    //         name: season.seasonName,
-    //       });
+    setIsLoadingNextButton(true);
+    values.seasonList.forEach(async (season: SeasonType, idx: number) => {
+      try {
+        const seasonId = await Axios.put(
+          `Seasons/${fetchedSeason[idx].seasonId}`,
+          {
+            name: season.name,
+          }
+        );
 
-    //       try {
-    //         await Axios.post("episode", season.episode, {
-    //           params: { seasonId: seasonId.data },
-    //         });
+        try {
+          await Axios.put(`episode/${season}`, season.episodes, {
+            params: { seasonId: seasonId.data },
+          });
 
-    //         try {
-    //           Axios.patch(
-    //             `Movie/${movieId}`,
-    //             {},
-    //             { params: { status: "Release" } }
-    //           );
-    //         } catch (error) {
-    //           console.log(error);
-    //         }
+          try {
+            Axios.patch(
+              `Movie/${movieId}`,
+              {},
+              { params: { status: "Release" } }
+            );
+          } catch (error) {
+            console.log(error);
+          }
 
-    //         message.success("Create Episode succesfully");
-    //         setTimeout(() => {
-    //           setIsLoadingNextButton(false);
-    //           setCurrent((prev: number) => prev + 1);
-    //         }, 2000);
-    //       } catch (error) {
-    //         console.log(error);
-    //         message.error("Failed to add Episode");
-    //         setIsLoadingNextButton(false);
-    //       }
-    //     } catch (error) {
-    //       console.log(error);
-    //       message.error("Failed to add Season");
-    //       setIsLoadingNextButton(false);
-    //       return;
-    //     }
-    //   });
-    // } else {
-    //   setCurrent((prev: number) => prev + 1);
-    // }
+          message.success("Create Episode succesfully");
+          setTimeout(() => {
+            setIsLoadingNextButton(false);
+            setCurrent((prev: number) => prev + 1);
+          }, 2000);
+        } catch (error) {
+          console.log(error);
+          message.error("Failed to add Episode");
+          setIsLoadingNextButton(false);
+        }
+      } catch (error) {
+        console.log(error);
+        message.error("Failed to add Season");
+        setIsLoadingNextButton(false);
+        return;
+      }
+    });
   };
 
   return (
@@ -129,7 +151,7 @@ const VideoForm = ({
                 >
                   <Form.Item
                     label={"Name"}
-                    name={[field.name, "seasonName"]}
+                    name={[field.name, "name"]}
                     rules={[{ required: true }]}
                   >
                     <Input
@@ -155,18 +177,14 @@ const VideoForm = ({
                                       required: true,
                                       whitespace: true,
                                       message:
-                                        "Please input Link Video or delete this field.",
-                                    },
-                                    {
-                                      type: "url",
-                                      warningOnly: true,
+                                        "Please input ID Video or delete this field.",
                                     },
                                   ]}
                                   noStyle
                                 >
                                   <Input
                                     className="bg-transparent placeholder:text-[#5d5d5d]"
-                                    placeholder="https://example.com"
+                                    placeholder="1MEcf3..."
                                     disabled={isLoadingNextButton}
                                     style={{ marginRight: "20px", flex: 2 }}
                                   />
@@ -210,6 +228,7 @@ const VideoForm = ({
                                 type="dashed"
                                 onClick={() => subOpt.add()}
                                 icon={<PlusOutlined />}
+                                disabled={isLoadingNextButton}
                               >
                                 Add Link Episode
                               </Button>
@@ -222,7 +241,12 @@ const VideoForm = ({
                   </Form.Item>
                 </Card>
               ))}
-              <Button type="dashed" onClick={() => add()} block>
+              <Button
+                disabled={isLoadingNextButton}
+                type="dashed"
+                onClick={() => add()}
+                block
+              >
                 + Add Season
               </Button>
             </div>

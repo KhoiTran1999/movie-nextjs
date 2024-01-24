@@ -34,3 +34,19 @@ export interface MovieAntdTableType {
   categories: string[];
   dateCreated: string;
 }
+
+export interface EpisodeType {
+  episodeId: string;
+  episodeNumber: number,
+  name: number;
+  video: string;
+  dateCreated: string;
+  dateUpdated: string;
+}
+
+export interface SeasonType {
+  seasonId: string;
+  seasonNumber: number;
+  name: string;
+  episodes: EpisodeType[]
+}

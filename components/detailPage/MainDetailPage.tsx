@@ -86,7 +86,9 @@ export default function MainDetailPage({ ...props }: detailProps) {
 
   const showModal = async () => {
     setLoadingMovie(true);
-    if (props.totalEpisodes > 1 || props.totalSeasons > 1) {
+    console.log(props);
+
+    if (props.totalEpisodes > 1 && props.totalSeasons >= 1) {
       setLoadingMovie(false);
       return setIsEpisodeModalOpen(true);
     }
@@ -239,10 +241,18 @@ export default function MainDetailPage({ ...props }: detailProps) {
               loading={loadingMovie}
               type="primary"
               className="mr-3"
+              disabled={props.totalSeasons === 0}
             >
-              <i className="fa-duotone fa-play text-xl mr-2"></i>
-              <span>Play Now</span>
+              {props.totalSeasons > 0 ? (
+                <>
+                  <i className="fa-duotone fa-play text-xl mr-2"></i>
+                  <span>Play Now</span>
+                </>
+              ) : (
+                <span>Upcoming...</span>
+              )}
             </Button>
+
             <Tooltip color="grey" title="Add watch list">
               <span
                 className={`transition-all hover:scale-110 hover:bg-gray-700/60 bg-gray-700/90 w-11 h-11 p-3 rounded-full  flex justify-center items-center cursor-pointer`}
