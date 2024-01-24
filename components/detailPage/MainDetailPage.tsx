@@ -86,7 +86,6 @@ export default function MainDetailPage({ ...props }: detailProps) {
 
   const showModal = async () => {
     setLoadingMovie(true);
-    console.log(props);
 
     if (props.totalEpisodes > 1 && props.totalSeasons >= 1) {
       setLoadingMovie(false);
