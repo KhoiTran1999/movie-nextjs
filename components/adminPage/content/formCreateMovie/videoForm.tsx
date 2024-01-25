@@ -49,7 +49,7 @@ const VideoForm = ({
       values.seasonList.forEach(async (season: any) => {
         try {
           const seasonId = await Axios.post("Seasons", {
-            movieId: movieId.data,
+            movieId,
             name: season.seasonName,
           });
 

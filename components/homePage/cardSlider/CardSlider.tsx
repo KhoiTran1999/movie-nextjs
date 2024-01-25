@@ -31,30 +31,19 @@ type movieProps = {
 
 const CardSlider = ({ title, movieList = [] }: cardSliderProps) => {
   const [isHover, setIsHover] = useState<boolean>(false);
-  const [seeAll, setSeeAll] = useState<boolean>(false);
 
-  const handleOnMouseEnter = () => {
-    setIsHover(true);
-  };
+  const handleOnMouseEnter = () => {};
   const onMouseLeave = () => {
     setIsHover(false);
   };
 
   return (
     <div className="mb-10">
-      <div
-        className="mb-2"
-        onMouseEnter={() => setSeeAll(true)}
-        onMouseLeave={() => setSeeAll(false)}
-      >
-        <div className="cursor-pointer inline-flex items-center">
+      <div className="mb-2">
+        <div className="group cursor-pointer inline-flex items-center w-fit">
           <h2 className="font-bold text-2xl hover:text-[#D1D0CF]">{title}</h2>
           <div
-            className={`${
-              seeAll
-                ? "visible opacity-100 translate-x-[0px]"
-                : "invisible opacity-0 translate-x-[-20px]"
-            } transition-all ml-3 text-[#E50914] font-bold flex justify-center items-center`}
+            className={`invisible opacity-0 translate-x-[-20px] group-hover:visible group-hover:opacity-100 group-hover:translate-x-[0px] transition-all ml-3 text-[#E50914] font-bold flex justify-center items-center`}
           >
             <span className="mr-2">See all </span>
             <i className="fa-solid fa-angle-right text-sm"></i>
