@@ -46,35 +46,30 @@ const VideoForm = ({
 
     if (movieId && values.seasonList) {
       setIsLoadingNextButton(true);
-      values.seasonList.forEach(async (season: any) => {
-        try {
-          const seasonId = await Axios.post("Seasons", {
-            movieId,
-            name: season.seasonName,
-          });
 
+      const fetchApi = async () => {
+        for (const season of values.seasonList) {
           try {
+            const seasonId = await Axios.post("Seasons", {
+              movieId,
+              name: season.name,
+            });
+
             await Axios.post("episode", season.episode, {
               params: { seasonId: seasonId.data },
             });
-
-            message.success("Create Episode succesfully");
-            setTimeout(() => {
-              setIsLoadingNextButton(false);
-              setCurrent((prev: number) => prev + 1);
-            }, 2000);
           } catch (error) {
             console.log(error);
-            message.error("Failed to add Episode");
+            message.error("Create videoForm Error!");
             setIsLoadingNextButton(false);
+            return;
           }
-        } catch (error) {
-          console.log(error);
-          message.error("Failed to add Season");
-          setIsLoadingNextButton(false);
-          return;
         }
-      });
+      };
+      fetchApi();
+
+      setIsLoadingNextButton(false);
+      setCurrent((prev: number) => prev + 1);
     } else {
       setCurrent((prev: number) => prev + 1);
     }
@@ -111,7 +106,7 @@ const VideoForm = ({
                 >
                   <Form.Item
                     label={"Name"}
-                    name={[field.name, "seasonName"]}
+                    name={[field.name, "name"]}
                     rules={[{ required: true }]}
                   >
                     <Input

@@ -11,8 +11,12 @@ import {
   movieIdSelector,
 } from "@/utils/redux/selector";
 import Axios from "@/utils/axios";
-import { SeasonType } from "@/types";
+import { EpisodeType, SeasonType } from "@/types";
 import { deepEqual } from "assert";
+import {
+  getSeasonListAction,
+  revalidateTagSeasonListAction,
+} from "@/components/actions";
 
 interface VideoFormType {
   setCurrent: Function;
@@ -53,20 +57,22 @@ const VideoForm = ({
   useEffect(() => {
     const fetchApi = async () => {
       setIsLoadingNextButton(true);
-      const res = await fetch(
-        `${process.env.API_URL}/Seasons?movieId=${movieId}`
-      );
-      const seasonList = await res.json();
+      // const res = await fetch(
+      //   `${process.env.API_URL}/Seasons?movieId=${movieId}`
+      // );
+      // const seasonList = await res.json();
+      const seasonList = await getSeasonListAction(movieId);
+      console.log(seasonList);
+
       setFetchedSeason(seasonList);
 
-      const filterdSeasonList = seasonList.map((season: any) => {
-        const filterdEpisodes = season.episodes.map((episode: any) => ({
+      const filterdSeasonList = seasonList.map((season: SeasonType) => {
+        const filterdEpisodes = season.episodes.map((episode: EpisodeType) => ({
           video: episode.video,
           name: episode.name,
         }));
         return { name: season.name, episode: filterdEpisodes };
       });
-      console.log("filterdSeasonList: ", filterdSeasonList);
 
       form.setFieldValue("seasonList", filterdSeasonList);
       setOldSeasonList(filterdSeasonList);
@@ -80,255 +86,276 @@ const VideoForm = ({
   const handleOnFinish = async (values: any) => {
     console.log(values);
 
-    // if (!values.seasonList) {
-    //   return setCurrent((prev: number) => prev + 1);
-    // }
+    if (!values.seasonList) {
+      return setCurrent((prev: number) => prev + 1);
+    }
 
-    // if (values.seasonList.length === 1 && !values.seasonList[0].episode) {
-    //   setCurrent((prev: number) => prev + 1);
-    //   return form.resetFields();
-    // }
+    if (values.seasonList.length === 1 && !values.seasonList[0].episode) {
+      setCurrent((prev: number) => prev + 1);
+      return form.resetFields();
+    }
 
-    // console.log("fetchedSeason: ", fetchedSeason);
-    // console.log("oldSeason: ", oldSeasonList);
-    // console.log("values.seasonList: ", values.seasonList);
+    console.log("fetchedSeason: ", fetchedSeason);
+    console.log("oldSeason: ", oldSeasonList);
+    console.log("values.seasonList: ", values.seasonList);
+    try {
+      //Compare Old values and New value
+      deepEqual(oldSeasonList, values.seasonList, "not same");
+      form.resetFields();
+      setCurrent((prev: number) => prev + 1);
+    } catch (error) {
+      setIsLoadingNextButton(true);
+      //3 Situation about Updating VideoForm
+      if (values.seasonList.length === oldSeasonList.length) {
+        const fetchUpdateVideoFormS1 = async () => {
+          for (const [idx, season] of values.seasonList.entries()) {
+            // Update Season
+            try {
+              await Axios.put(
+                `Seasons/${fetchedSeason[idx].seasonId}`,
+                season.name
+              );
+            } catch (error) {
+              setIsLoadingNextButton(false);
+              console.log(error);
+            }
 
-    // try {
-    //   //Compare Old values and New value
-    //   deepEqual(oldSeasonList, values.seasonList, "not same");
-    //   form.resetFields();
-    //   setCurrent((prev: number) => prev + 1);
-    // } catch (error) {
-    //   //3 Situation about Updating VideoForm
-    //   if (values.seasonList.length === oldSeasonList.length) {
-    //     values.seasonList.forEach((season: SeasonFilterdType, idx: number) => {
-    //       const fetchUpdateSeason = async () => {
-    //         //Update Season
-    //         try {
-    //           await Axios.put(
-    //             `Seasons/${fetchedSeason[idx].seasonId}`,
-    //             season.name
-    //           );
-    //         } catch (error) {
-    //           console.log(error);
-    //         }
+            //-------------------------------------------
+            const newEpisode = season.episode.map(
+              (episode: EpisodeFilterdType, index: number) => {
+                return {
+                  episodeId: fetchedSeason[idx]?.episodes[index]?.episodeId,
+                  name: episode.name,
+                  video: episode.video,
+                };
+              }
+            );
 
-    //         //-------------------------------------------
-    //         const newEpisode = season.episode.map(
-    //           (episode: EpisodeFilterdType, idx: number) => {
-    //             return {
-    //               episodeId: fetchedSeason[idx].episodes[idx].episodeId,
-    //               name: episode.name,
-    //               video: episode.video,
-    //             };
-    //           }
-    //         );
-    //         //Update Episode: 3 situation
-    //         if (season.episode.length <= oldSeasonList[idx].episode.length) {
-    //           try {
-    //             await Axios.put(
-    //               `episode/${fetchedSeason[idx].seasonId}`,
-    //               newEpisode
-    //             );
-    //           } catch (error) {
-    //             console.log(error);
-    //           }
-    //         } else {
-    //           //New Episode List > Old Episode List
+            //Update Episode: 2 situations
+            if (season.episode.length <= oldSeasonList[idx].episode.length) {
+              try {
+                console.log("newEpisode: ", newEpisode);
+                console.log(
+                  "fetchedSeason[idx].seasonId: ",
+                  fetchedSeason[idx].seasonId
+                );
 
-    //           //Update first apart of New Episode which equal the length of Old Episode List
-    //           const apartOfNewEpisodeList = newEpisode.slice(
-    //             0,
-    //             oldSeasonList[idx].episode.length - 1
-    //           );
+                const res = await Axios.put(
+                  `episode/${fetchedSeason[idx].seasonId}`,
+                  newEpisode
+                );
+                await revalidateTagSeasonListAction();
+                console.log("res.data: ", res.data);
 
-    //           try {
-    //             await Axios.put(
-    //               `episode/${fetchedSeason[idx].seasonId}`,
-    //               apartOfNewEpisodeList
-    //             );
-    //           } catch (error) {
-    //             console.log(error);
-    //           }
+                setCurrent((prev: number) => prev + 1);
+                setIsLoadingNextButton(false);
+              } catch (error) {
+                console.log(error);
+                setIsLoadingNextButton(false);
+              }
+            } else {
+              //New Episode List > Old Episode List
 
-    //           //Create a rest of New Episode
-    //           const restOfNewEpisodeList = newEpisode
-    //             .slice(oldSeasonList[idx].episode.length - 1)
-    //             .map((val) => ({ name: val.name, video: val.video }));
+              //Update first apart of New Episode which equal the length of Old Episode List
+              const apartOfNewEpisodeList = newEpisode.slice(
+                0,
+                oldSeasonList[idx].episode.length - 1
+              );
 
-    //           try {
-    //             await Axios.post(`episode`, restOfNewEpisodeList, {
-    //               params: { seasonId: fetchedSeason[idx].seasonId },
-    //             });
-    //           } catch (error) {
-    //             console.log(error);
-    //           }
-    //         }
-    //       };
-    //       fetchUpdateSeason();
-    //     });
-    //   } else if (values.seasonList.length > oldSeasonList.length) {
-    //     //Update First New Season with the length of Old Season List
+              try {
+                await Axios.put(
+                  `episode/${fetchedSeason[idx].seasonId}`,
+                  apartOfNewEpisodeList
+                );
+              } catch (error) {
+                setIsLoadingNextButton(false);
+                console.log(error);
+              }
 
-    //     values.seasonList.forEach((season: SeasonFilterdType, idx: number) => {
-    //       const updateFirstNewSeason = async () => {
-    //         //Update Season
-    //         try {
-    //           await Axios.put(`Seasons/${fetchedSeason[idx].seasonId}`);
-    //         } catch (error) {
-    //           console.log(error);
-    //         }
+              //Create a rest of New Episode
+              const restOfNewEpisodeList = newEpisode
+                .slice(oldSeasonList[idx].episode.length - 1)
+                .map((val: EpisodeFilterdType) => ({
+                  name: val.name,
+                  video: val.video,
+                }));
 
-    //         //-------------------------------------------
-    //         const newEpisode = season.episode.map(
-    //           (episode: EpisodeFilterdType, idx: number) => {
-    //             return {
-    //               episodeId: fetchedSeason[idx].episodes[idx].episodeId,
-    //               name: episode.name,
-    //               video: episode.video,
-    //             };
-    //           }
-    //         );
-    //         //Update Episode: 3 situation
-    //         if (season.episode.length <= oldSeasonList[idx].episode.length) {
-    //           try {
-    //             await Axios.put(
-    //               `episode/${fetchedSeason[idx].seasonId}`,
-    //               newEpisode
-    //             );
-    //           } catch (error) {
-    //             console.log(error);
-    //           }
-    //         } else {
-    //           //New Episode List > Old Episode List
+              try {
+                await Axios.post(`episode`, restOfNewEpisodeList, {
+                  params: { seasonId: fetchedSeason[idx].seasonId },
+                });
+                await revalidateTagSeasonListAction();
+                setIsLoadingNextButton(false);
+              } catch (error) {
+                console.log(error);
+                setIsLoadingNextButton(false);
+              }
+            }
+          }
+        };
+        fetchUpdateVideoFormS1();
+      } else if (values.seasonList.length > oldSeasonList.length) {
+        //Update First New Season with the length of Old Season List
 
-    //           //Update first apart of New Episode which equal the length of Old Episode List
-    //           const apartOfNewEpisodeList = newEpisode.slice(
-    //             0,
-    //             oldSeasonList[idx].episode.length - 1
-    //           );
+        values.seasonList.forEach((season: SeasonFilterdType, idx: number) => {
+          const updateFirstNewSeason = async () => {
+            //Update Season
+            try {
+              await Axios.put(`Seasons/${fetchedSeason[idx].seasonId}`);
+            } catch (error) {
+              console.log(error);
+            }
 
-    //           try {
-    //             await Axios.put(
-    //               `episode/${fetchedSeason[idx].seasonId}`,
-    //               apartOfNewEpisodeList
-    //             );
-    //           } catch (error) {
-    //             console.log(error);
-    //           }
+            //-------------------------------------------
+            const newEpisode = season.episode.map(
+              (episode: EpisodeFilterdType, idx: number) => {
+                return {
+                  episodeId: fetchedSeason[idx].episodes[idx].episodeId,
+                  name: episode.name,
+                  video: episode.video,
+                };
+              }
+            );
+            //Update Episode: 3 situation
+            if (season.episode.length <= oldSeasonList[idx].episode.length) {
+              try {
+                await Axios.put(
+                  `episode/${fetchedSeason[idx].seasonId}`,
+                  newEpisode
+                );
+              } catch (error) {
+                console.log(error);
+              }
+            } else {
+              //New Episode List > Old Episode List
 
-    //           //Create a rest of New Episode
-    //           const restOfNewEpisodeList = newEpisode
-    //             .slice(oldSeasonList[idx].episode.length - 1)
-    //             .map((val) => ({ name: val.name, video: val.video }));
+              //Update first apart of New Episode which equal the length of Old Episode List
+              const apartOfNewEpisodeList = newEpisode.slice(
+                0,
+                oldSeasonList[idx].episode.length - 1
+              );
 
-    //           try {
-    //             await Axios.post(`episode`, restOfNewEpisodeList, {
-    //               params: { seasonId: fetchedSeason[idx].seasonId },
-    //             });
-    //           } catch (error) {
-    //             console.log(error);
-    //           }
-    //         }
-    //       };
-    //       const updateTheRestOfNewSeason = async () => {
-    //         const seasonId = await Axios.post("Seasons", {
-    //           movieId,
-    //           name: season.name,
-    //         });
+              try {
+                await Axios.put(
+                  `episode/${fetchedSeason[idx].seasonId}`,
+                  apartOfNewEpisodeList
+                );
+              } catch (error) {
+                console.log(error);
+              }
 
-    //         try {
-    //           await Axios.post("episode", season.episode, {
-    //             params: { seasonId: seasonId.data },
-    //           });
-    //         } catch (error) {
-    //           console.log(error);
-    //         }
-    //       };
+              //Create a rest of New Episode
+              const restOfNewEpisodeList = newEpisode
+                .slice(oldSeasonList[idx].episode.length - 1)
+                .map((val) => ({ name: val.name, video: val.video }));
 
-    //       //Example: New Season length = 5, Old Season length = 3 => Update the first 3 of New Season Element
-    //       if (fetchedSeason[idx]) updateFirstNewSeason();
-    //       else {
-    //         //Update the Rest of New Season Element
-    //         updateTheRestOfNewSeason();
-    //       }
-    //     });
-    //   } else {
-    //     //Update New Season with the length of itself
+              try {
+                await Axios.post(`episode`, restOfNewEpisodeList, {
+                  params: { seasonId: fetchedSeason[idx].seasonId },
+                });
+              } catch (error) {
+                console.log(error);
+              }
+            }
+          };
+          const updateTheRestOfNewSeason = async () => {
+            const seasonId = await Axios.post("Seasons", {
+              movieId,
+              name: season.name,
+            });
 
-    //     values.seasonList.forEach((season: SeasonFilterdType, idx: number) => {
-    //       const updateFirstNewSeason = async () => {
-    //         //Update Season
-    //         try {
-    //           await Axios.put(`Seasons/${fetchedSeason[idx].seasonId}`);
-    //         } catch (error) {
-    //           console.log(error);
-    //         }
+            try {
+              await Axios.post("episode", season.episode, {
+                params: { seasonId: seasonId.data },
+              });
+            } catch (error) {
+              console.log(error);
+            }
+          };
 
-    //         //-------------------------------------------
-    //         const newEpisode = season.episode.map(
-    //           (episode: EpisodeFilterdType, idx: number) => {
-    //             return {
-    //               episodeId: fetchedSeason[idx].episodes[idx].episodeId,
-    //               name: episode.name,
-    //               video: episode.video,
-    //             };
-    //           }
-    //         );
-    //         //Update Episode: 3 situation
-    //         if (season.episode.length <= oldSeasonList[idx].episode.length) {
-    //           try {
-    //             await Axios.put(
-    //               `episode/${fetchedSeason[idx].seasonId}`,
-    //               newEpisode
-    //             );
-    //           } catch (error) {
-    //             console.log(error);
-    //           }
-    //         } else {
-    //           //New Episode List > Old Episode List
+          //Example: New Season length = 5, Old Season length = 3 => Update the first 3 of New Season Element
+          if (fetchedSeason[idx]) updateFirstNewSeason();
+          else {
+            //Update the Rest of New Season Element
+            updateTheRestOfNewSeason();
+          }
+        });
+      } else {
+        //Update New Season with the length of itself
 
-    //           //Update first apart of New Episode which equal the length of Old Episode List
-    //           const apartOfNewEpisodeList = newEpisode.slice(
-    //             0,
-    //             oldSeasonList[idx].episode.length - 1
-    //           );
+        values.seasonList.forEach((season: SeasonFilterdType, idx: number) => {
+          const updateFirstNewSeason = async () => {
+            //Update Season
+            try {
+              await Axios.put(`Seasons/${fetchedSeason[idx].seasonId}`);
+            } catch (error) {
+              console.log(error);
+            }
 
-    //           try {
-    //             await Axios.put(
-    //               `episode/${fetchedSeason[idx].seasonId}`,
-    //               apartOfNewEpisodeList
-    //             );
-    //           } catch (error) {
-    //             console.log(error);
-    //           }
+            //-------------------------------------------
+            const newEpisode = season.episode.map(
+              (episode: EpisodeFilterdType, idx: number) => {
+                return {
+                  episodeId: fetchedSeason[idx].episodes[idx].episodeId,
+                  name: episode.name,
+                  video: episode.video,
+                };
+              }
+            );
+            //Update Episode: 3 situation
+            if (season.episode.length <= oldSeasonList[idx].episode.length) {
+              try {
+                await Axios.put(
+                  `episode/${fetchedSeason[idx].seasonId}`,
+                  newEpisode
+                );
+              } catch (error) {
+                console.log(error);
+              }
+            } else {
+              //New Episode List > Old Episode List
 
-    //           //Create a rest of New Episode
-    //           const restOfNewEpisodeList = newEpisode
-    //             .slice(oldSeasonList[idx].episode.length - 1)
-    //             .map((val) => ({ name: val.name, video: val.video }));
+              //Update first apart of New Episode which equal the length of Old Episode List
+              const apartOfNewEpisodeList = newEpisode.slice(
+                0,
+                oldSeasonList[idx].episode.length - 1
+              );
 
-    //           try {
-    //             await Axios.post(`episode`, restOfNewEpisodeList, {
-    //               params: { seasonId: fetchedSeason[idx].seasonId },
-    //             });
-    //           } catch (error) {
-    //             console.log(error);
-    //           }
-    //         }
-    //       };
-    //       updateFirstNewSeason();
-    //     });
-    //     const theRestOfOldSeasonList = oldSeasonList.slice(
-    //       values.seasonList.length - 1
-    //     );
-    //     theRestOfOldSeasonList.forEach(
-    //       async (oldSeason: SeasonFilterdType, idx: number) => {
-    //         await Axios.delete(`Seasons/${fetchedSeason[idx].seasonId}`);
-    //       }
-    //     );
-    //   }
-    // }
+              try {
+                await Axios.put(
+                  `episode/${fetchedSeason[idx].seasonId}`,
+                  apartOfNewEpisodeList
+                );
+              } catch (error) {
+                console.log(error);
+              }
+
+              //Create a rest of New Episode
+              const restOfNewEpisodeList = newEpisode
+                .slice(oldSeasonList[idx].episode.length - 1)
+                .map((val) => ({ name: val.name, video: val.video }));
+
+              try {
+                await Axios.post(`episode`, restOfNewEpisodeList, {
+                  params: { seasonId: fetchedSeason[idx].seasonId },
+                });
+              } catch (error) {
+                console.log(error);
+              }
+            }
+          };
+          updateFirstNewSeason();
+        });
+        const theRestOfOldSeasonList = oldSeasonList.slice(
+          values.seasonList.length - 1
+        );
+        theRestOfOldSeasonList.forEach(
+          async (oldSeason: SeasonFilterdType, idx: number) => {
+            await Axios.delete(`Seasons/${fetchedSeason[idx].seasonId}`);
+          }
+        );
+      }
+    }
   };
 
   return (
