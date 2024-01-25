@@ -48,18 +48,16 @@ const CardSlider = ({ title, movieList = [] }: cardSliderProps) => {
         onMouseLeave={() => setSeeAll(false)}
       >
         <div className="cursor-pointer inline-flex items-center">
-          <h2 className="font-semibold text-xl hover:text-[#D1D0CF]">
-            {title}
-          </h2>
+          <h2 className="font-bold text-2xl hover:text-[#D1D0CF]">{title}</h2>
           <div
             className={`${
               seeAll
                 ? "visible opacity-100 translate-x-[0px]"
                 : "invisible opacity-0 translate-x-[-20px]"
-            } transition-all ml-3 text-xs text-[#E50914] font-bold flex justify-center items-center`}
+            } transition-all ml-3 text-[#E50914] font-bold flex justify-center items-center`}
           >
-            <span className="mr-1">See all </span>
-            <RightOutlined />
+            <span className="mr-2">See all </span>
+            <i className="fa-solid fa-angle-right text-sm"></i>
           </div>
         </div>
       </div>
@@ -76,22 +74,20 @@ const CardSlider = ({ title, movieList = [] }: cardSliderProps) => {
             <SwiperSlide key={idx} className="group/card">
               <Link href={`/detail?id=${val.movieId}`}>
                 <div
-                  className={` flex flex-col justify-center items-center relative cursor-pointer`}
+                  className={`flex flex-col justify-center items-center relative cursor-pointer overflow-hidden rounded-md`}
                 >
-                  <div className="overflow-hidden rounded-md">
-                    <div className="scale-100 group-hover/card:scale-105 transition-all">
-                      <LazyLoadImage
-                        alt="Thumbnail"
-                        src={val.thumbnail}
-                        effect="blur"
-                        loading="lazy"
-                        className="h-[330px] rounded-md object-contain"
-                        onError={(e) => {
-                          e.currentTarget.onerror = null;
-                          e.currentTarget.src = "/errorThumbnail.png";
-                        }}
-                      />
-                    </div>
+                  <div className="scale-100 group-hover/card:scale-105 transition-all">
+                    <LazyLoadImage
+                      alt="Thumbnail"
+                      src={val.thumbnail}
+                      effect="blur"
+                      loading="lazy"
+                      className="h-[330px] rounded-md object-cover"
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = "/errorThumbnail.png";
+                      }}
+                    />
                   </div>
 
                   <Tooltip

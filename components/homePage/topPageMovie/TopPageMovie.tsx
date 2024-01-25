@@ -1,6 +1,7 @@
 import { Rubik_Dirt } from "@next/font/google";
 import Link from "next/link";
 import VideoPlayer from "./component/VideoPlayer";
+import { InfoCircleOutlined } from "@ant-design/icons";
 
 interface previewMovieProps {
   description: string;
@@ -45,7 +46,8 @@ const TopPageMovie = async () => {
         <div className="mt-5 flex ">
           <Link href={`/detail?id=${previewMovie?.movieId}`}>
             <button className="w-32 h-10 text-white rounded-md bg-[#b2afaf94] hover:bg-[#adaaaa64] transition-colors">
-              Detail
+              <InfoCircleOutlined className="mr-3" />
+              Details
             </button>
           </Link>
         </div>

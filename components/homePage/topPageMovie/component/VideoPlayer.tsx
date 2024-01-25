@@ -22,6 +22,7 @@ const VideoPlayer = ({ trailer }: VideoType) => {
         backgroundSize: "contain",
         filter: "brightness(.7)",
         transform: "scale(1.35)",
+        backgroundColor: "black",
       }}
     />
   );

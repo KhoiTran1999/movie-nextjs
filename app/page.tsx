@@ -1,4 +1,3 @@
-import { revalidateTagMovieListAction } from "@/components/actions";
 import CardSlider from "@/components/homePage/cardSlider/CardSlider";
 import NavigationMovie from "@/components/homePage/navigationMovie/NavigationMovie";
 import TopPageMovie from "@/components/homePage/topPageMovie/TopPageMovie";

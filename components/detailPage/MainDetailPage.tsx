@@ -15,6 +15,7 @@ const ReactPlayer = dynamic(() => import("react-player/youtube"), {
   ssr: false,
 });
 import ReactPlayerTest from "react-player/youtube";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const rubik = Rubik_Dirt({
   subsets: ["latin"],
@@ -168,6 +169,7 @@ export default function MainDetailPage({ ...props }: detailProps) {
           controls
           width={"100svw"}
           height={"80svh"}
+          style={{ backgroundColor: "black" }}
         />
       )}
 
@@ -278,12 +280,19 @@ export default function MainDetailPage({ ...props }: detailProps) {
             </Tooltip>
           </div>
         </div>
-        <img
-          src={props.thumbnail}
-          alt="thumbnail"
-          style={{ borderRadius: "10px" }}
-          className="w-[20%]"
-        />
+        <div className="w-[20%] h-[20rem] overflow-hidden">
+          <LazyLoadImage
+            alt="Thumbnail"
+            src={props.thumbnail}
+            effect="blur"
+            loading="lazy"
+            className="h-[20rem] rounded-md object-cover"
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = "/errorThumbnail.png";
+            }}
+          />
+        </div>
       </div>
       <Modal
         centered

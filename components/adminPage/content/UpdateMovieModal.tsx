@@ -7,6 +7,7 @@ import { isLoadingAIButtonSelector } from "@/utils/redux/selector";
 import { setIsCancelButtonModal } from "@/utils/redux/slices/toggle/IsCancelButtonModalSlice";
 import ActorForm from "./formUpdateMovie/actorForm";
 import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
+import { InfoCircleOutlined } from "@ant-design/icons";
 
 interface UpdateMovieModalType {
   isUpdateModalOpen: boolean;
@@ -35,7 +36,7 @@ const UpdateMovieModal = ({
           <Steps.Step
             key={"Information"}
             title="Information"
-            icon={<i className="fa-regular fa-circle-info"></i>}
+            icon={<InfoCircleOutlined />}
           />
           <Steps.Step
             key={"Video"}

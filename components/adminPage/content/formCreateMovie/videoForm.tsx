@@ -58,16 +58,6 @@ const VideoForm = ({
               params: { seasonId: seasonId.data },
             });
 
-            try {
-              Axios.patch(
-                `Movie/${movieId}`,
-                {},
-                { params: { status: "Release" } }
-              );
-            } catch (error) {
-              console.log(error);
-            }
-
             message.success("Create Episode succesfully");
             setTimeout(() => {
               setIsLoadingNextButton(false);
