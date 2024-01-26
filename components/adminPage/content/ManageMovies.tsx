@@ -129,7 +129,7 @@ const ManageMovies = (props: IProps) => {
               className="h-[160px] rounded-md object-contain"
               onError={(e) => {
                 e.currentTarget.onerror = null;
-                e.currentTarget.src = "/errorThumbnail.png";
+                e.currentTarget.src = "/errorThumbnail.jpg";
               }}
             />
           )}

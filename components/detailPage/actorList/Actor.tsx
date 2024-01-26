@@ -25,7 +25,7 @@ export const Actor = ({ castCharacteries }: castCharacteries) => {
                 className="h-[150px] w-full object-cover rounded-md"
                 onError={(e) => {
                   e.currentTarget.onerror = null;
-                  e.currentTarget.src = "/errorThumbnail.png";
+                  e.currentTarget.src = "/errorThumbnail.jpg";
                 }}
               />
               <span>{val.namePerson}</span>

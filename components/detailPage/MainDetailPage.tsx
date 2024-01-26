@@ -149,7 +149,7 @@ export default function MainDetailPage({ ...props }: detailProps) {
     <div>
       <NavigationMovie />
 
-      {isTrailerError ? (
+      {/* {isTrailerError ? (
         <Result
           status="error"
           title="Something went wrong with Trailer"
@@ -170,12 +170,18 @@ export default function MainDetailPage({ ...props }: detailProps) {
           height={"80svh"}
           style={{ backgroundColor: "black" }}
         />
-      )}
+      )} */}
 
       <div
         className={`${
-          isTrailerError ? "!mt-16" : ""
-        } flex justify-center items-start my-8 `}
+          isTrailerError ? "!pt-16" : ""
+        } flex justify-center items-start py-8 w-screen h-screen`}
+        style={{
+          background: `url("${props.thumbnail}")`,
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+        }}
       >
         <div
           style={{
@@ -288,7 +294,7 @@ export default function MainDetailPage({ ...props }: detailProps) {
             className="h-[20rem] rounded-md object-cover"
             onError={(e) => {
               e.currentTarget.onerror = null;
-              e.currentTarget.src = "/errorThumbnail.png";
+              e.currentTarget.src = "/errorThumbnail.jpg";
             }}
           />
         </div>
