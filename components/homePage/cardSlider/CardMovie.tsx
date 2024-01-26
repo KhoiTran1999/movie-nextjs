@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 const CardMovie = ({ ...props }) => {
   const { val } = props;
 
   return (
-    <Link href={`/detail?id=${val.movieId}`}>
+    <Link href={`/detail?id=${val.movieId}`} className="group/card">
       <div
-        className={`flex flex-col justify-center items-center relative cursor-pointer overflow-hidden rounded-md`}
+        className={`m-3 flex flex-col justify-center items-center relative cursor-pointer overflow-hidden rounded-md`}
       >
         <div>
           <LazyLoadImage
@@ -24,7 +25,7 @@ const CardMovie = ({ ...props }) => {
         </div>
 
         <div className="bg-[#0000009b] backdrop-blur-sm w-full p-2 pb-3 z-50 absolute bottom-[-200px] group-hover/card:bottom-0 transition-all duration-300">
-          <h3 className="tracking-wide text-left font-bold text-base whitespace-nowrap overflow-hidden overflow-ellipsis">
+          <h3 className="text-white tracking-wide text-left font-bold text-base whitespace-nowrap overflow-hidden overflow-ellipsis">
             {val.englishName}
           </h3>
           <h4 className="text-left text-gray-200 text-sm whitespace-nowrap overflow-hidden overflow-ellipsis">

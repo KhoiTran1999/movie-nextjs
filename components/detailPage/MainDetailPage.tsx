@@ -140,6 +140,7 @@ export default function MainDetailPage(props: any) {
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center center",
+          boxShadow: "0px -240px 44px -215px rgba(0,0,0,1) inset",
         }}
       ></div>
       <div
@@ -149,13 +150,10 @@ export default function MainDetailPage(props: any) {
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center center",
+          boxShadow: "0px -240px 44px -215px rgba(0,0,0,1) inset",
         }}
       ></div>
-      <div
-        className={`${
-          isTrailerError ? "!pt-16" : ""
-        } py-8 max-w-[1200px] w-full m-auto backdrop-blur-sm`}
-      >
+      <div className={`py-8 max-w-[1200px] w-full m-auto backdrop-blur-sm`}>
         <div className="max-w-[700px] mt-14 w-full m-auto text-[#D1D0CF]">
           <div className="flex items-center">
             <div className="w-[60%]">
@@ -285,11 +283,16 @@ export default function MainDetailPage(props: any) {
             </Tooltip>
           </div>
         </div>
-        <List
-          dataSource={recommendedMovie}
-          grid={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4, xxl: 6 }}
-          renderItem={(val: movieProps, idx: number) => <CardMovie val={val} />}
-        />
+        <div className="mt-8 px-4">
+          <h3 className="font-bold text-2xl text-red-700">Recommended Movie</h3>
+          <List
+            dataSource={recommendedMovie}
+            grid={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5, xxl: 5, gutter: 12 }}
+            renderItem={(val: movieProps, idx: number) => (
+              <CardMovie val={val} />
+            )}
+          />
+        </div>
       </div>
       <Modal
         centered

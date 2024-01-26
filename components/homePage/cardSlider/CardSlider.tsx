@@ -51,15 +51,22 @@ const CardSlider = ({ title, movieList = [] }: cardSliderProps) => {
       </div>
       <div onMouseEnter={handleOnMouseEnter} onMouseLeave={onMouseLeave}>
         <Swiper
-          spaceBetween={15}
-          lazyPreloadPrevNext={5}
-          slidesPerView={5}
+          breakpoints={{
+            600: {
+              width: 600,
+              slidesPerView: 2,
+            },
+            768: {
+              width: 768,
+              slidesPerView: 3,
+            },
+          }}
           navigation={isHover}
           modules={[Navigation, Scrollbar, A11y]}
           loop
         >
           {movieList.map((val: movieProps, idx: number) => (
-            <SwiperSlide key={idx} className="group/card">
+            <SwiperSlide key={idx}>
               <CardMovie val={val} />
             </SwiperSlide>
           ))}

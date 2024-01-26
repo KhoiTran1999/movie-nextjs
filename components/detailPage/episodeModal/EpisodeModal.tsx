@@ -73,7 +73,6 @@ export const EpisodeModal = ({
         `${process.env.API_URL}/Seasons?movieId=${movieId}&seasonNumber=${seasonNumber}`
       );
       const data = await res.json();
-      console.log(data);
 
       setSeason(data[0]);
       setIsLoading(false);

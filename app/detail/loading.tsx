@@ -1,9 +1,10 @@
-import { Introduction } from "@/components/introduction/Introduction";
-
 export default function Loading() {
   return (
-    <div className="w-full h-[100svh] flex justify-center items-center">
-      <i className="fa-solid fa-spinner-scale text-6xl animate-spin text-[red]"></i>
+    <div className="max-w-[700px] mt-14 w-full m-auto">
+      <div className="w-[50%] h-8 animate-pulse bg-[#ffffff3f] rounded-md mb-2"></div>
+      <div className="w-[30%] h-4 animate-pulse bg-[#ffffff3f] rounded-md mb-2"></div>
+      <div className="w-[15%] h-4 animate-pulse bg-[#ffffff3f] rounded-md mb-2"></div>
+      <div className="w-[20%] h-4 animate-pulse bg-[#ffffff3f] rounded-md mb-4"></div>
     </div>
   );
 }
