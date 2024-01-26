@@ -26,7 +26,7 @@ const TopPageMovie = async () => {
   const previewMovie: previewMovieProps = await res.json();
 
   return (
-    <div className="text-white overflow-hidden relative h-[80vh] w-screen">
+    <div className="text-white overflow-hidden relative h-[80svh] w-screen">
       <VideoPlayer trailer={previewMovie?.trailer} />
 
       <div
