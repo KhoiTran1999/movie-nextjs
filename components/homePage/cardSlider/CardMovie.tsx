@@ -23,7 +23,7 @@ const CardMovie = ({ ...props }) => {
           />
         </div>
 
-        <div className="bg-[#0000009b] w-full p-2 pb-3 z-50 absolute bottom-[-200px] group-hover/card:bottom-0 transition-all duration-300">
+        <div className="bg-[#0000009b] backdrop-blur-sm w-full p-2 pb-3 z-50 absolute bottom-[-200px] group-hover/card:bottom-0 transition-all duration-300">
           <h3 className="tracking-wide text-left font-bold text-base whitespace-nowrap overflow-hidden overflow-ellipsis">
             {val.englishName}
           </h3>

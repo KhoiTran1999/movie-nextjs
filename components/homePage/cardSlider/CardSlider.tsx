@@ -1,16 +1,12 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { RightOutlined } from "@ant-design/icons";
+import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Scrollbar, A11y } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/scrollbar";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
-import { Tooltip } from "antd";
-import Link from "next/link";
 import CardMovie from "./CardMovie";
 
 type cardSliderProps = {

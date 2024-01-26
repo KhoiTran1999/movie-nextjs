@@ -3,7 +3,7 @@
 import NavigationMovie from "@/components/homePage/navigationMovie/NavigationMovie";
 import dynamic from "next/dynamic";
 import { Rubik_Dirt } from "@next/font/google";
-import { StarFilled, FireFilled } from "@ant-design/icons";
+import { StarFilled, FireFilled, InfoCircleOutlined } from "@ant-design/icons";
 import { Tabs, Tooltip, Modal, message, Button, Result } from "antd";
 import { Actor } from "@/components/detailPage/actorList/Actor";
 import { useEffect, useRef, useState } from "react";
@@ -66,6 +66,7 @@ export default function MainDetailPage({ ...props }: detailProps) {
   const [loadingMovie, setLoadingMovie] = useState<boolean>(false);
   const [isEpisodeModalOpen, setIsEpisodeModalOpen] = useState<boolean>(false);
   const [isWatchModalOpen, setIsWatchModalOpen] = useState<boolean>(false);
+  const [isTrailerModalOpen, setIsTrailerModalOpen] = useState<boolean>(false);
   const [isTrailerError, setIsTrailerError] = useState<boolean>(false);
   const [watchMovie, setWatchMovie] = useState<seasonProps>({
     seasonId: "",
@@ -130,6 +131,10 @@ export default function MainDetailPage({ ...props }: detailProps) {
     dispatch(setMovieId(""));
   };
 
+  const handleCancelTrailer = () => {
+    setIsTrailerModalOpen(false);
+  };
+
   const handleAfterClose = () => {
     let iframeVideo: HTMLIFrameElement | null = document.getElementById(
       "iframeVideo"
@@ -149,82 +154,84 @@ export default function MainDetailPage({ ...props }: detailProps) {
     <div>
       <NavigationMovie />
 
-      {/* {isTrailerError ? (
-        <Result
-          status="error"
-          title="Something went wrong with Trailer"
-          subTitle={
-            <span className="text-white text-lg">
-              Sorry, We will update later.
-            </span>
-          }
-          className="mt-20"
-        />
-      ) : (
-        <ReactPlayer
-          url={props.trailer}
-          playing
-          muted
-          controls
-          width={"100svw"}
-          height={"80svh"}
-          style={{ backgroundColor: "black" }}
-        />
-      )} */}
-
+      <div
+        className="w-screen h-screen absolute brightness-[0.3]"
+        style={{
+          backgroundImage: `url("/errorThumbnail.jpg")`,
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center center",
+        }}
+      ></div>
+      <div
+        className="w-screen h-screen absolute brightness-[0.3]"
+        style={{
+          background: `url("${props.thumbnail}"`,
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center center",
+        }}
+      ></div>
       <div
         className={`${
           isTrailerError ? "!pt-16" : ""
-        } flex justify-center items-start py-8 w-screen h-screen`}
-        style={{
-          background: `url("${props.thumbnail}")`,
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center",
-        }}
+        } py-8 max-w-[1200px] w-full m-auto h-screen backdrop-blur-sm`}
       >
-        <div
-          style={{
-            boxShadow: "0px -240px 44px -215px rgba(0,0,0,1) inset",
-          }}
-          className="w-1/2 mr-2 text-[#D1D0CF] flex flex-col justify-center"
-        >
-          <h1
-            className={`${rubik.className} text-7xl my-4 tracking-wider [word-spacing:5px]  w-full`}
-          >
-            {props.englishName}
-          </h1>
-          <h2>{props.vietnamName}</h2>
-          <div className="my-4">
-            <span>{props.producedDate.slice(0, 4)}</span>
-            <span className="mx-4">{props.time} minutes</span>
-            <span>
-              {props.mark}/10 <StarFilled className="text-yellow-400" />
-            </span>
-            <ul className="mt-2 flex items-center flex-wrap">
-              {props.categories.map(
-                (val: { categoryId: number; name: string }, idx) => {
-                  if (idx + 1 < props.categories.length) {
-                    return (
-                      <li className="mr-2" key={val.categoryId}>
-                        <span className="mr-2 hover:text-[#E50914] cursor-pointer">
-                          {val.name}
-                        </span>
-                        <FireFilled className="text-xs text-[#E50914]" />
-                      </li>
-                    );
-                  }
-                  return (
-                    <li className="mr-2" key={val.categoryId}>
-                      <span className=" hover:text-[#E50914] cursor-pointer">
-                        {val.name}
-                      </span>
-                    </li>
-                  );
-                }
-              )}
-            </ul>
+        <div className="max-w-[700px] mt-14 w-full m-auto text-[#D1D0CF]">
+          <div className="flex items-center">
+            <div className="w-[60%]">
+              <h1
+                className={`${rubik.className} text-5xl my-4 tracking-wider [word-spacing:5px]  w-full`}
+              >
+                {props.englishName}
+              </h1>
+              <h2 className="font-bold">{props.vietnamName}</h2>
+              <div className="my-4">
+                <span>{props.producedDate.slice(0, 4)}</span>
+                <span className="mx-4">{props.time} minutes</span>
+                <span>
+                  {props.mark}/10 <StarFilled className="text-yellow-400" />
+                </span>
+                <ul className="mt-2 flex items-center flex-wrap">
+                  {props.categories.map(
+                    (val: { categoryId: number; name: string }, idx) => {
+                      if (idx + 1 < props.categories.length) {
+                        return (
+                          <li className="mr-2" key={val.categoryId}>
+                            <span className="mr-2 hover:text-[#E50914] cursor-pointer">
+                              {val.name}
+                            </span>
+                            <FireFilled className="text-xs text-[#E50914]" />
+                          </li>
+                        );
+                      }
+                      return (
+                        <li className="mr-2" key={val.categoryId}>
+                          <span className=" hover:text-[#E50914] cursor-pointer">
+                            {val.name}
+                          </span>
+                        </li>
+                      );
+                    }
+                  )}
+                </ul>
+              </div>
+            </div>
+            <div className="w-[30%] overflow-hidden">
+              <LazyLoadImage
+                alt="Thumbnail"
+                src={props.thumbnail}
+                effect="blur"
+                loading="lazy"
+                className="w-full h-full rounded-md object-cover"
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = "/errorThumbnail.jpg";
+                }}
+              />
+            </div>
           </div>
+
           <Tabs
             type="card"
             defaultActiveKey="Description"
@@ -260,6 +267,14 @@ export default function MainDetailPage({ ...props }: detailProps) {
               )}
             </Button>
 
+            <button
+              onClick={() => setIsTrailerModalOpen(true)}
+              className="w-[121px] h-10 mr-3 text-white rounded-md bg-[#b2afaf2e] hover:bg-[#adaaaa64] transition-colors"
+            >
+              <InfoCircleOutlined />
+              <span className="ml-3">Trailer</span>
+            </button>
+
             <Tooltip color="grey" title="Add watch list">
               <span
                 className={`transition-all hover:scale-110 hover:bg-gray-700/60 bg-gray-700/90 w-11 h-11 p-3 rounded-full  flex justify-center items-center cursor-pointer`}
@@ -284,19 +299,6 @@ export default function MainDetailPage({ ...props }: detailProps) {
               </span>
             </Tooltip>
           </div>
-        </div>
-        <div className="w-[20%] h-[20rem] overflow-hidden">
-          <LazyLoadImage
-            alt="Thumbnail"
-            src={props.thumbnail}
-            effect="blur"
-            loading="lazy"
-            className="h-[20rem] rounded-md object-cover"
-            onError={(e) => {
-              e.currentTarget.onerror = null;
-              e.currentTarget.src = "/errorThumbnail.jpg";
-            }}
-          />
         </div>
       </div>
       <Modal
@@ -327,6 +329,37 @@ export default function MainDetailPage({ ...props }: detailProps) {
           name={watchMovie?.episodes[0]?.name}
           video={watchMovie?.episodes[0]?.video}
         />
+      </Modal>
+      <Modal
+        open={isTrailerModalOpen}
+        centered
+        width={"70svw"}
+        footer={null}
+        styles={{ body: { paddingTop: "20px", paddingBottom: "10px" } }}
+        onCancel={handleCancelTrailer}
+      >
+        {isTrailerError ? (
+          <Result
+            status="error"
+            title="Something went wrong with Trailer"
+            subTitle={
+              <span className="text-white text-lg">
+                Sorry, We will update later.
+              </span>
+            }
+            className="mt-20"
+          />
+        ) : (
+          <ReactPlayer
+            url={props.trailer}
+            playing
+            controls
+            loop
+            width={"100%"}
+            height={"70svh"}
+            style={{ backgroundColor: "black" }}
+          />
+        )}
       </Modal>
     </div>
   );
