@@ -20,12 +20,7 @@ import {
   isLoadingAIButtonSelector,
   movieIdSelector,
 } from "@/utils/redux/selector";
-import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
-import {
-  revalidateTagCardSliderListAction,
-  revalidateTagMovieListAction,
-  revalidateTagNewestMovieAction,
-} from "@/components/actions";
+import { revalidateTagMovieListAction } from "@/components/actions";
 import { deepEqual } from "assert";
 import Axios from "@/utils/axios";
 
@@ -300,8 +295,6 @@ const InformationForm = ({
         });
 
         await revalidateTagMovieListAction();
-        await revalidateTagNewestMovieAction();
-        await revalidateTagCardSliderListAction();
         message.success("Movie have been updated successfully!");
 
         setTimeout(() => {

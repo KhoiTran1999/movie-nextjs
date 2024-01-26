@@ -6,8 +6,6 @@ export const deleteMovieAction = async(movieId: string)=>{
     try {
         await fetch(`${process.env.API_URL}/Movie/${movieId}`, {method: "DELETE"});
         revalidateTag("movie-list");
-        revalidateTag("newest-movie");
-        revalidateTag("slider-movie");
         return true;
     } catch (error) {
         return false
@@ -16,14 +14,6 @@ export const deleteMovieAction = async(movieId: string)=>{
 
 export const revalidateTagMovieListAction = async()=>{
     revalidateTag("movie-list");
-}
-
-export const revalidateTagNewestMovieAction = async()=>{
-    revalidateTag("newest-movie");
-}
-
-export const revalidateTagCardSliderListAction = async()=>{
-    revalidateTag("slider-movie");
 }
 
 export const getSeasonListAction = async(movieId: string, seasonNumber?: number)=>{

@@ -6,19 +6,19 @@ export default async function Home() {
   const res = await Promise.all([
     fetch(
       `${process.env.API_URL}/Movies?sortBy=produceddate&page=1&eachPage=10`,
-      { next: { tags: ["slider-movie"] } }
+      { cache: "no-store" }
     ),
     fetch(
       `${process.env.API_URL}/Movies?filterBy=feature&key=1&sortBy=produceddate&page=1&eachPage=10`,
-      { next: { tags: ["slider-movie"] } }
+      { cache: "no-store" }
     ),
     fetch(
       `${process.env.API_URL}/Movies?filterBy=feature&key=2&sortBy=produceddate&page=1&eachPage=10`,
-      { next: { tags: ["slider-movie"] } }
+      { cache: "no-store" }
     ),
     fetch(
       `${process.env.API_URL}/Movies?filterBy=feature&key=3&sortBy=produceddate&page=1&eachPage=10`,
-      { next: { tags: ["slider-movie"] } }
+      { cache: "no-store" }
     ),
   ]).catch((error) => {
     console.log(error);

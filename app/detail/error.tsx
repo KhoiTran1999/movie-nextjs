@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { Button, Result } from "antd";
+import Link from "next/link";
 
 export default function Error({
   error,
@@ -24,9 +25,11 @@ export default function Error({
           <span className="text-white">Sorry, something went wrong.</span>
         }
         extra={
-          <Button onClick={() => reset()} type="primary">
-            Reload page
-          </Button>
+          <Link href={"/"}>
+            <Button onClick={() => reset()} type="primary">
+              Back home
+            </Button>
+          </Link>
         }
       />
     </div>

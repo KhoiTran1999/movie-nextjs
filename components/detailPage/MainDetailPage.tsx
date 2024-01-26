@@ -4,7 +4,7 @@ import NavigationMovie from "@/components/homePage/navigationMovie/NavigationMov
 import dynamic from "next/dynamic";
 import { Rubik_Dirt } from "@next/font/google";
 import { StarFilled, FireFilled, InfoCircleOutlined } from "@ant-design/icons";
-import { Tabs, Tooltip, Modal, message, Button, Result } from "antd";
+import { Tabs, Tooltip, Modal, message, Button, Result, List } from "antd";
 import { Actor } from "@/components/detailPage/actorList/Actor";
 import { useEffect, useRef, useState } from "react";
 import { EpisodeModal } from "@/components/detailPage/episodeModal/EpisodeModal";
@@ -16,6 +16,8 @@ const ReactPlayer = dynamic(() => import("react-player/youtube"), {
 });
 import ReactPlayerTest from "react-player/youtube";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import { SeasonMovieDetail } from "@/types";
+import CardMovie from "../homePage/cardSlider/CardMovie";
 
 const rubik = Rubik_Dirt({
   subsets: ["latin"],
@@ -23,44 +25,21 @@ const rubik = Rubik_Dirt({
   style: ["normal"],
 });
 
-interface detailProps {
-  castCharacteries: [];
-  categories: [];
-  producedDate: string;
-  dateUpdated: string;
-  description: string;
-  englishName: string;
-  feature: {};
-  mark: number;
+type movieProps = {
   movieId: string;
-  nation: {};
-  producer: {};
-  thumbnail: string;
+  mark: number;
   time: number;
-  totalEpisodes: number;
-  totalSeasons: number;
-  trailer: string;
   vietnamName: string;
-  viewer: number;
-}
-
-interface seasonProps {
-  seasonId: string;
-  seasonNumber: number;
-  name: string;
-  episodes: episodeProps[];
-}
-
-interface episodeProps {
-  episodeId: string;
-  episodeNumber: number;
-  name: string;
-  video: string;
+  englishName: string;
+  thumbnail: string;
+  totalSeasons: number;
+  totalEpisodes: number;
   dateCreated: string;
-  dateUpdated: string;
-}
+};
 
-export default function MainDetailPage({ ...props }: detailProps) {
+export default function MainDetailPage(props: any) {
+  const { movieDetail, recommendedMovie } = props;
+
   const dispatch = useDispatch();
 
   const [loadingMovie, setLoadingMovie] = useState<boolean>(false);
@@ -68,7 +47,7 @@ export default function MainDetailPage({ ...props }: detailProps) {
   const [isWatchModalOpen, setIsWatchModalOpen] = useState<boolean>(false);
   const [isTrailerModalOpen, setIsTrailerModalOpen] = useState<boolean>(false);
   const [isTrailerError, setIsTrailerError] = useState<boolean>(false);
-  const [watchMovie, setWatchMovie] = useState<seasonProps>({
+  const [watchMovie, setWatchMovie] = useState<SeasonMovieDetail>({
     seasonId: "",
     seasonNumber: 1,
     name: "",
@@ -89,14 +68,14 @@ export default function MainDetailPage({ ...props }: detailProps) {
   const showModal = async () => {
     setLoadingMovie(true);
 
-    if (props.totalEpisodes > 1 && props.totalSeasons >= 1) {
+    if (movieDetail.totalEpisodes > 1 && movieDetail.totalSeasons >= 1) {
       setLoadingMovie(false);
       return setIsEpisodeModalOpen(true);
     }
 
     try {
       const res = await fetch(
-        `${process.env.API_URL}/Seasons?movieId=${props.movieId}&seasonNumber=1`
+        `${process.env.API_URL}/Seasons?movieId=${movieDetail.movieId}&seasonNumber=1`
       );
       const data = await res.json();
       if (!data || data.length === 0) {
@@ -113,7 +92,7 @@ export default function MainDetailPage({ ...props }: detailProps) {
 
     setIsWatchModalOpen(true);
 
-    //Take back iframe props
+    //Take back iframe movieDetail
     let iframeVideo: HTMLIFrameElement | null = document.getElementById(
       "iframeVideo"
     ) as HTMLIFrameElement;
@@ -141,12 +120,12 @@ export default function MainDetailPage({ ...props }: detailProps) {
     ) as HTMLIFrameElement;
     iframeVideoRef.current = iframeVideo.src;
 
-    //remove iframe props
+    //remove iframe movieDetail
     iframeVideo.src = "";
   };
 
   useEffect(() => {
-    const canPlay = ReactPlayerTest.canPlay(props.trailer);
+    const canPlay = ReactPlayerTest.canPlay(movieDetail.trailer);
     if (!canPlay) setIsTrailerError(true);
   }, []);
 
@@ -166,7 +145,7 @@ export default function MainDetailPage({ ...props }: detailProps) {
       <div
         className="w-screen h-screen absolute brightness-[0.3]"
         style={{
-          background: `url("${props.thumbnail}"`,
+          background: `url("${movieDetail.thumbnail}"`,
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center center",
@@ -175,7 +154,7 @@ export default function MainDetailPage({ ...props }: detailProps) {
       <div
         className={`${
           isTrailerError ? "!pt-16" : ""
-        } py-8 max-w-[1200px] w-full m-auto h-screen backdrop-blur-sm`}
+        } py-8 max-w-[1200px] w-full m-auto backdrop-blur-sm`}
       >
         <div className="max-w-[700px] mt-14 w-full m-auto text-[#D1D0CF]">
           <div className="flex items-center">
@@ -183,19 +162,23 @@ export default function MainDetailPage({ ...props }: detailProps) {
               <h1
                 className={`${rubik.className} text-5xl my-4 tracking-wider [word-spacing:5px]  w-full`}
               >
-                {props.englishName}
+                {movieDetail.englishName}
               </h1>
-              <h2 className="font-bold">{props.vietnamName}</h2>
+              <h2 className="font-bold">{movieDetail.vietnamName}</h2>
               <div className="my-4">
-                <span>{props.producedDate.slice(0, 4)}</span>
-                <span className="mx-4">{props.time} minutes</span>
+                <span>{movieDetail.producedDate.slice(0, 4)}</span>
+                <span className="mx-4">{movieDetail.time} minutes</span>
                 <span>
-                  {props.mark}/10 <StarFilled className="text-yellow-400" />
+                  {movieDetail.mark}/10{" "}
+                  <StarFilled className="text-yellow-400" />
                 </span>
                 <ul className="mt-2 flex items-center flex-wrap">
-                  {props.categories.map(
-                    (val: { categoryId: number; name: string }, idx) => {
-                      if (idx + 1 < props.categories.length) {
+                  {movieDetail.categories.map(
+                    (
+                      val: { categoryId: number; name: string },
+                      idx: number
+                    ) => {
+                      if (idx + 1 < movieDetail.categories.length) {
                         return (
                           <li className="mr-2" key={val.categoryId}>
                             <span className="mr-2 hover:text-[#E50914] cursor-pointer">
@@ -220,7 +203,7 @@ export default function MainDetailPage({ ...props }: detailProps) {
             <div className="w-[30%] overflow-hidden">
               <LazyLoadImage
                 alt="Thumbnail"
-                src={props.thumbnail}
+                src={movieDetail.thumbnail}
                 effect="blur"
                 loading="lazy"
                 className="w-full h-full rounded-md object-cover"
@@ -239,12 +222,14 @@ export default function MainDetailPage({ ...props }: detailProps) {
               {
                 key: "Description",
                 label: "Description",
-                children: props.description,
+                children: movieDetail.description,
               },
               {
                 key: "Actors",
                 label: "Actors",
-                children: <Actor castCharacteries={props.castCharacteries} />,
+                children: (
+                  <Actor castCharacteries={movieDetail.castCharacteries} />
+                ),
               },
             ]}
           />
@@ -255,9 +240,9 @@ export default function MainDetailPage({ ...props }: detailProps) {
               loading={loadingMovie}
               type="primary"
               className="mr-3"
-              disabled={props.totalSeasons === 0}
+              disabled={movieDetail.totalSeasons === 0}
             >
-              {props.totalSeasons > 0 ? (
+              {movieDetail.totalSeasons > 0 ? (
                 <>
                   <i className="fa-duotone fa-play text-xl mr-2"></i>
                   <span>Play Now</span>
@@ -300,6 +285,11 @@ export default function MainDetailPage({ ...props }: detailProps) {
             </Tooltip>
           </div>
         </div>
+        <List
+          dataSource={recommendedMovie}
+          grid={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4, xxl: 6 }}
+          renderItem={(val: movieProps, idx: number) => <CardMovie val={val} />}
+        />
       </div>
       <Modal
         centered
@@ -308,9 +298,9 @@ export default function MainDetailPage({ ...props }: detailProps) {
         footer={null}
       >
         <EpisodeModal
-          movieId={props.movieId}
-          totalSeasons={props.totalSeasons}
-          englishName={props.englishName}
+          movieId={movieDetail.movieId}
+          totalSeasons={movieDetail.totalSeasons}
+          englishName={movieDetail.englishName}
         />
       </Modal>
       <Modal
@@ -321,7 +311,7 @@ export default function MainDetailPage({ ...props }: detailProps) {
         footer={null}
         styles={{ body: { paddingTop: "20px", paddingBottom: "10px" } }}
         afterClose={handleAfterClose}
-        title={props.englishName}
+        title={movieDetail.englishName}
       >
         <WatchModal
           episodeNumber={watchMovie?.episodes[0]?.episodeNumber}
@@ -351,7 +341,7 @@ export default function MainDetailPage({ ...props }: detailProps) {
           />
         ) : (
           <ReactPlayer
-            url={props.trailer}
+            url={movieDetail.trailer}
             playing
             controls
             loop

@@ -28,8 +28,6 @@ export default async function page(props: any) {
     return filteredData;
   };
 
-  await revalidateTagMovieListAction();
-
   const res = await fetch(
     `${process.env.API_URL}/Movies?sortBy=createddate&page=${page}&eachPage=${LIMIT}`,
     { next: { tags: ["movie-list"] } }
