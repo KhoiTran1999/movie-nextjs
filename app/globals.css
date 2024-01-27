@@ -98,10 +98,6 @@
   background-color: transparent;
 }
 
-/* :root .ant-picker-input > input {
-  background-color: transparent;
-} */
-
 :root .inputCustom input {
   background-color: transparent;
 }
@@ -281,6 +277,13 @@
   animation-duration: 1.4s;
   animation-timing-function: ease;
   animation-iteration-count: infinite;
+}
+
+:root .swiper-rtl .swiper-button-prev:after {
+  content: "next";
+  color: red;
+  font-size: 32px;
+  font-weight: 600;
 }
 
 /* width */

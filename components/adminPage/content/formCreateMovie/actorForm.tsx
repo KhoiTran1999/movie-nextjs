@@ -249,7 +249,7 @@ const ActorForm = ({
                         key={idx}
                         onError={(e) => {
                           e.currentTarget.onerror = null;
-                          e.currentTarget.src = "/errorAvatar.jpg";
+                          e.currentTarget.src = "/errorThumbnail.jpg";
                         }}
                       />
                     </div>

@@ -1,14 +1,8 @@
+import { castCharacteryType } from "@/types";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
-interface actorProps {
-  characterName: string;
-  thumbnail: string;
-  namePerson: number;
-  personId: string;
-}
-
 type castCharacteries = {
-  castCharacteries: [];
+  castCharacteries: castCharacteryType[];
 };
 
 export const Actor = ({ castCharacteries }: castCharacteries) => {
@@ -16,7 +10,7 @@ export const Actor = ({ castCharacteries }: castCharacteries) => {
     <div className="flex justify-start items-center flex-wrap">
       {castCharacteries.length === 0
         ? "Empty Actor"
-        : castCharacteries.map((val: actorProps) => (
+        : castCharacteries.map((val: castCharacteryType) => (
             <div className="w-[18%] h-[150px] mr-2 mb-2" key={val.personId}>
               <LazyLoadImage
                 alt="Actors"

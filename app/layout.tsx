@@ -3,6 +3,7 @@ import { Nunito } from "next/font/google";
 import "./globals.css";
 import StyledComponentsRegistry from "@/lib/antd.registry";
 import GlobalWrapper from "@/components/wrapper/GlobalWrapper";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 const nunito = Nunito({ subsets: ["latin"] });
 

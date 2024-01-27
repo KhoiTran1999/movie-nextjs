@@ -51,18 +51,29 @@ export interface SeasonType {
   episodes: EpisodeType[]
 }
 
-export interface DetailMovieDetail {
-  castCharacteries: [];
-  categories: [];
+export interface castCharacteryType {
+  personId: string;
+  namePerson: string;
+  characterName: string;
+  thumbnail: string
+}
+
+export interface nationType {
+  nationId: number;
+  name: string;
+}
+
+export interface MovieDetailType {
+  castCharacteries: castCharacteryType[];
+  categories: CategoryType[];
   producedDate: string;
   dateUpdated: string;
   description: string;
   englishName: string;
-  feature: {};
+  feature: FeatureType;
   mark: number;
   movieId: string;
-  nation: {};
-  producer: {};
+  nation: nationType;
   thumbnail: string;
   time: number;
   totalEpisodes: number;

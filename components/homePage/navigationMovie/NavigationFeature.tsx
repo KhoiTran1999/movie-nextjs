@@ -4,7 +4,7 @@ import { Menu } from "antd";
 import { homeItems } from "@/constant/homeItem";
 import { usePathname } from "next/navigation";
 
-const Navigation = () => {
+const NavigationFeature = () => {
   const pathname = usePathname();
 
   return (
@@ -21,4 +21,4 @@ const Navigation = () => {
   );
 };
 
-export default Navigation;
+export default NavigationFeature;

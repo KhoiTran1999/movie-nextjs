@@ -1,6 +1,5 @@
 import type { MenuProps } from "antd";
 import Link from "next/link";
-import { CaretDownOutlined } from "@ant-design/icons";
 
 export const homeItems: MenuProps["items"] = [
   {

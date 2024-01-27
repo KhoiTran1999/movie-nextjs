@@ -14,9 +14,8 @@ import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
 const ReactPlayer = dynamic(() => import("react-player/youtube"), {
   ssr: false,
 });
-import ReactPlayerTest from "react-player/youtube";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { SeasonMovieDetail } from "@/types";
+import { MovieDetailType, MovieType, SeasonMovieDetail } from "@/types";
 import CardMovie from "../homePage/cardSlider/CardMovie";
 
 const rubik = Rubik_Dirt({
@@ -25,19 +24,12 @@ const rubik = Rubik_Dirt({
   style: ["normal"],
 });
 
-type movieProps = {
-  movieId: string;
-  mark: number;
-  time: number;
-  vietnamName: string;
-  englishName: string;
-  thumbnail: string;
-  totalSeasons: number;
-  totalEpisodes: number;
-  dateCreated: string;
-};
+interface MainDetailPage {
+  movieDetail: MovieDetailType;
+  recommendedMovie: MovieType[];
+}
 
-export default function MainDetailPage(props: any) {
+export default function MainDetailPage(props: MainDetailPage) {
   const { movieDetail, recommendedMovie } = props;
 
   const dispatch = useDispatch();
@@ -46,8 +38,11 @@ export default function MainDetailPage(props: any) {
   const [loadingMovie, setLoadingMovie] = useState<boolean>(false);
   const [isEpisodeModalOpen, setIsEpisodeModalOpen] = useState<boolean>(false);
   const [isWatchModalOpen, setIsWatchModalOpen] = useState<boolean>(false);
+  const [isDestroyWatchModal, setIsDestroyWatchModal] =
+    useState<boolean>(false);
   const [isTrailerModalOpen, setIsTrailerModalOpen] = useState<boolean>(false);
-  const [isTrailerError, setIsTrailerError] = useState<boolean>(false);
+  const [isDestroyTrailerModal, setIsDestroyTrailerModal] =
+    useState<boolean>(false);
   const [watchMovie, setWatchMovie] = useState<SeasonMovieDetail>({
     seasonId: "",
     seasonNumber: 1,
@@ -65,14 +60,10 @@ export default function MainDetailPage(props: any) {
   });
 
   useEffect(() => {
-    console.log("props: ", props);
-
     if (movieDetail) {
       setIsSkeleton(false);
     }
   }, [props]);
-
-  const iframeVideoRef = useRef<any>();
 
   const showModal = async () => {
     setLoadingMovie(true);
@@ -98,14 +89,9 @@ export default function MainDetailPage(props: any) {
       console.log(error);
       setLoadingMovie(false);
     }
-
+    setIsDestroyWatchModal(false);
     setIsWatchModalOpen(true);
 
-    //Take back iframe movieDetail
-    let iframeVideo: HTMLIFrameElement | null = document.getElementById(
-      "iframeVideo"
-    ) as HTMLIFrameElement;
-    if (iframeVideo) iframeVideo.src = iframeVideoRef.current;
     setLoadingMovie(false);
   };
 
@@ -116,27 +102,27 @@ export default function MainDetailPage(props: any) {
 
   const handleCancelWatch = () => {
     setIsWatchModalOpen(false);
+    setIsDestroyWatchModal(true);
     dispatch(setMovieId(""));
   };
 
   const handleCancelTrailer = () => {
+    setIsDestroyTrailerModal(true);
     setIsTrailerModalOpen(false);
   };
 
   const handleAfterClose = () => {
-    let iframeVideo: HTMLIFrameElement | null = document.getElementById(
-      "iframeVideo"
-    ) as HTMLIFrameElement;
-    iframeVideoRef.current = iframeVideo.src;
+    setIsDestroyWatchModal(true);
+  };
 
-    //remove iframe movieDetail
-    iframeVideo.src = "";
+  const handleOpenTrailerModal = () => {
+    setIsTrailerModalOpen(true);
+    setIsDestroyTrailerModal(false);
   };
 
   useEffect(() => {
-    const canPlay = ReactPlayerTest.canPlay(movieDetail.trailer);
-    if (!canPlay) setIsTrailerError(true);
-  }, []);
+    console.log("isTrailerPlay: ", isDestroyTrailerModal);
+  }, [isDestroyTrailerModal]);
 
   return (
     <div>
@@ -183,7 +169,13 @@ export default function MainDetailPage(props: any) {
                   <h2 className="font-bold">{movieDetail.vietnamName}</h2>
                   <div className="my-4">
                     <span>{movieDetail.producedDate.slice(0, 4)}</span>
-                    <span className="mx-4">{movieDetail.time} minutes</span>
+                    <span className="mx-4">
+                      {movieDetail.totalSeasons > 1
+                        ? `${movieDetail.totalSeasons} seasons`
+                        : movieDetail.totalEpisodes > 1
+                        ? `${movieDetail.totalEpisodes} episodes`
+                        : `${movieDetail.time} minutes`}
+                    </span>
                     <span>
                       {movieDetail.mark}/10{" "}
                       <StarFilled className="text-yellow-400" />
@@ -269,7 +261,7 @@ export default function MainDetailPage(props: any) {
                 </Button>
 
                 <button
-                  onClick={() => setIsTrailerModalOpen(true)}
+                  onClick={handleOpenTrailerModal}
                   className="w-[121px] h-10 mr-3 text-white rounded-md bg-[#b2afaf2e] hover:bg-[#adaaaa64] transition-colors"
                 >
                   <InfoCircleOutlined />
@@ -308,7 +300,7 @@ export default function MainDetailPage(props: any) {
               <List
                 dataSource={recommendedMovie}
                 grid={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5, xxl: 5, gutter: 12 }}
-                renderItem={(val: movieProps, idx: number) => (
+                renderItem={(val: MovieType, idx: number) => (
                   <div onClick={() => setIsSkeleton(true)}>
                     <CardMovie val={val} />
                   </div>
@@ -352,29 +344,18 @@ export default function MainDetailPage(props: any) {
             footer={null}
             styles={{ body: { paddingTop: "20px", paddingBottom: "10px" } }}
             onCancel={handleCancelTrailer}
+            destroyOnClose={isDestroyTrailerModal}
           >
-            {isTrailerError ? (
-              <Result
-                status="error"
-                title="Something went wrong with Trailer"
-                subTitle={
-                  <span className="text-white text-lg">
-                    Sorry, We will update later.
-                  </span>
-                }
-                className="mt-20"
-              />
-            ) : (
-              <ReactPlayer
-                url={movieDetail.trailer}
-                playing
-                controls
-                loop
-                width={"100%"}
-                height={"70svh"}
-                style={{ backgroundColor: "black" }}
-              />
-            )}
+            <ReactPlayer
+              url={movieDetail.trailer}
+              playing
+              controls
+              loop
+              width={"100%"}
+              height={"70svh"}
+              style={{ backgroundColor: "black" }}
+              id="iframeTrailerVideo"
+            />
           </Modal>
         </div>
       )}

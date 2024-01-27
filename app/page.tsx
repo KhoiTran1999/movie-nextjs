@@ -1,44 +1,35 @@
-import CardSlider from "@/components/homePage/cardSlider/CardSlider";
+import CardSliderCinemaMovie from "@/components/homePage/cardSlider/cardSliderFeature/CardSliderCinemaMovie";
+import CardSliderNewMovie from "@/components/homePage/cardSlider/cardSliderFeature/CardSliderNewMovie";
+import CardSliderStandalone from "@/components/homePage/cardSlider/cardSliderFeature/CardSliderStandalone";
+import CardSliderTVSeriesMovie from "@/components/homePage/cardSlider/cardSliderFeature/CardSliderTVSeriesMovie";
 import NavigationMovie from "@/components/homePage/navigationMovie/NavigationMovie";
 import TopPageMovie from "@/components/homePage/topPageMovie/TopPageMovie";
 
+interface previewMovieProps {
+  description: string;
+  englishName: string;
+  movieId: number;
+  vietnamName: string;
+  trailer: string;
+  thumbnail: string;
+}
+
 export default async function Home() {
-  const res = await Promise.all([
-    fetch(
-      `${process.env.API_URL}/Movies?sortBy=produceddate&page=1&eachPage=10`,
-      { cache: "no-store" }
-    ),
-    fetch(
-      `${process.env.API_URL}/Movies?filterBy=feature&key=1&sortBy=produceddate&page=1&eachPage=10`,
-      { cache: "no-store" }
-    ),
-    fetch(
-      `${process.env.API_URL}/Movies?filterBy=feature&key=2&sortBy=produceddate&page=1&eachPage=10`,
-      { cache: "no-store" }
-    ),
-    fetch(
-      `${process.env.API_URL}/Movies?filterBy=feature&key=3&sortBy=produceddate&page=1&eachPage=10`,
-      { cache: "no-store" }
-    ),
-  ]).catch((error) => {
-    console.log(error);
-    throw new Error("Failed to fetch Movie List");
+  const res = await fetch(`${process.env.API_URL}/Movies/Newest`, {
+    cache: "no-store",
   });
 
-  const newMovieList = await res[0].json();
-  const standaloneMovieList = await res[1].json();
-  const cinemaMovieList = await res[2].json();
-  const TVSeriesMovieList = await res[3].json();
+  const previewMovie: previewMovieProps = await res.json();
 
   return (
     <main>
       <NavigationMovie />
-      <TopPageMovie />
+      <TopPageMovie previewMovie={previewMovie} />
       <div className="px-12 pb-5 w-full h-fit absolute top-[70%]">
-        <CardSlider title="New Movies" movieList={newMovieList} />
-        <CardSlider title="Standalone Movies" movieList={standaloneMovieList} />
-        <CardSlider title="Cinema Movies" movieList={cinemaMovieList} />
-        <CardSlider title="TV Series Movies" movieList={TVSeriesMovieList} />
+        <CardSliderNewMovie />
+        <CardSliderStandalone />
+        <CardSliderCinemaMovie />
+        <CardSliderTVSeriesMovie />
       </div>
     </main>
   );
