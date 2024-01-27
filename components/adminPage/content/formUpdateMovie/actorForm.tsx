@@ -159,7 +159,13 @@ const ActorForm = ({
 
   const handleOnFinish = async (values: any) => {
     if (selectedRowKeys.length === 0) {
+      form.resetFields();
+      setSearchText("");
+      setSearchedColumn("");
+      setSelectedRowKeys([]);
+      dispatch(setMovieId(""));
       success("Finish!");
+      setCurrent(0);
       return;
     }
 

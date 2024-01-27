@@ -109,11 +109,8 @@ const UpdateMovieModal = ({
           loading={isLoadingNextButton}
           onClick={() => {
             if (current >= 2) {
-              return setTimeout(() => {
-                handleOkUpdateModal();
-                setCurrent(0);
-                setClickAIButton(0);
-              }, 2000);
+              handleOkUpdateModal();
+              setClickAIButton(0);
             }
           }}
         >

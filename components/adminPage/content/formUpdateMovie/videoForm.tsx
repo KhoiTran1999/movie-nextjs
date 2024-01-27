@@ -86,17 +86,17 @@ const VideoForm = ({
   const handleOnFinish = async (values: any) => {
     console.log(values);
 
-    if (!values.seasonList) {
-      return setCurrent((prev: number) => prev + 1);
-    }
+    // if (!values.seasonList) {
+    //   return setCurrent((prev: number) => prev + 1);
+    // }
 
-    if (values.seasonList.length === 1 && !values.seasonList[0].episode) {
-      setCurrent((prev: number) => prev + 1);
-      return form.resetFields();
-    }
+    // if (values.seasonList.length === 1 && !values.seasonList[0].episode) {
+    //   setCurrent((prev: number) => prev + 1);
+    //   return form.resetFields();
+    // }
 
-    console.log("fetchedSeason: ", fetchedSeason);
-    console.log("oldSeason: ", oldSeasonList);
+    // console.log("fetchedSeason: ", fetchedSeason);
+    // console.log("oldSeason: ", oldSeasonList);
     console.log("values.seasonList: ", values.seasonList);
     try {
       //Compare Old values and New value
@@ -121,7 +121,7 @@ const VideoForm = ({
             }
 
             //-------------------------------------------
-            const newEpisode = season.episode.map(
+            const newEpisodeList = season.episode.map(
               (episode: EpisodeFilterdType, index: number) => {
                 return {
                   episodeId: fetchedSeason[idx]?.episodes[index]?.episodeId,
@@ -130,22 +130,29 @@ const VideoForm = ({
                 };
               }
             );
+            const oldEpisodeList = oldSeasonList[idx].episode.map(
+              (episode: EpisodeFilterdType, index: number) => {
+                return {
+                  episodeId: fetchedSeason[idx]?.episodes[index]?.episodeId,
+                  name: episode.name,
+                  video: episode.video,
+                };
+              }
+            );
+            console.log("season.episode: ", season.episode);
+            console.log(
+              "oldSeasonList[idx].episode: ",
+              oldSeasonList[idx].episode
+            );
 
-            //Update Episode: 2 situations
-            if (season.episode.length <= oldSeasonList[idx].episode.length) {
+            //Update Episode: 3 situations
+            if ((season.episode.length = oldSeasonList[idx].episode.length)) {
               try {
-                console.log("newEpisode: ", newEpisode);
-                console.log(
-                  "fetchedSeason[idx].seasonId: ",
-                  fetchedSeason[idx].seasonId
-                );
-
-                const res = await Axios.put(
+                await Axios.put(
                   `episode/${fetchedSeason[idx].seasonId}`,
-                  newEpisode
+                  newEpisodeList
                 );
                 await revalidateTagSeasonListAction();
-                console.log("res.data: ", res.data);
 
                 setCurrent((prev: number) => prev + 1);
                 setIsLoadingNextButton(false);
@@ -153,11 +160,14 @@ const VideoForm = ({
                 console.log(error);
                 setIsLoadingNextButton(false);
               }
-            } else {
+            } else if (
+              season.episode.length > oldSeasonList[idx].episode.length
+            ) {
               //New Episode List > Old Episode List
+              console.log("Hello");
 
               //Update first apart of New Episode which equal the length of Old Episode List
-              const apartOfNewEpisodeList = newEpisode.slice(
+              const apartOfNewEpisodeList = newEpisodeList.slice(
                 0,
                 oldSeasonList[idx].episode.length - 1
               );
@@ -173,7 +183,7 @@ const VideoForm = ({
               }
 
               //Create a rest of New Episode
-              const restOfNewEpisodeList = newEpisode
+              const restOfNewEpisodeList = newEpisodeList
                 .slice(oldSeasonList[idx].episode.length - 1)
                 .map((val: EpisodeFilterdType) => ({
                   name: val.name,
@@ -185,11 +195,42 @@ const VideoForm = ({
                   params: { seasonId: fetchedSeason[idx].seasonId },
                 });
                 await revalidateTagSeasonListAction();
+                setCurrent((prev: number) => prev + 1);
                 setIsLoadingNextButton(false);
               } catch (error) {
                 console.log(error);
                 setIsLoadingNextButton(false);
               }
+            } else {
+              //New Episode List < Old Episode List
+
+              //Update New Episode
+              try {
+                await Axios.put(
+                  `episode/${fetchedSeason[idx].seasonId}`,
+                  newEpisodeList
+                );
+              } catch (error) {
+                setIsLoadingNextButton(false);
+                console.log(error);
+              }
+
+              //Delete a rest of Old Episode
+              const theRestOfOldEpisodeList = oldEpisodeList.slice(
+                season.episode.length - 1
+              );
+
+              for (const [idx, episode] of theRestOfOldEpisodeList.entries()) {
+                try {
+                  await Axios.delete(`episode/${episode.episodeId}`);
+                } catch (error) {
+                  console.log(error);
+                  setIsLoadingNextButton(false);
+                }
+              }
+              await revalidateTagSeasonListAction();
+              setCurrent((prev: number) => prev + 1);
+              setIsLoadingNextButton(false);
             }
           }
         };
