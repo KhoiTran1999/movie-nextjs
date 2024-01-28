@@ -86,18 +86,14 @@ const VideoForm = ({
   const handleOnFinish = async (values: any) => {
     console.log(values);
 
-    // if (!values.seasonList) {
-    //   return setCurrent((prev: number) => prev + 1);
-    // }
+    if (!values.seasonList) {
+      return setCurrent((prev: number) => prev + 1);
+    }
 
-    // if (values.seasonList.length === 1 && !values.seasonList[0].episode) {
-    //   setCurrent((prev: number) => prev + 1);
-    //   return form.resetFields();
-    // }
-
-    // console.log("fetchedSeason: ", fetchedSeason);
-    // console.log("oldSeason: ", oldSeasonList);
-    console.log("values.seasonList: ", values.seasonList);
+    if (values.seasonList.length === 1 && !values.seasonList[0].episode) {
+      setCurrent((prev: number) => prev + 1);
+      return form.resetFields();
+    }
     try {
       //Compare Old values and New value
       deepEqual(oldSeasonList, values.seasonList, "not same");
@@ -139,18 +135,9 @@ const VideoForm = ({
                 };
               }
             );
-            console.log("season.episode: ", season.episode.length);
-            console.log(
-              "oldSeasonList[idx].episode: ",
-              oldSeasonList[idx].episode.length
-            );
 
             //Update Episode: 3 situations
             if (season.episode.length === oldSeasonList[idx].episode.length) {
-              console.log(
-                "season.episode.length = oldSeasonList[idx].episode.length"
-              );
-
               try {
                 await Axios.put(
                   `episode/${fetchedSeason[idx].seasonId}`,
@@ -164,18 +151,16 @@ const VideoForm = ({
               season.episode.length > oldSeasonList[idx].episode.length
             ) {
               //New Episode List > Old Episode List
-              console.log(
-                "season.episode.length > oldSeasonList[idx].episode.length"
-              );
 
               //Update first apart of New Episode which equal the length of Old Episode List
               let apartOfNewEpisodeList;
-              if (newEpisodeList.length > 1) {
+              if (newEpisodeList.length >= 2) {
                 apartOfNewEpisodeList = newEpisodeList.slice(
                   0,
-                  oldSeasonList[idx].episode.length - 1
+                  oldSeasonList[idx].episode.length
                 );
-              } else apartOfNewEpisodeList = newEpisodeList;
+              } else
+                throw Error("New Episode list must have at least 2 episodes");
 
               try {
                 await Axios.put(
@@ -189,7 +174,7 @@ const VideoForm = ({
 
               //Create a rest of New Episode
               const restOfNewEpisodeList = newEpisodeList
-                .slice(oldSeasonList[idx].episode.length - 1)
+                .slice(oldSeasonList[idx].episode.length)
                 .map((val: EpisodeFilterdType) => ({
                   name: val.name,
                   video: val.video,
@@ -222,7 +207,7 @@ const VideoForm = ({
 
               //Delete a rest of Old Episode
               const theRestOfOldEpisodeList = oldEpisodeList.slice(
-                season.episode.length - 1
+                season.episode.length
               );
               console.log("theRestOfOldEpisodeList: ", theRestOfOldEpisodeList);
 
