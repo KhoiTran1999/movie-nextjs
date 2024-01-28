@@ -1,6 +1,7 @@
 import { revalidateTagMovieListAction } from "@/components/actions";
 import ManageMovies from "@/components/adminPage/content/ManageMovies";
 import { CategoryType, MovieAntdTableType, MovieType } from "@/types";
+import { revalidatePath } from "next/cache";
 
 export default async function page(props: any) {
   const LIMIT = 5;
@@ -28,6 +29,7 @@ export default async function page(props: any) {
     return filteredData;
   };
 
+  revalidatePath("admin/manageMovies");
   const res = await fetch(
     `${process.env.API_URL}/Movies?sortBy=createddate&page=${page}&eachPage=${LIMIT}`,
     { next: { tags: ["movie-list"] } }

@@ -1,6 +1,6 @@
 "use server"
 
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export const deleteMovieAction = async(movieId: string)=>{
     try {
@@ -18,6 +18,7 @@ export const revalidateTagMovieListAction = async()=>{
 
 export const getSeasonListAction = async(movieId: string, seasonNumber?: number)=>{
     try {
+        revalidatePath("admin/manageMovies");
         const res = await fetch(
         `${process.env.API_URL}/Seasons?movieId=${movieId}${seasonNumber?`&seasonNumber=${seasonNumber}`:""}`, {next: {tags: ["season-list"]}}
       );

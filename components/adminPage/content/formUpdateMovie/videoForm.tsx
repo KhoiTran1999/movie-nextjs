@@ -107,7 +107,7 @@ const VideoForm = ({
       setIsLoadingNextButton(true);
       //3 Situation about Updating VideoForm
       if (values.seasonList.length === oldSeasonList.length) {
-        const fetchUpdateVideoFormS1 = async () => {
+        const fetchUpdateVideoFormCase1 = async () => {
           for (const [idx, season] of values.seasonList.entries()) {
             // Update Season
             try {
@@ -139,23 +139,23 @@ const VideoForm = ({
                 };
               }
             );
-            console.log("season.episode: ", season.episode);
+            console.log("season.episode: ", season.episode.length);
             console.log(
               "oldSeasonList[idx].episode: ",
-              oldSeasonList[idx].episode
+              oldSeasonList[idx].episode.length
             );
 
             //Update Episode: 3 situations
-            if ((season.episode.length = oldSeasonList[idx].episode.length)) {
+            if (season.episode.length === oldSeasonList[idx].episode.length) {
+              console.log(
+                "season.episode.length = oldSeasonList[idx].episode.length"
+              );
+
               try {
                 await Axios.put(
                   `episode/${fetchedSeason[idx].seasonId}`,
                   newEpisodeList
                 );
-                await revalidateTagSeasonListAction();
-
-                setCurrent((prev: number) => prev + 1);
-                setIsLoadingNextButton(false);
               } catch (error) {
                 console.log(error);
                 setIsLoadingNextButton(false);
@@ -164,13 +164,18 @@ const VideoForm = ({
               season.episode.length > oldSeasonList[idx].episode.length
             ) {
               //New Episode List > Old Episode List
-              console.log("Hello");
+              console.log(
+                "season.episode.length > oldSeasonList[idx].episode.length"
+              );
 
               //Update first apart of New Episode which equal the length of Old Episode List
-              const apartOfNewEpisodeList = newEpisodeList.slice(
-                0,
-                oldSeasonList[idx].episode.length - 1
-              );
+              let apartOfNewEpisodeList;
+              if (newEpisodeList.length > 1) {
+                apartOfNewEpisodeList = newEpisodeList.slice(
+                  0,
+                  oldSeasonList[idx].episode.length - 1
+                );
+              } else apartOfNewEpisodeList = newEpisodeList;
 
               try {
                 await Axios.put(
@@ -194,15 +199,15 @@ const VideoForm = ({
                 await Axios.post(`episode`, restOfNewEpisodeList, {
                   params: { seasonId: fetchedSeason[idx].seasonId },
                 });
-                await revalidateTagSeasonListAction();
-                setCurrent((prev: number) => prev + 1);
-                setIsLoadingNextButton(false);
               } catch (error) {
                 console.log(error);
                 setIsLoadingNextButton(false);
               }
             } else {
               //New Episode List < Old Episode List
+              console.log(
+                "season.episode.length < oldSeasonList[idx].episode.length"
+              );
 
               //Update New Episode
               try {
@@ -219,6 +224,7 @@ const VideoForm = ({
               const theRestOfOldEpisodeList = oldEpisodeList.slice(
                 season.episode.length - 1
               );
+              console.log("theRestOfOldEpisodeList: ", theRestOfOldEpisodeList);
 
               for (const [idx, episode] of theRestOfOldEpisodeList.entries()) {
                 try {
@@ -228,13 +234,13 @@ const VideoForm = ({
                   setIsLoadingNextButton(false);
                 }
               }
-              await revalidateTagSeasonListAction();
-              setCurrent((prev: number) => prev + 1);
-              setIsLoadingNextButton(false);
             }
           }
+          await revalidateTagSeasonListAction();
+          setCurrent((prev: number) => prev + 1);
+          setIsLoadingNextButton(false);
         };
-        fetchUpdateVideoFormS1();
+        fetchUpdateVideoFormCase1();
       } else if (values.seasonList.length > oldSeasonList.length) {
         //Update First New Season with the length of Old Season List
 
