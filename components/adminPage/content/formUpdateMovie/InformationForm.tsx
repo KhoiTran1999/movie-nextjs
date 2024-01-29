@@ -191,8 +191,10 @@ const InformationForm = ({
     const fetchApi = async () => {
       try {
         setIsLoadingNextButton(true);
+
         const res = await fetch(`${process.env.API_URL}/Movie/${movieId}`);
         const movie = await res.json();
+        console.log("movie: ", movie);
 
         dispatch(setmovieDetail(movie));
         //Add value into form

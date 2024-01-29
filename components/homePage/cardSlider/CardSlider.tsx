@@ -2,10 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Scrollbar, A11y } from "swiper/modules";
+import { Navigation, Scrollbar, A11y, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/scrollbar";
+import "swiper/css/pagination";
 import CardMovie from "./CardMovie";
 
 type cardSliderProps = {
@@ -43,11 +44,13 @@ const CardSlider = ({ title, movieList }: cardSliderProps) => {
   }, [movieList]);
 
   return (
-    <div className="mb-10">
+    <div className="mb-3">
       <>
         <div>
           <div className="group cursor-pointer inline-flex items-center w-fit">
-            <h2 className="font-bold text-2xl hover:text-[#D1D0CF]">{title}</h2>
+            <h2 className="font-bold text-2xl max-[528px]:text-lg hover:text-[#D1D0CF]">
+              {title}
+            </h2>
             <div
               className={`invisible opacity-0 translate-x-[-20px] group-hover:visible group-hover:opacity-100 group-hover:translate-x-[0px] transition-all ml-3 text-[#E50914] font-bold flex justify-center items-center`}
             >
@@ -67,14 +70,8 @@ const CardSlider = ({ title, movieList }: cardSliderProps) => {
           <div onMouseEnter={handleOnMouseEnter} onMouseLeave={onMouseLeave}>
             <Swiper
               lazyPreloadPrevNext={5}
-              slidesPerView={1}
+              slidesPerView={3}
               breakpoints={{
-                500: {
-                  slidesPerView: 2,
-                },
-                760: {
-                  slidesPerView: 3,
-                },
                 930: {
                   slidesPerView: 4,
                 },
@@ -94,10 +91,11 @@ const CardSlider = ({ title, movieList }: cardSliderProps) => {
                   slidesPerView: 9,
                 },
               }}
-              navigation={isHover}
-              modules={[Navigation, Scrollbar, A11y]}
+              navigation={isHover && screen.width > 930}
+              modules={[Navigation, Scrollbar, A11y, Pagination]}
               loop
               longSwipes={true}
+              pagination={screen.width < 930}
             >
               {movieList.map((val: movieProps, idx: number) => (
                 <SwiperSlide key={idx}>

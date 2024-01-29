@@ -279,11 +279,20 @@
   animation-iteration-count: infinite;
 }
 
-:root .swiper-rtl .swiper-button-prev:after {
-  content: "next";
-  color: red;
-  font-size: 32px;
-  font-weight: 600;
+:root {
+  --swiper-navigation-size: 25px !important;
+  --swiper-theme-color: white !important;
+}
+
+:root .swiper-button-next,
+.swiper-button-prev {
+  background-color: rgba(252, 0, 0, 0.621);
+  border-radius: 1000px;
+  padding: 22px;
+}
+
+:root .swiper-pagination-bullet {
+  background: rgba(255, 255, 255, 0.567);
 }
 
 /* width */

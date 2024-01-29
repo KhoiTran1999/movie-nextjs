@@ -25,7 +25,7 @@ export default async function Home() {
     <main>
       <NavigationMovie />
       <TopPageMovie previewMovie={previewMovie} />
-      <div className="px-12 pb-5 w-full h-fit absolute top-[70%]">
+      <div className="px-3 sm:px-12  pb-5 w-full h-fit absolute top-[63%] sm:top-[63%] lg:top-[70%]">
         <CardSliderNewMovie />
         <CardSliderStandalone />
         <CardSliderCinemaMovie />
