@@ -120,10 +120,6 @@ export default function MainDetailPage(props: MainDetailPage) {
     setIsDestroyTrailerModal(false);
   };
 
-  useEffect(() => {
-    console.log("isTrailerPlay: ", isDestroyTrailerModal);
-  }, [isDestroyTrailerModal]);
-
   return (
     <div>
       <NavigationMovie />
@@ -268,25 +264,25 @@ export default function MainDetailPage(props: MainDetailPage) {
                   <span className="ml-3">Trailer</span>
                 </button>
 
-                <Tooltip color="grey" title="Add watch list">
+                <Tooltip color="#b2afaf2e" title="Add watch list">
                   <span
-                    className={`transition-all hover:scale-110 hover:bg-gray-700/60 bg-gray-700/90 w-11 h-11 p-3 rounded-full  flex justify-center items-center cursor-pointer`}
+                    className={`bg-[#b2afaf2e] hover:bg-[#adaaaa64] transition-colors w-11 h-11 p-3 rounded-full  flex justify-center items-center cursor-pointer`}
                   >
                     <i className="fa-regular fa-plus text-xl"></i>
                   </span>
                 </Tooltip>
 
-                <Tooltip color="grey" title="Like">
+                <Tooltip color="#b2afaf2e" title="Like">
                   <span
-                    className={`mx-3 transition-all hover:scale-110 hover:bg-gray-700/60 bg-gray-700/90 w-11 h-11 p-3 rounded-full  flex justify-center items-center cursor-pointer`}
+                    className={`mx-3 bg-[#b2afaf2e] hover:bg-[#adaaaa64] transition-colors w-11 h-11 p-3 rounded-full  flex justify-center items-center cursor-pointer`}
                   >
                     <i className="fa-regular fa-heart text-xl"></i>
                   </span>
                 </Tooltip>
 
-                <Tooltip color="grey" title="Share">
+                <Tooltip color="#b2afaf2e" title="Share">
                   <span
-                    className={`transition-all hover:scale-110 hover:bg-gray-700/60 bg-gray-700/90 w-11 h-11 p-3 rounded-full  flex justify-center items-center cursor-pointer`}
+                    className={`bg-[#b2afaf2e] hover:bg-[#adaaaa64] transition-colors w-11 h-11 p-3 rounded-full  flex justify-center items-center cursor-pointer`}
                   >
                     <i className="fa-light fa-share-from-square text-xl"></i>
                   </span>
@@ -329,6 +325,7 @@ export default function MainDetailPage(props: MainDetailPage) {
             styles={{ body: { paddingTop: "20px", paddingBottom: "10px" } }}
             afterClose={handleAfterClose}
             title={movieDetail.englishName}
+            destroyOnClose={isDestroyWatchModal}
           >
             <WatchModal
               episodeNumber={watchMovie?.episodes[0]?.episodeNumber}

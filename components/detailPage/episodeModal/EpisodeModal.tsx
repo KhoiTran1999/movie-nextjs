@@ -51,6 +51,8 @@ export const EpisodeModal = ({
   const [seasonNumber, setSeasonNumber] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isWatchModalOpen, setIsWatchModalOpen] = useState<boolean>(false);
+  const [isDestroyWatchModal, setIsDestroyWatchModal] =
+    useState<boolean>(false);
   const [watchMovie, setWatchMovie] = useState<watchMovieType>({
     episodeNumber: 1,
     seasonNumber: 1,
@@ -87,26 +89,16 @@ export const EpisodeModal = ({
   ) => {
     setIsWatchModalOpen(true);
     setWatchMovie({ episodeNumber, seasonNumber, name, video });
-
-    //Take back iframe data
-    let iframeVideo: HTMLIFrameElement | null = document.getElementById(
-      "iframeVideo"
-    ) as HTMLIFrameElement;
-    if (iframeVideo) iframeVideo.src = iframeVideoRef.current;
+    setIsDestroyWatchModal(false);
   };
 
   const handleCancelWatch = () => {
     setIsWatchModalOpen(false);
+    setIsDestroyWatchModal(true);
   };
 
   const handleAfterClose = () => {
-    let iframeVideo: HTMLIFrameElement | null = document.getElementById(
-      "iframeVideo"
-    ) as HTMLIFrameElement;
-    iframeVideoRef.current = iframeVideo.src;
-
-    //remove iframe data
-    iframeVideo.src = "";
+    setIsDestroyWatchModal(true);
   };
 
   return (
@@ -156,6 +148,7 @@ export const EpisodeModal = ({
               footer={null}
               styles={{ body: { paddingTop: "20px", paddingBottom: "10px" } }}
               afterClose={handleAfterClose}
+              destroyOnClose={isDestroyWatchModal}
               title={`${
                 !watchMovie.name
                   ? englishName + " - Episode " + watchMovie.episodeNumber
