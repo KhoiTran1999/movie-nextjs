@@ -58,7 +58,6 @@ const VideoForm = ({
     const fetchApi = async () => {
       setIsLoadingNextButton(true);
       const seasonList = await getSeasonListAction(movieId);
-      console.log(seasonList);
 
       setFetchedSeason(seasonList);
 
@@ -80,8 +79,6 @@ const VideoForm = ({
 
   //----------------------------------------------
   const handleOnFinish = async (values: any) => {
-    console.log(values);
-
     if (!values.seasonList) {
       return setCurrent((prev: number) => prev + 1);
     }

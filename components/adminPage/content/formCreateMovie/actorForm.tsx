@@ -24,6 +24,7 @@ import CreatePersonModal from "./createPersonModal";
 import { setPersonList } from "@/utils/redux/slices/data/personListSlice";
 import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
 import Axios from "@/utils/axios";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 interface DataType {
   key: React.Key;
@@ -242,11 +243,13 @@ const ActorForm = ({
                   key="thumbnail"
                   render={(image: string, _, idx) => (
                     <div className="w-fit h-[160px] overflow-hidden rounded-lg">
-                      <img
-                        src={image}
-                        alt="thumbnail"
-                        className="h-full object-contain"
+                      <LazyLoadImage
                         key={idx}
+                        alt="Thumbnail"
+                        src={image}
+                        effect="blur"
+                        loading="lazy"
+                        className="h-[160px] rounded-md object-contain"
                         onError={(e) => {
                           e.currentTarget.onerror = null;
                           e.currentTarget.src = "/errorThumbnail.jpg";

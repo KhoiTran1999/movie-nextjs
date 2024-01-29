@@ -23,6 +23,7 @@ import {
 import { revalidateTagMovieListAction } from "@/components/actions";
 import { deepEqual } from "assert";
 import Axios from "@/utils/axios";
+import { setmovieDetail } from "@/utils/redux/slices/data/movieDetailSlice";
 
 const { TextArea } = Input;
 
@@ -193,6 +194,7 @@ const InformationForm = ({
         const res = await fetch(`${process.env.API_URL}/Movie/${movieId}`);
         const movie = await res.json();
 
+        dispatch(setmovieDetail(movie));
         //Add value into form
         const filterCategories = movie.categories.map(
           (val: any) => val.categoryId

@@ -17,6 +17,7 @@ import Highlighter from "react-highlight-words";
 import { useDispatch, useSelector } from "react-redux";
 import {
   isCancelButtonModalSelector,
+  movieDetailSelector,
   movieIdSelector,
   personListSelector,
 } from "@/utils/redux/selector";
@@ -24,6 +25,8 @@ import CreatePersonModal from "./createPersonModal";
 import { setPersonList } from "@/utils/redux/slices/data/personListSlice";
 import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
 import Axios from "@/utils/axios";
+import { deepEqual } from "assert";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 interface DataType {
   key: React.Key;
@@ -51,6 +54,13 @@ interface VideoFormType {
   isLoadingNextButton: boolean;
 }
 
+interface CharactorType {
+  personId: string;
+  namePerson: string;
+  characterName: string;
+  thumbnail: string;
+}
+
 type DataIndex = keyof DataType;
 
 const ActorForm = ({
@@ -61,37 +71,23 @@ const ActorForm = ({
 }: VideoFormType) => {
   const dispatch = useDispatch();
 
+  const movieId = useSelector(movieIdSelector);
+  const personList = useSelector(personListSelector);
+  const isCancelButtonModal = useSelector(isCancelButtonModalSelector);
+  const movieDetail = useSelector(movieDetailSelector);
+
   const [searchText, setSearchText] = useState<string>("");
   const [searchedColumn, setSearchedColumn] = useState<string>("");
+  const [oldSelectedRowKey, setOldSelectedRowKey] = useState<React.Key[]>([]);
   const searchInput = useRef<InputRef>(null);
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [reloading, setReloading] = useState<boolean>(false);
   const [isOpenCreatePersonModal, setIsOpenCreatePersonModal] =
     useState<boolean>(false);
 
-  const movieId = useSelector(movieIdSelector);
-  const personList = useSelector(personListSelector);
-  const isCancelButtonModal = useSelector(isCancelButtonModalSelector);
-
   const [form] = Form.useForm();
 
   const [messageApi, contextHolder] = message.useMessage();
-
-  //Message when created movie
-  const success = (text: any) => {
-    messageApi.open({
-      type: "success",
-      content: text,
-    });
-  };
-
-  const errorRes = (error: any) => {
-    messageApi.open({
-      type: "error",
-      content: error,
-    });
-  };
 
   useEffect(() => {
     const fetchApi = async () => {
@@ -119,6 +115,21 @@ const ActorForm = ({
     fetchApi();
   }, []);
 
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>(() => {
+    const selectedRowReduce = personList.reduce(
+      (acc: number[], val: PersonType, idx: number) => {
+        const isExistPerson = movieDetail.castCharacteries.some(
+          (item: CharactorType) => item.personId === val.personId
+        );
+        if (isExistPerson) return [...acc, idx];
+        return acc;
+      },
+      [] as React.Key[]
+    );
+    setOldSelectedRowKey(selectedRowReduce);
+    return selectedRowReduce;
+  });
+
   //Row Selection -------------------
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys(newSelectedRowKeys);
@@ -131,12 +142,7 @@ const ActorForm = ({
 
   //Search person -----------------------------
   const start = () => {
-    setReloading(true);
-    // ajax request after empty completing
-    setTimeout(() => {
-      setSelectedRowKeys([]);
-      setReloading(false);
-    }, 1000);
+    setSelectedRowKeys([]);
   };
   const hasSelected = selectedRowKeys.length > 0;
 
@@ -164,60 +170,61 @@ const ActorForm = ({
       setSearchedColumn("");
       setSelectedRowKeys([]);
       dispatch(setMovieId(""));
-      success("Finish!");
+      message.success("Finish!");
       setCurrent(0);
       return;
     }
 
-    const selectedPersons = personList.reduce(
-      (acc: any, val: PersonType, idx: number) => {
-        if (!selectedRowKeys.includes(idx)) return acc;
-
-        const person = {
-          personId: val.personId,
-          characterName: val.namePerson,
-        };
-        return [...acc, person];
-      },
-      []
-    );
-
     try {
-      setIsLoadingNextButton(true);
-      await Axios.post("Cast", selectedPersons, {
-        params: { movieId: movieId.data },
-      });
-
-      success("Add actors successfully!");
-      setTimeout(() => {
-        setIsLoadingNextButton(false);
-        form.resetFields();
-        setSearchText("");
-        setSearchedColumn("");
-        setSelectedRowKeys([]);
-        dispatch(setMovieId(""));
-      }, 2000);
+      deepEqual(oldSelectedRowKey, selectedRowKeys, "Selected Key not same");
+      form.resetFields();
+      setSearchText("");
+      setSearchedColumn("");
+      setSelectedRowKeys([]);
+      dispatch(setMovieId(""));
+      message.success("Finish!");
     } catch (error) {
-      console.log(error);
-      errorRes("Failed to add actors!");
-      setIsLoadingNextButton(false);
+      try {
+        setIsLoadingNextButton(true);
+
+        const selectedPersons = personList.reduce(
+          (acc: any, val: PersonType, idx: number) => {
+            if (!selectedRowKeys.includes(idx)) return acc;
+
+            const person = {
+              personId: val.personId,
+              characterName: val.namePerson,
+            };
+            return [...acc, person];
+          },
+          []
+        );
+
+        await Axios.put(`Cast/${movieId}`, selectedPersons);
+
+        message.success("Add actors successfully!");
+        setTimeout(() => {
+          setIsLoadingNextButton(false);
+          form.resetFields();
+          setSearchText("");
+          setSearchedColumn("");
+          setSelectedRowKeys([]);
+          dispatch(setMovieId(""));
+        }, 2000);
+      } catch (error) {
+        console.log(error);
+        message.error("Failed to add actors!");
+        setIsLoadingNextButton(false);
+      }
     }
   };
 
   //-----------------------------------------
-  // useEffect(() => {
-  //   if (current === 3) {
-  //     dispatch(setMovieId(""))
-  //     form.resetFields;
-  //   }
-  // }, [current]);
 
   useEffect(() => {
     form.resetFields();
     setSearchText("");
     setSearchedColumn("");
-    setSelectedRowKeys([]);
-    dispatch(setMovieId(""));
   }, [isCancelButtonModal]);
 
   return (
@@ -275,11 +282,13 @@ const ActorForm = ({
                   key="thumbnail"
                   render={(image: string, _, idx) => (
                     <div className="w-fit h-[160px] overflow-hidden rounded-lg">
-                      <img
-                        src={image}
-                        alt="thumbnail"
-                        className="h-full object-contain"
+                      <LazyLoadImage
                         key={idx}
+                        alt="Thumbnail"
+                        src={image}
+                        effect="blur"
+                        loading="lazy"
+                        className="h-[160px] rounded-md object-contain"
                         onError={(e) => {
                           e.currentTarget.onerror = null;
                           e.currentTarget.src = "/errorThumbnail.jpg";

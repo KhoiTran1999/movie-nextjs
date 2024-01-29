@@ -8,6 +8,7 @@ import movieIdSliceReducer from "@/utils/redux/slices/data/movieIdSlice"
 import IsLoadingAIButtonReducer from "@/utils/redux/slices/toggle/IsLoadingAIButtonSlice"
 import isCancelButtonModalReducer from "@/utils/redux/slices/toggle/IsCancelButtonModalSlice"
 import personListReducer from "@/utils/redux/slices/data/personListSlice"
+import movieDetailtReducer from "@/utils/redux/slices/data/movieDetailSlice"
 
 export const store = configureStore({
   reducer: {
@@ -17,6 +18,7 @@ export const store = configureStore({
     movieId: movieIdSliceReducer,
     isLoadingAIButton: IsLoadingAIButtonReducer,
     isCancelButtonModal: isCancelButtonModalReducer,
-    personList: personListReducer
+    personList: personListReducer,
+    movieDetail: movieDetailtReducer
   },
 });

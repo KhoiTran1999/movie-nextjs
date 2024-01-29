@@ -67,6 +67,8 @@ const ManageMovies = (props: IProps) => {
   };
 
   const handleUpdateModalOpen = async (movieId: any) => {
+    console.log("movieId: ", movieId);
+
     dispatch(setMovieId(movieId));
     setIsUpdateModalOpen(true);
   };

@@ -111,6 +111,7 @@ const UpdateMovieModal = ({
             if (current >= 2) {
               handleOkUpdateModal();
               setClickAIButton(0);
+              setCurrent(0);
             }
           }}
         >

@@ -7,5 +7,6 @@ const movieIdSelector = (state:any) => state.movieId.value;
 const isLoadingAIButtonSelector = (state:any) => state.isLoadingAIButton.value;
 const isCancelButtonModalSelector = (state:any) => state.isCancelButtonModal.value;
 const personListSelector = (state:any) => state.personList.value;
+const movieDetailSelector = (state:any) => state.movieDetail.value;
 
-export {isToggleSiderSelector, statisticSelector, movieListSelector, movieIdSelector, isLoadingAIButtonSelector, isCancelButtonModalSelector, personListSelector}
+export {isToggleSiderSelector, statisticSelector, movieListSelector, movieIdSelector, isLoadingAIButtonSelector, isCancelButtonModalSelector, personListSelector, movieDetailSelector}

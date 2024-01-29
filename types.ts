@@ -76,6 +76,7 @@ export interface MovieDetailType {
   nation: nationType;
   thumbnail: string;
   time: number;
+  status: string;
   totalEpisodes: number;
   totalSeasons: number;
   trailer: string;
