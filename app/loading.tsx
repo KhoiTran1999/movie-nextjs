@@ -1,17 +1,17 @@
 export default function Loading() {
   return (
     <div className="mt-10 flex flex-col justify-center">
-      <div className="px-12 h-[60svh] flex flex-col justify-center">
-        <div className="w-[50%] h-8 animate-pulse bg-[#ffffff3f] rounded-md mb-2"></div>
-        <div className="w-[30%] h-4 animate-pulse bg-[#ffffff3f] rounded-md mb-2"></div>
-        <div className="w-[15%] h-4 animate-pulse bg-[#ffffff3f] rounded-md mb-2"></div>
-        <div className="w-[20%] h-4 animate-pulse bg-[#ffffff3f] rounded-md mb-4"></div>
+      <div className="flex h-[60svh] flex-col justify-center px-12">
+        <div className="mb-2 h-8 w-[50%] animate-pulse rounded-md bg-[#ffffff3f]"></div>
+        <div className="mb-2 h-4 w-[30%] animate-pulse rounded-md bg-[#ffffff3f]"></div>
+        <div className="mb-2 h-4 w-[15%] animate-pulse rounded-md bg-[#ffffff3f]"></div>
+        <div className="mb-4 h-4 w-[20%] animate-pulse rounded-md bg-[#ffffff3f]"></div>
       </div>
-      <div className="mx-12 w-[120px] h-8 animate-pulse bg-[#ffffff3f] rounded-md mb-2"></div>
+      <div className="mx-12 mb-2 h-8 w-[120px] animate-pulse rounded-md bg-[#ffffff3f]"></div>
       <div className="flex px-12">
-        <div className="h-[200px] w-[150px] animate-pulse bg-[#ffffff3f] rounded-md mr-3"></div>
-        <div className="h-[200px] w-[150px] animate-pulse bg-[#ffffff3f] rounded-md mr-3"></div>
-        <div className="h-[200px] w-[150px] animate-pulse bg-[#ffffff3f] rounded-md"></div>
+        <div className="mr-3 h-[150px] w-[120px] animate-pulse rounded-md bg-[#ffffff3f] sm:h-[200px] sm:w-[150px]"></div>
+        <div className="mr-3 h-[150px] w-[120px] animate-pulse rounded-md bg-[#ffffff3f] sm:h-[200px] sm:w-[150px]"></div>
+        <div className="h-[150px] w-[120px] animate-pulse rounded-md bg-[#ffffff3f] sm:h-[200px] sm:w-[150px]"></div>
       </div>
     </div>
   );
