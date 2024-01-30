@@ -16,14 +16,13 @@ const VideoPlayer = ({ trailer }: VideoType) => {
         url={trailer}
         loop
         muted
-        // playing
+        playing
         width={"100%"}
         height={"100%"}
         style={{
           backgroundSize: "contain",
           backgroundPosition: "center center",
           filter: "brightness(.7)",
-          // transform: "scale(1.35)",
           backgroundColor: "black",
         }}
       />
