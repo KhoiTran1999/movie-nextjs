@@ -10,8 +10,9 @@ import UpdateMovieModal from "./UpdateMovieModal";
 import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { MovieAntdTableType } from "@/types";
-import { deleteMovieAction } from "@/components/actions";
+import { deleteMovieAction, restoreMovieAction } from "@/components/actions";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import Axios from "@/utils/axios";
 
 interface IProps {
   movieList: MovieAntdTableType[] | [];
@@ -35,9 +36,7 @@ const Trash = (props: IProps) => {
   const pathname = usePathname();
   const { replace } = useRouter();
 
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState<boolean>(false);
-  const [deleteLoadingState, setDeleteLoadingState] = useState<boolean>(false);
+  const [isLoading, setisLoading] = useState<boolean>(false);
   const [isFetching, setIsFetching] = useState<boolean>(false);
 
   useEffect(() => {
@@ -46,38 +45,11 @@ const Trash = (props: IProps) => {
     }
   }, [movieList]);
 
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleOkUpdateModal = () => {
-    setIsUpdateModalOpen(false);
-  };
-
-  const handleCancelUpdateModal = () => {
-    setIsUpdateModalOpen(false);
-  };
-
-  const handleUpdateModalOpen = async (movieId: any) => {
-    console.log("movieId: ", movieId);
-
-    dispatch(setMovieId(movieId));
-    setIsUpdateModalOpen(true);
-  };
-
   const handleTableChange = (
     pagination: any,
     filter: any,
     sorter: any,
-    extra: any
+    extra: any,
   ) => {
     if (pagination && pagination.current) {
       const params = new URLSearchParams(searchParams);
@@ -87,28 +59,43 @@ const Trash = (props: IProps) => {
     }
   };
 
-  const handleDelete = async (value: any) => {
-    setDeleteLoadingState(true);
-    const res = await deleteMovieAction(value);
-    setDeleteLoadingState(false);
-    if (res) return message.success("Movie deleted successfully!");
-    message.error("Failed to delete movie!");
+  const handleRestore = async (value: any) => {
+    setisLoading(true);
+    const res = await restoreMovieAction(value);
+    setisLoading(false);
+    if (res) return message.success("Movie restored successfully!");
+    message.error("Failed to restored movie!");
+  };
+
+  const handleClearAll = async () => {
+    try {
+      setisLoading(true);
+      const res = await Axios.delete(`Movies`, {
+        params: { status: "Deleted" },
+      });
+      message.success("All Movies are deleted successfully!");
+      setisLoading(false);
+    } catch (error) {
+      setisLoading(false);
+      message.error("Failed to clear all movie!");
+    }
   };
 
   return (
     <div>
       {contextHolder}
-      <div className="flex justify-end mb-8">
+      <div className="mb-8 flex justify-end">
         <button
-          onClick={showModal}
-          className="relative inline-flex active:scale-95 items-center justify-start px-5 py-3 overflow-hidden font-bold rounded-2xl group transition-all"
+          onClick={handleClearAll}
+          disabled={isLoading}
+          className="group relative inline-flex items-center justify-start overflow-hidden rounded-2xl px-5 py-3 font-bold transition-all active:scale-95"
         >
-          <span className="w-32 h-32 rotate-45 translate-x-12 -translate-y-2 absolute left-0 top-0 bg-white opacity-[3%]"></span>
-          <span className="absolute top-0 left-0 w-48 h-48 -mt-1 transition-all duration-500 ease-in-out rotate-45 -translate-x-56 -translate-y-24 bg-white opacity-100 group-hover:-translate-x-8"></span>
-          <span className="relative w-full text-left tracking-wide text-base text-white transition-colors duration-200 ease-in-out group-hover:text-gray-900">
-            Clear
+          <span className="absolute left-0 top-0 h-32 w-32 -translate-y-2 translate-x-12 rotate-45 bg-white opacity-[3%]"></span>
+          <span className="absolute left-0 top-0 -mt-1 h-48 w-48 -translate-x-56 -translate-y-24 rotate-45 bg-white opacity-100 transition-all duration-500 ease-in-out group-hover:-translate-x-8"></span>
+          <span className="relative w-full text-left text-base tracking-wide text-white transition-colors duration-200 ease-in-out group-hover:text-gray-900">
+            Clear All
           </span>
-          <span className="absolute inset-0 border-2 border-white rounded-2xl"></span>
+          <span className="absolute inset-0 rounded-2xl border-2 border-white"></span>
         </button>
       </div>
       <Table
@@ -197,10 +184,10 @@ const Trash = (props: IProps) => {
               <Popconfirm
                 title="Restore movie"
                 description="Are you sure to store this movie?"
-                onConfirm={() => handleDelete(val)}
+                onConfirm={() => handleRestore(val)}
               >
                 <Tooltip title="Restore" placement="bottom">
-                  <Button type="text" disabled={deleteLoadingState}>
+                  <Button type="text" disabled={isLoading}>
                     <i className="fa-solid fa-trash-undo text-[22px]"></i>
                   </Button>
                 </Tooltip>

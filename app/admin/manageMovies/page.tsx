@@ -1,4 +1,3 @@
-import { revalidateTagMovieListAction } from "@/components/actions";
 import ManageMovies from "@/components/adminPage/content/ManageMovies";
 import { CategoryType, MovieAntdTableType, MovieType } from "@/types";
 import { revalidatePath } from "next/cache";
@@ -32,7 +31,7 @@ export default async function page(props: any) {
   revalidatePath("admin/manageMovies");
   const res = await fetch(
     `${process.env.API_URL}/Movies?sortBy=createddate&page=${page}&eachPage=${LIMIT}&status=All`,
-    { next: { tags: ["movie-list"] } }
+    { cache: "no-store" },
   );
 
   const data = await res.json();

@@ -29,10 +29,12 @@ export default async function page(props: any) {
   };
 
   revalidatePath("admin/Trash");
-  const res = await fetch(`${process.env.API_URL}/Movies?status=Deleted}`, {
-    cache: "no-cache",
-  });
-
+  const res = await fetch(
+    `${process.env.API_URL}Movies?filterBy=deleted&page=${page}&eachPage=${LIMIT}&sortBy=dayDeleted`,
+    {
+      cache: "no-cache",
+    },
+  );
   const data = await res.json();
 
   const totalItems = Number(res.headers.get("x-total-element"));
