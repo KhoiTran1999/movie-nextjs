@@ -24,9 +24,9 @@ interface TopPageMovieProps {
 
 const TopPageMovie = async ({ previewMovie }: TopPageMovieProps) => {
   return (
-    <div className="relative h-[40svh] overflow-hidden text-white md:h-[80svh]">
+    <div className="relative overflow-hidden text-white">
       <>
-        <VideoPlayer trailer={previewMovie?.trailer} />
+        <VideoPlayer previewMovie={previewMovie} />
         <div
           style={{
             boxShadow: "0px -240px 44px -215px rgba(0,0,0,1) inset",
