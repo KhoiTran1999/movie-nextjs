@@ -1,7 +1,8 @@
+"use server";
+
 import Image from "next/image";
 import Link from "next/link";
 import NavigationFeature from "./NavigationFeature";
-import SearchMovie from "./SearchMovie";
 import User from "./User";
 
 const NavigationMovie = () => {
@@ -21,7 +22,7 @@ const NavigationMovie = () => {
           <NavigationFeature />
         </div>
         <div className="flex items-center justify-end pr-5">
-          <SearchMovie />
+          <i className="fa-solid fa-magnifying-glass cursor-pointer text-xl text-[#D1D0CF]"></i>
           <User />
         </div>
       </div>

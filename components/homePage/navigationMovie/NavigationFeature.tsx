@@ -1,23 +1,29 @@
-"use client";
+"use server";
 
-import { Menu } from "antd";
 import { homeItems } from "@/constant/homeItem";
-import { usePathname } from "next/navigation";
+import Link from "next/link";
 
-const NavigationFeature = () => {
-  const pathname = usePathname();
+interface homeItemProps {
+  href: string;
+  name: string;
+}
+
+const NavigationFeature = (props: any) => {
+  const page = props?.searchParams?.page ?? "Home";
 
   return (
-    <Menu
-      items={homeItems}
-      mode="horizontal"
-      selectedKeys={[pathname]}
-      style={{
-        fontWeight: 600,
-        fontSize: 16,
-        backgroundColor: "transparent",
-      }}
-    />
+    <ul className="flex items-center justify-center">
+      {homeItems?.map((val: homeItemProps, idx: number) => (
+        <li
+          key={idx}
+          className={`${val.name === page && "border-b-2 border-b-red-600"} mr-4 font-semibold`}
+        >
+          <div>
+            <Link href={val.href}>{val.name}</Link>
+          </div>
+        </li>
+      ))}
+    </ul>
   );
 };
 

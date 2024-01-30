@@ -29,8 +29,8 @@ export default async function page(props: any) {
   };
 
   revalidatePath("admin/Trash");
-  const res = await fetch(`${process.env.API_URL}/Movies?status=deleted}`, {
-    next: { tags: ["movie-list"] },
+  const res = await fetch(`${process.env.API_URL}/Movies?status=Deleted}`, {
+    cache: "no-cache",
   });
 
   const data = await res.json();

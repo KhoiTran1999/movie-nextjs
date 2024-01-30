@@ -1,45 +1,31 @@
 import type { MenuProps } from "antd";
 import Link from "next/link";
 
-export const homeItems: MenuProps["items"] = [
+interface homeItemProps {
+  href: string;
+  name: string;
+}
+
+export const homeItems: homeItemProps[] = [
   {
-    key: "/",
-    label: (
-      <div>
-        <Link href="/">Home</Link>
-      </div>
-    ),
+    href: "/?page=Home",
+    name: "Home",
   },
   {
-    key: "/CinemaFilm",
-    label: (
-      <div>
-        <Link href="/CinemaFilm">Cinema Film</Link>
-      </div>
-    ),
+    href: "/NewMovie?page=NewMovie",
+    name: "New Movie",
   },
   {
-    key: "/NewMovie",
-    label: (
-      <div>
-        <Link href="/NewMovie">New Movie</Link>
-      </div>
-    ),
+    href: "/CinemaFilm?page=CinemaFilm",
+    name: "Cinema Film",
+  },
+
+  {
+    href: "/StandaloneFilm?page=StandaloneFilm",
+    name: "Standalone Film",
   },
   {
-    key: "/StandaloneFilm",
-    label: (
-      <div>
-        <Link href="/StandaloneFilm">Standalone Film</Link>
-      </div>
-    ),
-  },
-  {
-    key: "/TVSeries",
-    label: (
-      <div>
-        <Link href="/TVSeries">TV Series</Link>
-      </div>
-    ),
+    href: "/TVSeries?page=TVSeries",
+    name: "TV Series",
   },
 ];

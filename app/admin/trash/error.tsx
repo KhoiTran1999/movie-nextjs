@@ -16,7 +16,7 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="w-[100svw] h-[100svh] flex justify-center items-center">
+    <div className="flex h-[100%] w-[100%] items-center justify-center">
       <Result
         status="500"
         title="500"
