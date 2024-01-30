@@ -24,27 +24,27 @@ interface TopPageMovieProps {
 
 const TopPageMovie = async ({ previewMovie }: TopPageMovieProps) => {
   return (
-    <div className="text-white overflow-hidden relative h-[80svh]">
+    <div className="relative h-[40svh] overflow-hidden text-white md:h-[80svh]">
       <>
         <VideoPlayer trailer={previewMovie?.trailer} />
         <div
           style={{
             boxShadow: "0px -240px 44px -215px rgba(0,0,0,1) inset",
           }}
-          className="text-[#D1D0CF] absolute z-9 top-1/2 max-[768px]:top-[30%] translate-y-[-50%] z-0 h-[80vh] w-screen px-12 flex flex-col justify-center"
+          className="z-9 absolute top-1/2 z-0 mt-6 flex h-[100%] w-[100%] translate-y-[-50%] flex-col items-center justify-center px-12 text-[#D1D0CF] md:mt-0 md:items-start"
         >
           <>
             <h1
-              className={`${rubik.className} lg:text-4xl text-2xl my-4 tracking-wider [word-spacing:5px] break-words line-clamp-[3] text-ellipsis overflow-hidden  md:w-2/3 w-4/5`}
+              className={`${rubik.className} order-1 my-4 line-clamp-[3] w-4/5 overflow-hidden text-ellipsis break-words text-center text-2xl tracking-wider [word-spacing:5px] md:w-2/3  md:text-left lg:text-4xl`}
             >
               {previewMovie?.englishName}
             </h1>
-            <p className="md:w-2/5 w-4/5 lg:text-base text-sm mb-4 max-h-[148px] break-words line-clamp-[3] text-ellipsis overflow-hidden ">
+            <p className=" order-3 mb-4 line-clamp-[3] max-h-[148px] w-0 overflow-hidden text-ellipsis break-words text-sm md:order-2 md:w-2/5 lg:text-base">
               {previewMovie?.description}
             </p>
-            <div className="mt-5 flex ">
+            <div className="order-2 mt-0 flex md:order-3 md:mt-5">
               <Link href={`/detail?id=${previewMovie?.movieId}`}>
-                <button className="md:w-32 md:text-base text-xs w-20 h-10 text-white rounded-md bg-[#b2afaf94] hover:bg-[#adaaaa64] transition-colors">
+                <button className="h-10 w-20 rounded-md bg-[#b2afaf94] text-xs text-white transition-colors hover:bg-[#adaaaa64] md:w-32 md:text-base">
                   <InfoCircleOutlined className="mr-3" />
                   Details
                 </button>

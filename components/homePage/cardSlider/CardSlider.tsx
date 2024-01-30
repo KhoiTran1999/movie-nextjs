@@ -47,12 +47,12 @@ const CardSlider = ({ title, movieList }: cardSliderProps) => {
     <div className="mb-3">
       <>
         <div>
-          <div className="group cursor-pointer inline-flex items-center w-fit">
-            <h2 className="font-bold text-2xl max-[528px]:text-lg hover:text-[#D1D0CF]">
+          <div className="group inline-flex w-fit cursor-pointer items-center">
+            <h2 className="text-2xl font-bold hover:text-[#D1D0CF] max-[528px]:text-lg">
               {title}
             </h2>
             <div
-              className={`invisible opacity-0 translate-x-[-20px] group-hover:visible group-hover:opacity-100 group-hover:translate-x-[0px] transition-all ml-3 text-[#E50914] font-bold flex justify-center items-center`}
+              className={`invisible ml-3 flex translate-x-[-20px] items-center justify-center font-bold text-[#E50914] opacity-0 transition-all group-hover:visible group-hover:translate-x-[0px] group-hover:opacity-100`}
             >
               <span className="mr-2">See all </span>
               <i className="fa-solid fa-angle-right text-sm"></i>
@@ -62,9 +62,9 @@ const CardSlider = ({ title, movieList }: cardSliderProps) => {
 
         {isLoading ? (
           <div className="flex">
-            <div className="h-[200px] w-[150px] animate-pulse bg-[#ffffff3f] rounded-md mr-3"></div>
-            <div className="h-[200px] w-[150px] animate-pulse bg-[#ffffff3f] rounded-md mr-3"></div>
-            <div className="h-[200px] w-[150px] animate-pulse bg-[#ffffff3f] rounded-md"></div>
+            <div className="mr-3 h-[140px] w-[120px] animate-pulse rounded-md bg-[#ffffff3f] md:h-[200px] md:w-[150px]"></div>
+            <div className="mr-3 h-[140px] w-[120px] animate-pulse rounded-md bg-[#ffffff3f] md:h-[200px] md:w-[150px]"></div>
+            <div className="h-[140px] w-[120px] animate-pulse rounded-md bg-[#ffffff3f] md:h-[200px] md:w-[150px]"></div>
           </div>
         ) : (
           <div onMouseEnter={handleOnMouseEnter} onMouseLeave={onMouseLeave}>
@@ -95,7 +95,6 @@ const CardSlider = ({ title, movieList }: cardSliderProps) => {
               modules={[Navigation, Scrollbar, A11y, Pagination]}
               loop
               longSwipes={true}
-              pagination={screen.width < 930}
             >
               {movieList.map((val: movieProps, idx: number) => (
                 <SwiperSlide key={idx}>

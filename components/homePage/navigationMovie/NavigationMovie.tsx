@@ -11,16 +11,16 @@ const NavigationMovie = () => {
         true
           ? "bg-gradient-to-b from-black to-transparent backdrop-blur-none"
           : "bg-black/20 backdrop-blur-lg"
-      } w-full pt-1 px-12  fixed z-[100] top-0 left-0 transition-all`}
+      } fixed left-0 top-0  z-[100] w-full px-4 pt-1 transition-all lg:px-12`}
     >
-      <div className="flex justify-between items-center max-w-[1200px] w-full m-auto ">
+      <div className="m-auto flex w-full max-w-[1200px] items-center justify-between ">
         <Link href="/">
           <Image src="/logo.png" alt="logo" width={100} height={50} />
         </Link>
-        <div>
+        <div className="hidden md:block">
           <NavigationFeature />
         </div>
-        <div className="pr-5 flex justify-end items-center">
+        <div className="flex items-center justify-end pr-5">
           <SearchMovie />
           <User />
         </div>
