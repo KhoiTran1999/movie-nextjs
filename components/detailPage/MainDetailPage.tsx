@@ -308,6 +308,7 @@ export default function MainDetailPage(props: MainDetailPage) {
             open={isEpisodeModalOpen}
             onCancel={handleCancel}
             footer={null}
+            styles={{ body: { paddingTop: "20px", paddingBottom: "10px" } }}
           >
             <EpisodeModal
               movieId={movieDetail.movieId}

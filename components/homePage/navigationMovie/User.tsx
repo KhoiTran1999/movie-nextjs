@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Dropdown, Divider, theme, Avatar, Tooltip } from "antd";
+import { Dropdown, Divider, theme, Avatar } from "antd";
 import type { MenuProps } from "antd";
 
 const { useToken } = theme;
@@ -70,31 +70,29 @@ const User = () => {
         <div style={contentStyle}>
           <div className="flex items-center ">
             <Avatar src="/avatar.jpg" size="large" />
-            <span className="max-w-[100px] font-semibold text-base ml-4 overflow-hidden text-ellipsis">
+            <span className="ml-4 max-w-[100px] overflow-hidden text-ellipsis text-base font-semibold">
               Admin
             </span>
           </div>
           <Divider
             style={{ margin: "10px 0px" }}
-            className="border-gray-500 border-1"
+            className="border-1 border-gray-500"
           />
           {React.cloneElement(menu as React.ReactElement, { style: menuStyle })}
           <Divider
             style={{ margin: "10px 0px" }}
-            className="border-gray-500 border-1"
+            className="border-1 border-gray-500"
           />
-          <div className="group flex justify-center items-center cursor-pointer">
-            <i className="fa-regular fa-arrow-right-from-bracket group-hover:text-[#E50914] text-lg mr-2"></i>
-            <span className="group-hover:text-[#E50914] font-medium">
+          <div className="group flex cursor-pointer items-center justify-center">
+            <i className="fa-regular fa-arrow-right-from-bracket mr-2 text-lg group-hover:text-[#E50914]"></i>
+            <span className="font-medium group-hover:text-[#E50914]">
               Logout
             </span>
           </div>
         </div>
       )}
     >
-      <Tooltip title="Account">
-        <UserOutlined className="text-[#D1D0CF] text-xl cursor-pointer ml-5" />
-      </Tooltip>
+      <UserOutlined className="ml-5 cursor-pointer text-xl text-[#D1D0CF]" />
     </Dropdown>
   );
 };
