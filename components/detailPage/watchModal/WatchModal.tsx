@@ -12,7 +12,7 @@ export const WatchModal = ({
   video,
 }: movieProps) => {
   return (
-    <div className="h-[70svh]">
+    <div className="md:h-[70svh]">
       <iframe
         src={`https://drive.google.com/file/d/${video}/preview`}
         width="100%"

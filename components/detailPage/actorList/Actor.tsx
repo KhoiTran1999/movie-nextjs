@@ -7,16 +7,19 @@ type castCharacteries = {
 
 export const Actor = ({ castCharacteries }: castCharacteries) => {
   return (
-    <div className="flex justify-start items-center flex-wrap">
+    <div className="flex flex-wrap items-center justify-start">
       {castCharacteries.length === 0
         ? "Empty Actor"
         : castCharacteries.map((val: castCharacteryType) => (
-            <div className="w-[18%] h-[150px] mr-2 mb-2" key={val.personId}>
+            <div
+              className="mb-2 mr-2 h-[100px] w-[18%] sm:h-[150px]"
+              key={val.personId}
+            >
               <LazyLoadImage
                 alt="Actors"
                 src={val.thumbnail}
                 effect="blur"
-                className="h-[150px] w-full object-cover rounded-md"
+                className="h-full w-full rounded-md object-cover"
                 onError={(e) => {
                   e.currentTarget.onerror = null;
                   e.currentTarget.src = "/errorThumbnail.jpg";
