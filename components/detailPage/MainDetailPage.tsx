@@ -160,7 +160,7 @@ export default function MainDetailPage(props: MainDetailPage) {
               <div className="flex items-center">
                 <div className="w-[60%]">
                   <h1
-                    className={`${rubik.className} my-4 w-full text-5xl tracking-wider  [word-spacing:5px]`}
+                    className={`${rubik.className} my-2 w-full text-2xl tracking-wider [word-spacing:5px] md:my-4  md:text-5xl`}
                   >
                     {movieDetail.englishName}
                   </h1>
