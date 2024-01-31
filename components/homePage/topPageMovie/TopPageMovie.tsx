@@ -77,7 +77,7 @@ const TopPageMovie = async ({ previewMovie }: TopPageMovieProps) => {
                 </button>
               </Link>
             </div>
-            <div className="absolute bottom-[30%] right-2 rounded bg-[red] p-1 text-[10px] font-medium sm:text-xs ">
+            <div className="absolute bottom-[30%] right-2 rounded bg-[red] p-1 text-[10px] font-medium text-white sm:text-xs ">
               {previewMovie?.tag}
             </div>
           </>
