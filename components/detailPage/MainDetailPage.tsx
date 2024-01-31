@@ -26,7 +26,7 @@ const rubik = Rubik_Dirt({
 
 interface MainDetailPage {
   movieDetail: MovieDetailType;
-  recommendedMovie: MovieType[];
+  recommendedMovie?: MovieType[];
 }
 
 export default function MainDetailPage(props: MainDetailPage) {
@@ -132,29 +132,26 @@ export default function MainDetailPage(props: MainDetailPage) {
         </div>
       ) : (
         <div>
-          {movieDetail ? (
-            <div
-              className="absolute h-screen w-screen brightness-[0.3]"
-              style={{
-                background: `url("${movieDetail.thumbnail}"`,
-                backgroundSize: "cover",
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "center center",
-                boxShadow: "0px -240px 44px -215px rgba(0,0,0,1) inset",
-              }}
-            ></div>
-          ) : (
-            <div
-              className="absolute h-screen w-screen brightness-[0.3]"
-              style={{
-                backgroundImage: `url("/errorThumbnail.jpg")`,
-                backgroundSize: "cover",
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "center center",
-                boxShadow: "0px -240px 44px -215px rgba(0,0,0,1) inset",
-              }}
-            ></div>
-          )}
+          <div
+            className="absolute h-screen w-screen brightness-[0.3]"
+            style={{
+              backgroundImage: `url("/errorThumbnail.jpg")`,
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center center",
+              boxShadow: "0px -240px 44px -215px rgba(0,0,0,1) inset",
+            }}
+          ></div>
+          <div
+            className="absolute h-screen w-screen brightness-[0.3]"
+            style={{
+              background: `url("${movieDetail.thumbnail}"`,
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center center",
+              boxShadow: "0px -240px 44px -215px rgba(0,0,0,1) inset",
+            }}
+          ></div>
 
           <div
             className={`m-auto w-full max-w-[1200px] px-3 py-8 backdrop-blur-sm`}
