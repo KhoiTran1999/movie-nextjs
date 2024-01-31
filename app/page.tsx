@@ -4,6 +4,7 @@ import CardSliderStandalone from "@/components/homePage/cardSlider/cardSliderFea
 import CardSliderTVSeriesMovie from "@/components/homePage/cardSlider/cardSliderFeature/CardSliderTVSeriesMovie";
 import NavigationMovie from "@/components/homePage/navigationMovie/NavigationMovie";
 import TopPageMovie from "@/components/homePage/topPageMovie/TopPageMovie";
+import { CategoryType } from "@/types";
 
 interface previewMovieProps {
   description: string;
@@ -12,6 +13,7 @@ interface previewMovieProps {
   vietnamName: string;
   trailer: string;
   thumbnail: string;
+  categories: CategoryType[];
 }
 
 export default async function Home() {
@@ -25,7 +27,7 @@ export default async function Home() {
     <main>
       <NavigationMovie />
       <TopPageMovie previewMovie={previewMovie} />
-      <div className="absolute top-[33%] h-fit w-full px-3 pb-5 sm:px-12 md:top-[63%]">
+      <div className="absolute top-[40%] h-fit w-full px-3 pb-5 sm:top-[63%] sm:px-12">
         <CardSliderNewMovie />
         <CardSliderStandalone />
         <CardSliderCinemaMovie />

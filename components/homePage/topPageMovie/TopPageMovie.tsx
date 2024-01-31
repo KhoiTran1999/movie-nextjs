@@ -2,6 +2,7 @@ import { Rubik_Dirt } from "@next/font/google";
 import Link from "next/link";
 import VideoPlayer from "./component/VideoPlayer";
 import { InfoCircleOutlined } from "@ant-design/icons";
+import { CategoryType } from "@/types";
 
 const rubik = Rubik_Dirt({
   subsets: ["latin"],
@@ -16,6 +17,7 @@ interface previewMovieProps {
   vietnamName: string;
   trailer: string;
   thumbnail: string;
+  categories: CategoryType[];
 }
 
 interface TopPageMovieProps {
@@ -39,16 +41,43 @@ const TopPageMovie = async ({ previewMovie }: TopPageMovieProps) => {
             >
               {previewMovie?.englishName}
             </h1>
-            <p className=" order-3 mb-4 line-clamp-[3] max-h-[148px] w-0 overflow-hidden text-ellipsis break-words text-sm md:order-2 md:w-2/5 lg:text-base">
+
+            <p className=" order-4 mb-4 line-clamp-[3] max-h-[148px] w-0 overflow-hidden text-ellipsis break-words text-sm md:order-2  md:w-2/5 lg:text-base">
               {previewMovie?.description}
             </p>
-            <div className="order-2 mt-0 flex md:order-3 md:mt-5">
+            <ul className="order-2 mb-2 mt-0 flex flex-wrap items-center md:order-3 md:mt-4">
+              {previewMovie?.categories.map(
+                (val: { categoryId: number; name: string }, idx: number) => {
+                  if (idx + 1 < previewMovie?.categories.length) {
+                    return (
+                      <li className="mr-2" key={val.categoryId}>
+                        <span className="mr-2 cursor-pointer text-sm hover:text-[#E50914]">
+                          {val.name}
+                        </span>
+                        <i className="fa-solid fa-circle-small text-[7px] text-[#E50914]"></i>
+                      </li>
+                    );
+                  }
+                  return (
+                    <li className="mr-2" key={val.categoryId}>
+                      <span className=" cursor-pointer text-sm hover:text-[#E50914]">
+                        {val.name}
+                      </span>
+                    </li>
+                  );
+                },
+              )}
+            </ul>
+            <div className="order-3 mt-0 flex md:order-4 md:mt-4">
               <Link href={`/detail?id=${previewMovie?.movieId}`}>
                 <button className="h-10 w-20 rounded-md bg-[#b2afaf94] text-xs text-white transition-colors hover:bg-[#adaaaa64] md:w-32 md:text-base">
                   <InfoCircleOutlined className="mr-3" />
                   Details
                 </button>
               </Link>
+            </div>
+            <div className="absolute bottom-[30%] right-2 rounded bg-[red] p-1 text-[10px] font-medium sm:text-xs ">
+              Top Rating
             </div>
           </>
         </div>
