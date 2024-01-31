@@ -22,7 +22,7 @@ const NavigationMovie = () => {
           <NavigationFeature />
         </div>
         <div className="flex items-center justify-end pr-5">
-          <i className="fa-solid fa-magnifying-glass cursor-pointer text-xl text-[#D1D0CF]"></i>
+          <i className="fa-regular fa-magnifying-glass cursor-pointer text-xl text-[#D1D0CF]"></i>
           <User />
         </div>
       </div>

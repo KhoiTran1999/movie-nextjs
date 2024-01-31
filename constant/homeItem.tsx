@@ -8,24 +8,24 @@ interface homeItemProps {
 
 export const homeItems: homeItemProps[] = [
   {
-    href: "/?page=Home",
+    href: "/?current=Home",
     name: "Home",
   },
   {
-    href: "/NewMovie?page=NewMovie",
+    href: "/feture?current=NewMovie",
     name: "New Movie",
   },
   {
-    href: "/CinemaFilm?page=CinemaFilm",
+    href: "/feture?current=1",
     name: "Cinema Film",
   },
 
   {
-    href: "/StandaloneFilm?page=StandaloneFilm",
+    href: "/feture?current=2",
     name: "Standalone Film",
   },
   {
-    href: "/TVSeries?page=TVSeries",
+    href: "/feture?current=3",
     name: "TV Series",
   },
 ];

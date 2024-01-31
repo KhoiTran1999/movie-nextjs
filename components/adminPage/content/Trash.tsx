@@ -4,13 +4,10 @@ import { Button, Table, Tag, Popconfirm, message, Tooltip } from "antd";
 import { useEffect, useState } from "react";
 
 import { categoryItems } from "@/constant/categories";
-import CreateMovieModal from "./CreateMovieModal";
 import { useDispatch } from "react-redux";
-import UpdateMovieModal from "./UpdateMovieModal";
-import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { MovieAntdTableType } from "@/types";
-import { deleteMovieAction, restoreMovieAction } from "@/components/actions";
+import { restoreMovieAction } from "@/components/actions";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import Axios from "@/utils/axios";
 
@@ -72,6 +69,7 @@ const Trash = (props: IProps) => {
       setisLoading(true);
       const res = await Axios.delete(`Movies`, {
         params: { status: "Deleted" },
+        withCredentials: true,
       });
       message.success("All Movies are deleted successfully!");
       setisLoading(false);
@@ -88,7 +86,7 @@ const Trash = (props: IProps) => {
         <button
           onClick={handleClearAll}
           disabled={isLoading}
-          className="group relative inline-flex items-center justify-start overflow-hidden rounded-2xl px-5 py-3 font-bold transition-all active:scale-95"
+          className={`${isLoading && "textgr cursor-not-allowed"} group relative inline-flex items-center justify-start overflow-hidden rounded-2xl px-5 py-3 font-bold transition-all active:scale-95`}
         >
           <span className="absolute left-0 top-0 h-32 w-32 -translate-y-2 translate-x-12 rotate-45 bg-white opacity-[3%]"></span>
           <span className="absolute left-0 top-0 -mt-1 h-48 w-48 -translate-x-56 -translate-y-24 rotate-45 bg-white opacity-100 transition-all duration-500 ease-in-out group-hover:-translate-x-8"></span>

@@ -2,7 +2,7 @@
 
 import { revalidatePath, revalidateTag } from "next/cache";
 
-export const deleteMovieAction = async(movieId: string)=>{
+export const deleteMovieAction = async(movieId: string):Promise<boolean>=>{
     try {
         await fetch(`${process.env.API_URL}/Movie/${movieId}`, {method: "DELETE"});
         revalidatePath("admin/manageMovies");
@@ -12,7 +12,7 @@ export const deleteMovieAction = async(movieId: string)=>{
     }
 }
 
-export const restoreMovieAction = async(movieId: string)=>{
+export const restoreMovieAction = async(movieId: string):Promise<boolean>=>{
     try {
         await fetch(`${process.env.API_URL}/Movie/${movieId}?status=Revert`,{method: "PATCH"});
         revalidatePath("admin/trash");
@@ -36,4 +36,8 @@ export const getSeasonListAction = async(movieId: string, seasonNumber?: number)
 
 export const revalidateTagSeasonListAction = async()=>{
     revalidateTag("season-list");
+}
+
+export const revalidateTagMovieListAction = async() => {
+    revalidateTag("movie-list")
 }

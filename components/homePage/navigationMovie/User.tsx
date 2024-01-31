@@ -92,7 +92,7 @@ const User = () => {
         </div>
       )}
     >
-      <UserOutlined className="ml-5 cursor-pointer text-xl text-[#D1D0CF]" />
+      <i className="fa-light fa-user ml-5 cursor-pointer text-xl text-[#D1D0CF]"></i>
     </Dropdown>
   );
 };
