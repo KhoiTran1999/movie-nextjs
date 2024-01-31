@@ -51,16 +51,16 @@ const TopPageMovie = async ({ previewMovie }: TopPageMovieProps) => {
                   if (idx + 1 < previewMovie?.categories.length) {
                     return (
                       <li className="mr-2" key={val.categoryId}>
-                        <span className="mr-2 cursor-pointer text-sm hover:text-[#E50914]">
+                        <span className="mr-2 cursor-pointer text-[12px] hover:text-[#E50914] sm:text-sm">
                           {val.name}
                         </span>
-                        <i className="fa-solid fa-circle-small text-[7px] text-[#E50914]"></i>
+                        <i className="fa-solid fa-circle-small text-[7px]  text-[#E50914]"></i>
                       </li>
                     );
                   }
                   return (
                     <li className="mr-2" key={val.categoryId}>
-                      <span className=" cursor-pointer text-sm hover:text-[#E50914]">
+                      <span className=" cursor-pointer text-[12px] hover:text-[#E50914] sm:text-sm">
                         {val.name}
                       </span>
                     </li>
