@@ -6,7 +6,7 @@ export default async function Detail(props: any) {
   let movieDetail;
   try {
     const res = await fetch(`${process.env.API_URL}/Movie/${movieId}`, {
-      cache: "no-store",
+      next: { revalidate: 3600 },
     });
     movieDetail = await res.json();
   } catch (error) {
@@ -19,8 +19,8 @@ export default async function Detail(props: any) {
     const res = await fetch(
       `${process.env.API_URL}/Movies?page=1&eachPage=100`,
       {
-        cache: "no-store",
-      }
+        next: { revalidate: 3600 },
+      },
     );
     recommendedMovie = await res.json();
   } catch (error) {

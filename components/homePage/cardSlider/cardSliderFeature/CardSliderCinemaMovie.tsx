@@ -5,7 +5,7 @@ import CardSlider from "../CardSlider";
 const CardSliderCinemaMovie = async () => {
   const res = await fetch(
     `${process.env.API_URL}/Movies?filterBy=feature&key=2&sortBy=produceddate&page=1&eachPage=10`,
-    { cache: "no-store" }
+    { next: { revalidate: 3600 } },
   );
   const cinemaMovieList = await res.json();
 

@@ -16,7 +16,7 @@ interface previewMovieProps {
 
 export default async function Home() {
   const res = await fetch(`${process.env.API_URL}/Movies/Newest`, {
-    cache: "no-store",
+    next: { revalidate: 3600 },
   });
 
   const previewMovie: previewMovieProps = await res.json();
