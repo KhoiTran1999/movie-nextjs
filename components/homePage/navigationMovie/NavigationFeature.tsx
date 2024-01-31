@@ -1,5 +1,3 @@
-"use server";
-
 import { homeItems } from "@/constant/homeItem";
 import Link from "next/link";
 

@@ -1,3 +1,5 @@
+"use client";
+
 type movieProps = {
   seasonNumber: number;
   episodeNumber: number;

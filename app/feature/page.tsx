@@ -1,4 +1,4 @@
-export default async function Feture(props: any) {
+export default async function Feature(props: any) {
   const current = props?.searchParams?.current;
 
   let movieList;

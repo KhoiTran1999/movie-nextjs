@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 import { Select, Spin, Modal } from "antd";
 import { CaretRightFilled } from "@ant-design/icons";
@@ -51,8 +53,6 @@ export const EpisodeModal = ({
   const [seasonNumber, setSeasonNumber] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isWatchModalOpen, setIsWatchModalOpen] = useState<boolean>(false);
-  const [isDestroyWatchModal, setIsDestroyWatchModal] =
-    useState<boolean>(false);
   const [watchMovie, setWatchMovie] = useState<watchMovieType>({
     episodeNumber: 1,
     seasonNumber: 1,
@@ -72,7 +72,7 @@ export const EpisodeModal = ({
     const fetchAPI = async () => {
       setIsLoading(true);
       const res = await fetch(
-        `${process.env.API_URL}/Seasons?movieId=${movieId}&seasonNumber=${seasonNumber}`
+        `${process.env.API_URL}/Seasons?movieId=${movieId}&seasonNumber=${seasonNumber}`,
       );
       const data = await res.json();
 
@@ -85,31 +85,25 @@ export const EpisodeModal = ({
   const hanldeClickEpisode = (
     episodeNumber: number,
     name: string,
-    video: string
+    video: string,
   ) => {
     setIsWatchModalOpen(true);
     setWatchMovie({ episodeNumber, seasonNumber, name, video });
-    setIsDestroyWatchModal(false);
   };
 
   const handleCancelWatch = () => {
     setIsWatchModalOpen(false);
-    setIsDestroyWatchModal(true);
-  };
-
-  const handleAfterClose = () => {
-    setIsDestroyWatchModal(true);
   };
 
   return (
     <div>
-      <div className=" flex justify-between items-center">
+      <div className=" flex items-center justify-between">
         <h3 className="text-2xl">Episode</h3>
         {totalSeasons > 1 ? (
           <Select
             defaultValue={1}
             onChange={(val: number) => setSeasonNumber(val)}
-            options={optionSelectRef.current()}
+            // options={optionSelectRef.current()}
             size="large"
           />
         ) : (
@@ -118,26 +112,26 @@ export const EpisodeModal = ({
       </div>
       <div className="mt-6">
         {isLoading ? (
-          <div className="flex justify-center items-center">
+          <div className="flex items-center justify-center">
             <Spin />
           </div>
         ) : (
-          <ul className="px-3 max-h-[70svh] overflow-y-auto">
+          <ul className="max-h-[70svh] overflow-y-auto px-3">
             {season?.episodes.map((val: episodeProps, idx) => (
               <li
                 key={idx}
                 onClick={() =>
                   hanldeClickEpisode(val.episodeNumber, val.name, val.video)
                 }
-                className="group hover:scale-105 px-5 py-2 mb-4 bg-[#605f5f96] rounded-md flex justify-between items-center cursor-pointer transition-all relative"
+                className="group relative mb-4 flex cursor-pointer items-center justify-between rounded-md bg-[#605f5f96] px-5 py-2 transition-all hover:scale-105"
               >
                 <span className={`${rubik.className} text-4xl font-bold`}>
                   {val.episodeNumber}
                 </span>
-                <span className="text-xl mx-4 font-semibold max-w-[320px]">
+                <span className="mx-4 max-w-[320px] text-xl font-semibold">
                   {val.name}
                 </span>
-                <CaretRightFilled className="text-2xl opacity-0 translate-x-[-100px] group-hover:translate-x-0 group-hover:opacity-100 transition-all" />
+                <CaretRightFilled className="translate-x-[-100px] text-2xl opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100" />
               </li>
             ))}
             <Modal
@@ -147,8 +141,7 @@ export const EpisodeModal = ({
               onCancel={handleCancelWatch}
               footer={null}
               styles={{ body: { paddingTop: "20px", paddingBottom: "10px" } }}
-              afterClose={handleAfterClose}
-              destroyOnClose={isDestroyWatchModal}
+              destroyOnClose={!isWatchModalOpen}
               title={`${
                 !watchMovie.name
                   ? englishName + " - Episode " + watchMovie.episodeNumber

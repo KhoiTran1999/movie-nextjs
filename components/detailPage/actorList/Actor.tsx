@@ -1,3 +1,5 @@
+"use client";
+
 import { castCharacteryType } from "@/types";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 

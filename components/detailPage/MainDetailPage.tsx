@@ -38,11 +38,7 @@ export default function MainDetailPage(props: MainDetailPage) {
   const [loadingMovie, setLoadingMovie] = useState<boolean>(false);
   const [isEpisodeModalOpen, setIsEpisodeModalOpen] = useState<boolean>(false);
   const [isWatchModalOpen, setIsWatchModalOpen] = useState<boolean>(false);
-  const [isDestroyWatchModal, setIsDestroyWatchModal] =
-    useState<boolean>(false);
   const [isTrailerModalOpen, setIsTrailerModalOpen] = useState<boolean>(false);
-  const [isDestroyTrailerModal, setIsDestroyTrailerModal] =
-    useState<boolean>(false);
   const [watchMovie, setWatchMovie] = useState<SeasonMovieDetail>({
     seasonId: "",
     seasonNumber: 1,
@@ -63,7 +59,7 @@ export default function MainDetailPage(props: MainDetailPage) {
     if (movieDetail) {
       setIsSkeleton(false);
     }
-  }, [props]);
+  }, [movieDetail]);
 
   const showModal = async () => {
     setLoadingMovie(true);
@@ -89,9 +85,7 @@ export default function MainDetailPage(props: MainDetailPage) {
       console.log(error);
       setLoadingMovie(false);
     }
-    setIsDestroyWatchModal(false);
     setIsWatchModalOpen(true);
-
     setLoadingMovie(false);
   };
 
@@ -102,22 +96,15 @@ export default function MainDetailPage(props: MainDetailPage) {
 
   const handleCancelWatch = () => {
     setIsWatchModalOpen(false);
-    setIsDestroyWatchModal(true);
     dispatch(setMovieId(""));
   };
 
   const handleCancelTrailer = () => {
-    setIsDestroyTrailerModal(true);
     setIsTrailerModalOpen(false);
-  };
-
-  const handleAfterClose = () => {
-    setIsDestroyWatchModal(true);
   };
 
   const handleOpenTrailerModal = () => {
     setIsTrailerModalOpen(true);
-    setIsDestroyTrailerModal(false);
   };
 
   return (
@@ -125,10 +112,22 @@ export default function MainDetailPage(props: MainDetailPage) {
       <NavigationMovie />
       {isSkeleton ? (
         <div className="m-auto mt-14 w-full max-w-[700px]">
-          <div className="flex">
-            <div className="mr-3 h-[150px] w-[240px] animate-pulse rounded-md bg-[#ffffff3f]"></div>
-            <div className="mr-3 h-[150px] w-[240px] animate-pulse rounded-md bg-[#ffffff3f]"></div>
-            <div className="h-[150px] w-[240px] animate-pulse rounded-md bg-[#ffffff3f]"></div>
+          <div className="my-20 flex items-center justify-center ">
+            <div className="flex w-[240px] flex-col justify-center">
+              <div className="mb-2 h-8 w-[100%] animate-pulse rounded-md bg-[#ffffff3f]"></div>
+              <div className="mb-2 h-4 w-[60%] animate-pulse rounded-md bg-[#ffffff3f]"></div>
+              <div className="mb-2 h-4 w-[30%] animate-pulse rounded-md bg-[#ffffff3f]"></div>
+              <div className="h-4 w-[40%] animate-pulse rounded-md bg-[#ffffff3f]"></div>
+            </div>
+            <div className="mx-5 h-[200px] w-[150px] animate-pulse rounded-md bg-[#ffffff3f]"></div>
+          </div>
+          <div className="mx-5 mb-5 max-w-[700px] border-t border-[#ffffff3f] px-3"></div>
+          <div className="m-auto mt-14 w-full max-w-[700px] px-3">
+            <div className="flex items-center justify-center">
+              <div className="mr-3 h-[200px] w-[150px] animate-pulse rounded-md bg-[#ffffff3f]"></div>
+              <div className="mr-3 h-[200px] w-[150px] animate-pulse rounded-md bg-[#ffffff3f]"></div>
+              <div className="h-[200px] w-[150px] animate-pulse rounded-md bg-[#ffffff3f]"></div>
+            </div>
           </div>
         </div>
       ) : (
@@ -247,7 +246,12 @@ export default function MainDetailPage(props: MainDetailPage) {
                 >
                   {movieDetail.totalSeasons > 0 ? (
                     <>
-                      <i className="fa-duotone fa-play mr-2 text-xl"></i>
+                      {loadingMovie ? (
+                        <i className="fa-solid fa-circle-notch mr-2 animate-spin text-xl"></i>
+                      ) : (
+                        <i className="fa-duotone fa-play mr-2 text-xl"></i>
+                      )}
+
                       <span>Play</span>
                     </>
                   ) : (
@@ -323,9 +327,8 @@ export default function MainDetailPage(props: MainDetailPage) {
             onCancel={handleCancelWatch}
             footer={null}
             styles={{ body: { paddingTop: "20px", paddingBottom: "10px" } }}
-            afterClose={handleAfterClose}
             title={movieDetail.englishName}
-            destroyOnClose={isDestroyWatchModal}
+            destroyOnClose={!isWatchModalOpen}
           >
             <WatchModal
               episodeNumber={watchMovie?.episodes[0]?.episodeNumber}
@@ -341,7 +344,7 @@ export default function MainDetailPage(props: MainDetailPage) {
             footer={null}
             styles={{ body: { paddingTop: "20px", paddingBottom: "10px" } }}
             onCancel={handleCancelTrailer}
-            destroyOnClose={isDestroyTrailerModal}
+            destroyOnClose={!isTrailerModalOpen}
           >
             <div className="h-[30svh] sm:h-[70svh]">
               <ReactPlayer
