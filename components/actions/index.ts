@@ -41,3 +41,6 @@ export const revalidateTagSeasonListAction = async()=>{
 export const revalidateTagMovieListAction = async() => {
     revalidateTag("movie-list")
 }
+export const revalidatePathTrashAction = async() => {
+    revalidatePath("admin/Trash");
+}

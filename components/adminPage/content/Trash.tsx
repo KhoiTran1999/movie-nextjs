@@ -7,7 +7,10 @@ import { categoryItems } from "@/constant/categories";
 import { useDispatch } from "react-redux";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { MovieAntdTableType } from "@/types";
-import { restoreMovieAction } from "@/components/actions";
+import {
+  restoreMovieAction,
+  revalidatePathTrashAction,
+} from "@/components/actions";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import Axios from "@/utils/axios";
 
@@ -69,8 +72,8 @@ const Trash = (props: IProps) => {
       setisLoading(true);
       const res = await Axios.delete(`Movies`, {
         params: { status: "Deleted" },
-        withCredentials: true,
       });
+      await revalidatePathTrashAction();
       message.success("All Movies are deleted successfully!");
       setisLoading(false);
     } catch (error) {
@@ -86,12 +89,15 @@ const Trash = (props: IProps) => {
         <button
           onClick={handleClearAll}
           disabled={isLoading}
-          className={`${isLoading && "textgr cursor-not-allowed"} group relative inline-flex items-center justify-start overflow-hidden rounded-2xl px-5 py-3 font-bold transition-all active:scale-95`}
+          className={`${isLoading && "cursor-not-allowed text-gray-600"} group relative inline-flex items-center justify-start overflow-hidden rounded-2xl px-5 py-3 font-bold transition-all active:scale-95`}
         >
           <span className="absolute left-0 top-0 h-32 w-32 -translate-y-2 translate-x-12 rotate-45 bg-white opacity-[3%]"></span>
           <span className="absolute left-0 top-0 -mt-1 h-48 w-48 -translate-x-56 -translate-y-24 rotate-45 bg-white opacity-100 transition-all duration-500 ease-in-out group-hover:-translate-x-8"></span>
           <span className="relative w-full text-left text-base tracking-wide text-white transition-colors duration-200 ease-in-out group-hover:text-gray-900">
-            Clear All
+            {isLoading && (
+              <i className="fa-sharp fa-solid fa-rotate-right mr-2 animate-spin text-white"></i>
+            )}
+            <span>Clear All</span>
           </span>
           <span className="absolute inset-0 rounded-2xl border-2 border-white"></span>
         </button>

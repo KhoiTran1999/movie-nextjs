@@ -1,6 +1,7 @@
 import { revalidatePath } from "next/cache";
 import Trash from "../../../components/adminPage/content/Trash";
 import { CategoryType, MovieAntdTableType, MovieType } from "@/types";
+import Axios from "@/utils/axios";
 
 export default async function page(props: any) {
   const LIMIT = 5;
