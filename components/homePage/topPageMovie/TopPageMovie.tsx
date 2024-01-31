@@ -17,6 +17,7 @@ interface previewMovieProps {
   vietnamName: string;
   trailer: string;
   thumbnail: string;
+  tag: string;
   categories: CategoryType[];
 }
 
@@ -77,7 +78,7 @@ const TopPageMovie = async ({ previewMovie }: TopPageMovieProps) => {
               </Link>
             </div>
             <div className="absolute bottom-[30%] right-2 rounded bg-[red] p-1 text-[10px] font-medium sm:text-xs ">
-              Top Rating
+              {previewMovie?.tag}
             </div>
           </>
         </div>

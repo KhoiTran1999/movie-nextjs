@@ -13,6 +13,7 @@ interface previewMovieProps {
   vietnamName: string;
   trailer: string;
   thumbnail: string;
+  tag: string;
   categories: CategoryType[];
 }
 
