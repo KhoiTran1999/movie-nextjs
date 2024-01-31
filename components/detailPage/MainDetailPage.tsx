@@ -156,10 +156,10 @@ export default function MainDetailPage(props: MainDetailPage) {
           <div className="backdrop-blur-sm">
             <div className={`m-auto w-full max-w-[1200px] px-3 py-8`}>
               <div className="m-auto mt-14 w-full max-w-[700px] text-[#D1D0CF]">
-                <div className="flex items-center">
-                  <div className="w-[60%]">
+                <div className="flex items-center justify-start">
+                  <div className="w-fit">
                     <h1
-                      className={`${rubik.className} my-2 w-full text-2xl tracking-wider [word-spacing:5px] md:my-4  md:text-5xl`}
+                      className={`${rubik.className} my-2 w-full text-2xl tracking-wider [word-spacing:5px] md:my-4 md:text-4xl`}
                     >
                       {movieDetail.englishName}
                     </h1>
@@ -205,7 +205,7 @@ export default function MainDetailPage(props: MainDetailPage) {
                       </ul>
                     </div>
                   </div>
-                  <div className="w-[30%] overflow-hidden">
+                  <div className="ml-3 w-[30%] overflow-hidden">
                     <LazyLoadImage
                       alt="Thumbnail"
                       src={movieDetail.thumbnail}
