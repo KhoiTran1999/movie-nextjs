@@ -17,7 +17,8 @@ const ReactPlayer = dynamic(() => import("react-player/youtube"), {
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { MovieDetailType, MovieType, SeasonMovieDetail } from "@/types";
 import CardMovie from "../homePage/cardSlider/CardMovie";
-import Image from "next/image";
+import { getRecommendedMovieListAction } from "../actions";
+import {useInView} from "react-intersection-observer"
 
 const rubik = Rubik_Dirt({
   subsets: ["latin"],
@@ -27,14 +28,21 @@ const rubik = Rubik_Dirt({
 
 interface MainDetailPage {
   movieDetail: MovieDetailType;
-  recommendedMovie?: MovieType[];
+  initialRecommendedMovie: MovieType[];
+  totalItems:number
 }
 
 export default function MainDetailPage(props: MainDetailPage) {
-  const { movieDetail, recommendedMovie } = props;
-
+  const { movieDetail, initialRecommendedMovie, totalItems } = props;
+  console.log("initialRecommendedMovie: ", initialRecommendedMovie);
+  console.log("totalItems: ", totalItems);
+  
+  const [ref, inView] = useInView()
+  
   const dispatch = useDispatch();
 
+  const [recommendedMovie, setRecommendedMovie] = useState<MovieType[]>(initialRecommendedMovie);
+  const [pageNumber, setPageNumber] = useState<number>(1);
   const [isSkeleton, setIsSkeleton] = useState<boolean>(false);
   const [loadingMovie, setLoadingMovie] = useState<boolean>(false);
   const [isEpisodeModalOpen, setIsEpisodeModalOpen] = useState<boolean>(false);
@@ -61,6 +69,21 @@ export default function MainDetailPage(props: MainDetailPage) {
       setIsSkeleton(false);
     }
   }, [movieDetail]);
+
+  useEffect(()=>{
+    if(inView) {
+      loadMoreMovies();
+    }
+  }, [inView])
+
+  const loadMoreMovies = async() => {
+    const next = pageNumber+1
+    const data = await getRecommendedMovieListAction(movieDetail.movieId, next);
+      if(data.length) {
+        setPageNumber(next);
+        return setRecommendedMovie((prev:MovieType[] | undefined)=>([...(prev?.length ? prev:[]), ...data.data]))
+      } 
+  }
 
   const showModal = async () => {
     setLoadingMovie(true);
@@ -250,7 +273,7 @@ export default function MainDetailPage(props: MainDetailPage) {
                     {movieDetail.totalSeasons > 0 ? (
                       <>
                         {loadingMovie ? (
-                          <i className="fa-solid fa-circle-notch mr-2 animate-spin text-xl"></i>
+                          <i className="fa-duotone fa-spinner-third mr-2 animate-spin text-xl"></i>
                         ) : (
                           <i className="fa-duotone fa-play mr-2 text-xl"></i>
                         )}
@@ -299,7 +322,7 @@ export default function MainDetailPage(props: MainDetailPage) {
                 <h3 className="text-2xl font-bold text-red-700">
                   Recommended Movie
                 </h3>
-                <List
+                {recommendedMovie?.length ? <List
                   dataSource={recommendedMovie}
                   grid={{
                     xs: 3,
@@ -323,7 +346,11 @@ export default function MainDetailPage(props: MainDetailPage) {
                       />
                     </div>
                   )}
-                />
+                />:<></>}
+                { totalItems>recommendedMovie.length  && totalItems>initialRecommendedMovie.length ? <div className="flex justify-center mt-6">
+                  <i ref={ref} className="fa-duotone fa-spinner-third text-5xl text-[red] animate-spin"></i>
+                </div>:<></>}
+                
               </div>
             </div>
           </div>

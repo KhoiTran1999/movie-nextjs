@@ -1,7 +1,7 @@
 interface StatisticType {
   upcoming: number;
   pending: number;
-  release: number;
+  released: number;
   deleted: number;
   account: number;
 }
@@ -26,7 +26,7 @@ const Dashboard = (props: StatisticType) => {
       <div className="relative mb-5 mr-5 w-60 rounded-md bg-gradient-to-r from-[#AFC8AD] to-[#88AB8E] p-5 text-center shadow-[0_0_10px_5px_#88AB8E9f]">
         <h3 className="text-lg font-semibold text-white">Released</h3>
         <p className="mt-2 text-4xl font-bold text-white">
-          {props.release ?? 0}
+          {props.released ?? 0}
         </p>
         <i className="fa-solid fa-sparkles absolute right-3 top-3 text-2xl text-[#AFC8AD]"></i>
       </div>
@@ -40,7 +40,7 @@ const Dashboard = (props: StatisticType) => {
       <div className="relative mb-5 mr-5 w-60 rounded-md bg-gradient-to-r from-[#EDDBC7] to-[#A7727D] p-5 text-center shadow-[0_0_10px_5px_#a7727da5]">
         <h3 className="text-lg font-semibold text-white">Total Movie</h3>
         <p className="mt-2 text-4xl font-bold text-white">
-          {props.release ? props.upcoming + props.release + props.pending : 0}
+          {props.released ? props.upcoming + props.released + props.pending : 0}
         </p>
         <i className="fa-solid fa-clapperboard-play absolute right-3 top-3 text-2xl text-[#EDDBC7]"></i>
       </div>

@@ -3,7 +3,7 @@ import Dashboard from "@/components/adminPage/content/Dashboard";
 interface StatisticType {
   upcoming: number;
   pending: number;
-  release: number;
+  released: number;
   deleted: number;
   account: number;
 }
@@ -24,7 +24,7 @@ export default async function page() {
     <Dashboard
       upcoming={data.upcoming}
       pending={data.pending}
-      release={data.release}
+      released={data.released}
       deleted={data.deleted}
       account={data.account}
     />

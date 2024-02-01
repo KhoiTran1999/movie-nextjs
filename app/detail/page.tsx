@@ -1,9 +1,10 @@
 import MainDetailPage from "@/components/detailPage/MainDetailPage";
+import { MovieDetailType, MovieType } from "@/types";
 
 export default async function Detail(props: any) {
   const movieId = props?.searchParams?.id ?? "";
 
-  let movieDetail;
+  let movieDetail: MovieDetailType;
   try {
     const res = await fetch(`${process.env.API_URL}/Movie/${movieId}`, {
       next: { revalidate: 3600 },
@@ -14,15 +15,17 @@ export default async function Detail(props: any) {
     throw new Error("Failed to fetch Movie Detail!");
   }
 
-  let recommendedMovie;
+  let initialRecommendedMovie:MovieType[];
+  let totalItems;
   try {
     const res = await fetch(
-      `${process.env.API_URL}/Movies?page=1&eachPage=100`,
+      `${process.env.API_URL}/Movies?filterBy=recommend&key=${movieDetail.movieId}&page=1&eachPage=10`,
       {
         next: { revalidate: 3600 },
       },
     );
-    recommendedMovie = await res.json();
+    totalItems = Number(res.headers.get("x-total-element"));
+    initialRecommendedMovie = await res.json();
   } catch (error) {
     console.log(error);
     throw new Error("Failed to fetch Movie Detail!");
@@ -31,7 +34,8 @@ export default async function Detail(props: any) {
   return (
     <MainDetailPage
       movieDetail={movieDetail}
-      recommendedMovie={recommendedMovie}
+      initialRecommendedMovie={initialRecommendedMovie}
+      totalItems={totalItems}
     />
   );
 }

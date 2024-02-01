@@ -192,7 +192,7 @@ const ActorForm = ({
     <>
       {loading ? (
         <div className="w-full h-[70svh] flex justify-center items-center">
-          <i className="fa-solid fa-spinner-scale text-6xl animate-spin text-[red]"></i>
+          <i className="fa-duotone fa-spinner-third text-6xl animate-spin text-[red]"></i>
         </div>
       ) : (
         <div>

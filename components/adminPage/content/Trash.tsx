@@ -95,7 +95,7 @@ const Trash = (props: IProps) => {
           <span className="absolute left-0 top-0 -mt-1 h-48 w-48 -translate-x-56 -translate-y-24 rotate-45 bg-white opacity-100 transition-all duration-500 ease-in-out group-hover:-translate-x-8"></span>
           <span className="relative w-full text-left text-base tracking-wide text-white transition-colors duration-200 ease-in-out group-hover:text-gray-900">
             {isLoading && (
-              <i className="fa-sharp fa-solid fa-rotate-right mr-2 animate-spin text-white"></i>
+              <i className="fa-duotone fa-spinner-third mr-2 animate-spin text-white"></i>
             )}
             <span>Clear All</span>
           </span>
