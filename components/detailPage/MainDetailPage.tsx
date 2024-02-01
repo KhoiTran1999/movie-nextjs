@@ -17,6 +17,7 @@ const ReactPlayer = dynamic(() => import("react-player/youtube"), {
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { MovieDetailType, MovieType, SeasonMovieDetail } from "@/types";
 import CardMovie from "../homePage/cardSlider/CardMovie";
+import Image from "next/image";
 
 const rubik = Rubik_Dirt({
   subsets: ["latin"],
@@ -205,7 +206,7 @@ export default function MainDetailPage(props: MainDetailPage) {
                       </ul>
                     </div>
                   </div>
-                  <div className="ml-3 w-[30%] overflow-hidden">
+                  <div className="ml-3 aspect-[60/100] w-[30%] max-w-[200px] overflow-hidden">
                     <LazyLoadImage
                       alt="Thumbnail"
                       src={movieDetail.thumbnail}
@@ -311,7 +312,15 @@ export default function MainDetailPage(props: MainDetailPage) {
                   }}
                   renderItem={(val: MovieType, idx: number) => (
                     <div onClick={() => setIsSkeleton(true)}>
-                      <CardMovie val={val} />
+                      <CardMovie
+                        englishName={val.englishName}
+                        vietnamName={val.vietnamName}
+                        movieId={val.movieId}
+                        thumbnail={val.thumbnail}
+                        time={val.time}
+                        totalEpisodes={val.totalEpisodes}
+                        totalSeasons={val.totalSeasons}
+                      />
                     </div>
                   )}
                 />

@@ -1,41 +1,66 @@
-import Link from "next/link";
-import { LazyLoadImage } from "react-lazy-load-image-component";
+"use client";
 
-const CardMovie = ({ ...props }) => {
-  const { val } = props;
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
+
+type movieProps = {
+  movieId: string;
+  mark?: number;
+  time: number;
+  vietnamName: string;
+  englishName: string;
+  thumbnail: string;
+  totalSeasons: number;
+  totalEpisodes: number;
+  dateCreated?: string;
+};
+
+const CardMovie = (props: movieProps) => {
+  const {
+    movieId,
+    time,
+    vietnamName,
+    englishName,
+    thumbnail,
+    totalSeasons,
+    totalEpisodes,
+  } = props;
+
+  const [imageState, setImageState] = useState<string>(thumbnail);
 
   return (
-    <Link href={`/detail?id=${val.movieId}`} className="group/card">
+    <Link href={`/detail?id=${movieId}`} className="group/card">
       <div
         className={`relative m-3 flex cursor-pointer flex-col items-center justify-center overflow-hidden rounded-md`}
       >
-        <div>
-          <LazyLoadImage
+        <div className="aspect-[60/100] w-full max-w-[200px]">
+          <Image
+            src={imageState}
             alt="Thumbnail"
-            src={val.thumbnail}
-            effect="blur"
+            fill
             loading="lazy"
-            className="h-[140px] rounded-md object-cover max-[768px]:h-[290px]  max-[726px]:h-[250px] max-[622px]:h-[210px] max-[528px]:h-[170px]  max-[440px]:h-[160px] md:h-[330px]"
+            className="rounded object-cover"
+            sizes="(max-width: 1940px) 12vw, (max-width: 1600px) 13vw, (max-width: 1400px) 17vw, (max-width: 1130px) 20vw, (max-width: 930px) 25vw, 33vw"
             onError={(e) => {
-              e.currentTarget.onerror = null;
-              e.currentTarget.src = "/errorThumbnail.jpg";
+              setImageState("/errorThumbnail.jpg");
             }}
           />
         </div>
 
         <div className="absolute bottom-[-200px] z-50 hidden w-full bg-[#0000009b] p-2 pb-3 backdrop-blur-sm transition-all duration-300 group-hover/card:bottom-0 md:block">
           <h3 className="overflow-hidden overflow-ellipsis whitespace-nowrap text-left text-base font-bold tracking-wide text-white">
-            {val.englishName}
+            {englishName}
           </h3>
           <h4 className="overflow-hidden overflow-ellipsis whitespace-nowrap text-left text-sm text-gray-200">
-            {val.vietnamName}
+            {vietnamName}
           </h4>
           <span className="text-sm text-gray-200">
-            {val.totalSeasons > 1
-              ? `${val.totalSeasons} Seasons`
-              : val.totalEpisodes > 1
-                ? `${val.totalEpisodes} Episodes`
-                : `${val.time} minutes`}
+            {totalSeasons > 1
+              ? `${totalSeasons} Seasons`
+              : totalEpisodes > 1
+                ? `${totalEpisodes} Episodes`
+                : `${time} minutes`}
           </span>
         </div>
       </div>

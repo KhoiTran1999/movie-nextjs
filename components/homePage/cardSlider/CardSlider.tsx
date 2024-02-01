@@ -98,7 +98,15 @@ const CardSlider = ({ title, movieList }: cardSliderProps) => {
             >
               {movieList.map((val: movieProps, idx: number) => (
                 <SwiperSlide key={idx}>
-                  <CardMovie val={val} />
+                  <CardMovie
+                    englishName={val.englishName}
+                    vietnamName={val.vietnamName}
+                    movieId={val.movieId}
+                    thumbnail={val.thumbnail}
+                    time={val.time}
+                    totalEpisodes={val.totalEpisodes}
+                    totalSeasons={val.totalSeasons}
+                  />
                 </SwiperSlide>
               ))}
             </Swiper>
