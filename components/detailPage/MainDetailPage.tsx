@@ -319,10 +319,11 @@ export default function MainDetailPage(props: MainDetailPage) {
                 </div>
               </div>
               <div className="mt-8">
-                <h3 className="text-2xl font-bold text-red-700">
+                
+                {recommendedMovie?.length ? <><h3 className="text-2xl font-bold text-red-700">
                   Recommended Movie
                 </h3>
-                {recommendedMovie?.length ? <List
+                <List
                   dataSource={recommendedMovie}
                   grid={{
                     xs: 3,
@@ -346,7 +347,7 @@ export default function MainDetailPage(props: MainDetailPage) {
                       />
                     </div>
                   )}
-                />:<></>}
+                /></> :<></>}
                 { totalItems>recommendedMovie.length  && totalItems>initialRecommendedMovie.length ? <div className="flex justify-center mt-6">
                   <i ref={ref} className="fa-duotone fa-spinner-third text-5xl text-[red] animate-spin"></i>
                 </div>:<></>}
