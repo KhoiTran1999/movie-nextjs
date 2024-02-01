@@ -206,7 +206,7 @@ export default function MainDetailPage(props: MainDetailPage) {
                       </ul>
                     </div>
                   </div>
-                  <div className="ml-3 aspect-[60/100] w-[30%] max-w-[200px] overflow-hidden">
+                  <div className="ml-3 w-[30%] overflow-hidden">
                     <LazyLoadImage
                       alt="Thumbnail"
                       src={movieDetail.thumbnail}

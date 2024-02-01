@@ -41,7 +41,8 @@ const CardMovie = (props: movieProps) => {
             fill
             loading="lazy"
             className="rounded object-cover"
-            sizes="(max-width: 1940px) 12vw, (max-width: 1600px) 13vw, (max-width: 1400px) 17vw, (max-width: 1130px) 20vw, (max-width: 930px) 25vw, 33vw"
+            quality={100}
+            sizes="(min-width: 1024px) 100vw, (min-width: 625px) 30vw, 40vw"
             onError={(e) => {
               setImageState("/errorThumbnail.jpg");
             }}

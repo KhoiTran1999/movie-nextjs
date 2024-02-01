@@ -37,16 +37,19 @@ const TopPageMovie = async ({ previewMovie }: TopPageMovieProps) => {
           className="z-9 absolute top-1/2 z-0 mt-6 flex h-[100%] w-[100%] translate-y-[-50%] flex-col items-center justify-center px-12 text-[#D1D0CF] md:mt-0 md:items-start"
         >
           <>
+            <div className="order-1 mb-2 rounded bg-[red] p-1 text-[10px] font-medium text-white sm:text-xs ">
+              {previewMovie?.tag}
+            </div>
             <h1
-              className={`${rubik.className} order-1 my-4 line-clamp-[3] w-4/5 overflow-hidden text-ellipsis break-words text-center text-2xl tracking-wider [word-spacing:5px] md:w-2/3  md:text-left lg:text-4xl`}
+              className={`${rubik.className} order-2 mb-4 line-clamp-[3] w-4/5 overflow-hidden text-ellipsis break-words text-center text-2xl tracking-wider [word-spacing:5px] md:w-2/3  md:text-left lg:text-4xl`}
             >
               {previewMovie?.englishName}
             </h1>
 
-            <p className=" order-4 mb-4 line-clamp-[3] max-h-[148px] w-0 overflow-hidden text-ellipsis break-words text-sm md:order-2  md:w-2/5 lg:text-base">
+            <p className=" order-5 mb-4 line-clamp-[3] max-h-[148px] w-0 overflow-hidden text-ellipsis break-words text-sm md:order-3  md:w-2/5 lg:text-base">
               {previewMovie?.description}
             </p>
-            <ul className="order-2 mb-2 mt-0 flex flex-wrap items-center md:order-3 md:mt-4">
+            <ul className="order-3 mb-2 mt-0 flex flex-wrap items-center md:order-4">
               {previewMovie?.categories.map(
                 (val: { categoryId: number; name: string }, idx: number) => {
                   if (idx + 1 < previewMovie?.categories.length) {
@@ -69,16 +72,13 @@ const TopPageMovie = async ({ previewMovie }: TopPageMovieProps) => {
                 },
               )}
             </ul>
-            <div className="order-3 mt-0 flex md:order-4 md:mt-4">
+            <div className="order-4 mt-0 flex md:order-5 md:mt-4">
               <Link href={`/detail?id=${previewMovie?.movieId}`}>
                 <button className="rounded-md bg-[#b2afaf94] px-3 py-2 text-xs text-white transition-colors hover:bg-[#adaaaa64] md:w-32 md:text-base">
                   <InfoCircleOutlined className="mr-3" />
                   Details
                 </button>
               </Link>
-            </div>
-            <div className="absolute bottom-[30%] right-2 rounded bg-[red] p-1 text-[10px] font-medium text-white sm:text-xs ">
-              {previewMovie?.tag}
             </div>
           </>
         </div>
