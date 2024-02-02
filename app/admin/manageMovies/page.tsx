@@ -1,4 +1,5 @@
 import ManageMovies from "@/components/adminPage/content/ManageMovies";
+import { SuspenseComp } from "@/components/wrapper/SuspenseComp";
 import { CategoryType, MovieAntdTableType, MovieType } from "@/types";
 import { revalidatePath } from "next/cache";
 
@@ -39,9 +40,11 @@ export default async function page(props: any) {
   const totalItems = Number(res.headers.get("x-total-element"));
 
   return (
-    <ManageMovies
-      movieList={filterData(data)}
-      meta={{ current: page, pageSize: LIMIT, total: totalItems }}
-    />
+    <SuspenseComp>
+      <ManageMovies
+        movieList={filterData(data)}
+        meta={{ current: page, pageSize: LIMIT, total: totalItems }}
+      />
+    </SuspenseComp>
   );
 }

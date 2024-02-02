@@ -1,4 +1,5 @@
 import MainDetailPage from "@/components/detailPage/MainDetailPage";
+import { SuspenseComp } from "@/components/wrapper/SuspenseComp";
 import { MovieDetailType, MovieType } from "@/types";
 
 export default async function Detail(props: any) {
@@ -32,10 +33,12 @@ export default async function Detail(props: any) {
   }
 
   return (
-    <MainDetailPage
-      movieDetail={movieDetail}
-      initialRecommendedMovie={initialRecommendedMovie}
-      totalItems={totalItems}
-    />
+    <SuspenseComp>
+      <MainDetailPage
+        movieDetail={movieDetail}
+        initialRecommendedMovie={initialRecommendedMovie}
+        totalItems={totalItems}
+      />
+    </SuspenseComp>
   );
 }

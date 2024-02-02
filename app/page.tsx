@@ -4,6 +4,7 @@ import CardSliderStandalone from "@/components/homePage/cardSlider/cardSliderFea
 import CardSliderTVSeriesMovie from "@/components/homePage/cardSlider/cardSliderFeature/CardSliderTVSeriesMovie";
 import NavigationMovie from "@/components/homePage/navigationMovie/NavigationMovie";
 import TopPageMovie from "@/components/homePage/topPageMovie/TopPageMovie";
+import { SuspenseComp } from "@/components/wrapper/SuspenseComp";
 import { CategoryType } from "@/types";
 
 interface previewMovieProps {

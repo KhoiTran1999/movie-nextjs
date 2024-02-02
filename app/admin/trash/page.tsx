@@ -2,6 +2,7 @@ import { revalidatePath } from "next/cache";
 import Trash from "../../../components/adminPage/content/Trash";
 import { CategoryType, MovieAntdTableType, MovieType } from "@/types";
 import Axios from "@/utils/axios";
+import { SuspenseComp } from "@/components/wrapper/SuspenseComp";
 
 export default async function page(props: any) {
   const LIMIT = 5;
@@ -40,9 +41,11 @@ export default async function page(props: any) {
 
   const totalItems = Number(res.headers.get("x-total-element"));
   return (
-    <Trash
-      movieList={filterData(data)}
-      meta={{ current: page, pageSize: LIMIT, total: totalItems }}
-    />
+    <SuspenseComp>
+      <Trash
+        movieList={filterData(data)}
+        meta={{ current: page, pageSize: LIMIT, total: totalItems }}
+      />
+    </SuspenseComp>
   );
 }

@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import NavigationFeature from "./NavigationFeature";
 import User from "./User";
+import { SuspenseComp } from "@/components/wrapper/SuspenseComp";
 
 const NavigationMovie = () => {
   return (
@@ -17,7 +18,9 @@ const NavigationMovie = () => {
           <Image src="/logo.png" alt="logo" width={100} height={50} />
         </Link>
         <div className="hidden md:block">
-          <NavigationFeature />
+          <SuspenseComp>
+            <NavigationFeature />
+          </SuspenseComp>
         </div>
         <div className="flex items-center justify-end pr-5">
           <i className="fa-regular fa-magnifying-glass cursor-pointer text-xl text-[#D1D0CF]"></i>
