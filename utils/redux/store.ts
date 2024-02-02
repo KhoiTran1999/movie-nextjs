@@ -9,6 +9,7 @@ import IsLoadingAIButtonReducer from "@/utils/redux/slices/toggle/IsLoadingAIBut
 import isCancelButtonModalReducer from "@/utils/redux/slices/toggle/IsCancelButtonModalSlice"
 import personListReducer from "@/utils/redux/slices/data/personListSlice"
 import movieDetailtReducer from "@/utils/redux/slices/data/movieDetailSlice"
+import isLoadingFeatureReducer from "@/utils/redux/slices/toggle/IsLoadingFeatureSlice "
 
 export const store = configureStore({
   reducer: {
@@ -19,6 +20,7 @@ export const store = configureStore({
     isLoadingAIButton: IsLoadingAIButtonReducer,
     isCancelButtonModal: isCancelButtonModalReducer,
     personList: personListReducer,
-    movieDetail: movieDetailtReducer
+    movieDetail: movieDetailtReducer,
+    isLoadingFeature: isLoadingFeatureReducer
   },
 });

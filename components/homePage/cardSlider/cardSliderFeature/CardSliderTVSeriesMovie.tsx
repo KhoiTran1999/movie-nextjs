@@ -9,7 +9,13 @@ const CardSliderTVSeriesMovie = async () => {
   );
   const TVSeriesMovieList = await res.json();
 
-  return <CardSlider title="TV Series Movies" movieList={TVSeriesMovieList} />;
+  return (
+    <CardSlider
+      href="/feature?current=TVSeries&featureId=3"
+      title="TV Series Movies"
+      movieList={TVSeriesMovieList}
+    />
+  );
 };
 
 export default CardSliderTVSeriesMovie;

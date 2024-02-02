@@ -2,8 +2,10 @@
 
 import { revalidatePathAction } from "@/components/actions";
 import { homeItems } from "@/constant/homeItem";
+import { setIsLoadingFeature } from "@/utils/redux/slices/toggle/IsLoadingFeatureSlice ";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { useDispatch } from "react-redux";
 
 interface homeItemProps {
   href: string;
@@ -13,6 +15,7 @@ interface homeItemProps {
 
 const NavigationFeature = (props: any) => {
   const searchParams = useSearchParams();
+  const dispatch = useDispatch();
 
   const page = searchParams.get("current") ?? "Home";
 
@@ -20,14 +23,17 @@ const NavigationFeature = (props: any) => {
     await revalidatePathAction("feature");
   };
 
+  const handleOnClick = () => {
+    dispatch(setIsLoadingFeature(true));
+  };
+
   return (
     <ul className="flex items-center justify-center">
       {homeItems?.map((val: homeItemProps, idx: number) => {
         return (
-          <Link href={val.href}>
+          <Link href={val.href} key={idx} onClick={handleOnClick}>
             <li
               onClick={handleChangeRoute}
-              key={idx}
               className={` mr-4 border-b-2 border-transparent font-semibold transition-colors hover:border-b-[#ffffff8c] ${val.code === page && "border-b-red-600"}`}
             >
               {val.name}
