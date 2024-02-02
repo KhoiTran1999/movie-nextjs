@@ -9,7 +9,7 @@ interface homeItemProps {
 
 export const homeItems: homeItemProps[] = [
   {
-    href: "/?current=Home",
+    href: "/",
     name: "Home",
     code: "Home",
   },

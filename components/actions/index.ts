@@ -34,8 +34,8 @@ export const getSeasonListAction = async(movieId: string, seasonNumber?: number)
     }
 }
 
-export const revalidatePathAction = async(path: string) => {
-    revalidatePath(path);
+export const revalidatePathAction = async(path: string, type?: "page") => {
+    revalidatePath(path, type);
 }
 
 export const revalidateTagAction = async(tag:string) => {
@@ -55,6 +55,6 @@ export const getRecommendedMovieListAction = async(movieId: string, page?: numbe
     
       return data;
     } catch (error) {
-        throw Error("Failed to fetch get Season")
+        throw Error("Failed to fetch get Recommended Movie List")
     }
 }

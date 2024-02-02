@@ -3,13 +3,13 @@ import NavigationMovie from "@/components/homePage/navigationMovie/NavigationMov
 import { MovieType } from "@/types";
 
 export default async function Feature(props: any) {
-  const current = props?.searchParams?.current;
   const featureId = props?.searchParams?.featureId;
+  const current = props?.searchParams?.current;
 
-  let movieList: MovieType[] = [];
+  let movieList: MovieType[];
   let totalItems: number = 0;
 
-  if (current === "NewMovie") {
+  if (!featureId && current === "NewMovie") {
     try {
       const res = await fetch(
         `${process.env.API_URL}/Movies?sortBy=producedday}`,
@@ -24,14 +24,10 @@ export default async function Feature(props: any) {
       console.log(error);
       throw new Error("Failed to fetch New Movie List!");
     }
-  } else if (
-    current === "CinemaFilm" ||
-    current === "StandaloneFilm" ||
-    current === "TVSeries"
-  ) {
+  } else {
     try {
       const res = await fetch(
-        `${process.env.API_URL}/Movies?filterBy=feature&key=${featureId}&status=All&sortBy=producedday&page=1&eachPage=20}`,
+        `${process.env.API_URL}/Movies?filterBy=feature&key=${featureId}&status=All&sortBy=producedday&page=1&eachPage=10`,
         {
           next: { revalidate: 172800 },
         },
