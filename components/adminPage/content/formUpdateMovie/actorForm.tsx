@@ -27,7 +27,7 @@ import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
 import Axios from "@/utils/axios";
 import { deepEqual } from "assert";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { revalidateTagAction } from "@/components/actions";
+import { revalidatePathAction } from "@/components/actions";
 
 interface DataType {
   key: React.Key;
@@ -203,7 +203,7 @@ const ActorForm = ({
 
         await Axios.put(`Cast/${movieId}`, selectedPersons);
 
-        await revalidateTagAction("renew");
+        await revalidatePathAction("admin/manageMovies");
         message.success("Add actors successfully!");
         setTimeout(() => {
           setIsLoadingNextButton(false);

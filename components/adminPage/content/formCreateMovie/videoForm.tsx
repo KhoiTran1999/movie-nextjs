@@ -11,7 +11,7 @@ import {
   movieIdSelector,
 } from "@/utils/redux/selector";
 import Axios from "@/utils/axios";
-import { revalidateTagAction } from "@/components/actions";
+import { revalidatePathAction } from "@/components/actions";
 
 interface VideoFormType {
   setCurrent: Function;
@@ -59,7 +59,7 @@ const VideoForm = ({
             await Axios.post("episode", season.episode, {
               params: { seasonId: seasonId.data },
             });
-            await revalidateTagAction("renew");
+            await revalidatePathAction("admin/manageMovies");
           } catch (error) {
             console.log(error);
             message.error("Create videoForm Error!");

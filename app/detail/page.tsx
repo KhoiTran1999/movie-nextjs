@@ -7,7 +7,7 @@ export default async function Detail(props: any) {
   let movieDetail: MovieDetailType;
   try {
     const res = await fetch(`${process.env.API_URL}/Movie/${movieId}`, {
-      next: { tags: ["renew"] },
+      next: { revalidate: 172800 },
     });
     movieDetail = await res.json();
   } catch (error) {
@@ -15,13 +15,13 @@ export default async function Detail(props: any) {
     throw new Error("Failed to fetch Movie Detail!");
   }
 
-  let initialRecommendedMovie: MovieType[];
-  let totalItems;
+  let initialRecommendedMovie: MovieType[] = [];
+  let totalItems: number = 0;
   try {
     const res = await fetch(
       `${process.env.API_URL}/Movies?filterBy=recommend&key=${movieDetail.movieId}&page=1&eachPage=10`,
       {
-        next: { tags: ["renew"] },
+        next: { revalidate: 172800 },
       },
     );
     totalItems = Number(res.headers.get("x-total-element"));

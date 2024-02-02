@@ -10,7 +10,7 @@ import UpdateMovieModal from "./UpdateMovieModal";
 import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { MovieAntdTableType } from "@/types";
-import { deleteMovieAction, revalidateTagAction } from "@/components/actions";
+import { deleteMovieAction, revalidatePathAction } from "@/components/actions";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
 interface IProps {
@@ -88,7 +88,7 @@ const ManageMovies = (props: IProps) => {
   const handleDelete = async (value: any) => {
     setDeleteLoadingState(true);
     const res = await deleteMovieAction(value);
-    await revalidateTagAction("renew");
+    await revalidatePathAction("admin/manageMovies");
     setDeleteLoadingState(false);
     if (res) return message.success("Movie deleted successfully!");
     message.error("Failed to delete movie!");

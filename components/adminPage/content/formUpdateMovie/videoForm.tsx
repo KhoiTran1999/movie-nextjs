@@ -13,7 +13,10 @@ import {
 import Axios from "@/utils/axios";
 import { EpisodeType, SeasonType } from "@/types";
 import { deepEqual } from "assert";
-import { getSeasonListAction, revalidateTagAction } from "@/components/actions";
+import {
+  getSeasonListAction,
+  revalidatePathAction,
+} from "@/components/actions";
 
 interface VideoFormType {
   setCurrent: Function;
@@ -222,7 +225,7 @@ const VideoForm = ({
               }
             }
           }
-          await revalidateTagAction("renew");
+          await revalidatePathAction("admin/manageMovies");
           setCurrent((prev: number) => prev + 1);
           setIsLoadingNextButton(false);
         };
@@ -376,7 +379,7 @@ const VideoForm = ({
             }
           }
 
-          await revalidateTagAction("renew");
+          await revalidatePathAction("admin/manageMovies");
           setCurrent((prev: number) => prev + 1);
           setIsLoadingNextButton(false);
         };
@@ -527,7 +530,7 @@ const VideoForm = ({
             }
           }
 
-          await revalidateTagAction("renew");
+          await revalidatePathAction("admin/manageMovies");
           setCurrent((prev: number) => prev + 1);
           setIsLoadingNextButton(false);
         };

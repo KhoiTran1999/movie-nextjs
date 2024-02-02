@@ -17,7 +17,7 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="w-[100svw] h-[100svh] flex justify-center items-center">
+    <div className="flex h-[100svh] w-[100svw] items-center justify-center">
       <Result
         status="500"
         title="500"
@@ -26,9 +26,7 @@ export default function Error({
         }
         extra={
           <Link href={"/"}>
-            <Button onClick={() => reset()} type="primary">
-              Back home
-            </Button>
+            <Button type="primary">Back home</Button>
           </Link>
         }
       />

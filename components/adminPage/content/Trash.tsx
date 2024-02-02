@@ -7,10 +7,7 @@ import { categoryItems } from "@/constant/categories";
 import { useDispatch } from "react-redux";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { MovieAntdTableType } from "@/types";
-import {
-  restoreMovieAction,
-  revalidatePathTrashAction,
-} from "@/components/actions";
+import { restoreMovieAction, revalidatePathAction } from "@/components/actions";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import Axios from "@/utils/axios";
 
@@ -63,7 +60,10 @@ const Trash = (props: IProps) => {
     setisLoading(true);
     const res = await restoreMovieAction(value);
     setisLoading(false);
-    if (res) return message.success("Movie restored successfully!");
+    if (res) {
+      await revalidatePathAction("admin/manageMovies");
+      return message.success("Movie restored successfully!");
+    }
     message.error("Failed to restored movie!");
   };
 
@@ -73,7 +73,7 @@ const Trash = (props: IProps) => {
       const res = await Axios.delete(`Movies`, {
         params: { status: "Deleted" },
       });
-      await revalidatePathTrashAction();
+      await revalidatePathAction("admin/trash");
       message.success("All Movies are deleted successfully!");
       setisLoading(false);
     } catch (error) {
