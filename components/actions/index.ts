@@ -25,9 +25,8 @@ export const restoreMovieAction = async(movieId: string):Promise<boolean>=>{
 
 export const getSeasonListAction = async(movieId: string, seasonNumber?: number)=>{
     try {
-        revalidatePath("admin/manageMovies");
         const res = await fetch(
-        `${process.env.API_URL}/Seasons?movieId=${movieId}${seasonNumber?`&seasonNumber=${seasonNumber}`:""}`, {next: {tags: ["season-list"]}}
+        `${process.env.API_URL}/Seasons?movieId=${movieId}${seasonNumber?`&seasonNumber=${seasonNumber}`:""}`, {cache: "no-cache"}
       );
       return await res.json();
     } catch (error) {
@@ -35,15 +34,12 @@ export const getSeasonListAction = async(movieId: string, seasonNumber?: number)
     }
 }
 
-export const revalidateTagSeasonListAction = async()=>{
-    revalidateTag("season-list");
+export const revalidatePathAction = async(path: string) => {
+    revalidatePath(path);
 }
 
-export const revalidateTagMovieListAction = async() => {
-    revalidateTag("movie-list")
-}
-export const revalidatePathTrashAction = async() => {
-    revalidatePath("admin/Trash");
+export const revalidateTagAction = async(tag:string) => {
+    revalidateTag(tag);
 }
 
 export const getRecommendedMovieListAction = async(movieId: string, page?: number)=> {
@@ -52,7 +48,7 @@ export const getRecommendedMovieListAction = async(movieId: string, page?: numbe
         const res = await fetch(
       `${process.env.API_URL}/Movies?filterBy=recommend&key=${movieId}&page=${page}&eachPage=10`,
       {
-        next: { revalidate: 3600 },
+       next: {tags: ["renew"]},
       },
     );
     const data = await res.json();

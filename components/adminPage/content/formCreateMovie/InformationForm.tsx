@@ -20,7 +20,7 @@ import {
   isLoadingAIButtonSelector,
 } from "@/utils/redux/selector";
 import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
-import { revalidateTagMovieListAction } from "@/components/actions";
+import { revalidatePathAction } from "@/components/actions";
 import Axios from "@/utils/axios";
 const { TextArea } = Input;
 
@@ -237,7 +237,7 @@ const InformationForm = ({
         },
       });
 
-      await revalidateTagMovieListAction();
+      await revalidatePathAction("admin/manageMovies");
       message.success("Movie have been created successfully!");
 
       dispatch(setMovieId(movieId.data));
@@ -276,7 +276,7 @@ const InformationForm = ({
         try {
           dispatch(setIsLoadingAIButton(true));
           const res = await fetch(
-            `${process.env.API_URL}/Chat?content=${englishName}&${paramNation}`
+            `${process.env.API_URL}/Chat?content=${englishName}&${paramNation}`,
           );
           const movie = await res.json();
 
@@ -292,7 +292,7 @@ const InformationForm = ({
           });
           dispatch(setIsLoadingAIButton(false));
           message.success(
-            `AI have created the movie information, Click button "AI Create" again if you have unexpected result`
+            `AI have created the movie information, Click button "AI Create" again if you have unexpected result`,
           );
         } catch (error) {
           console.log(error);

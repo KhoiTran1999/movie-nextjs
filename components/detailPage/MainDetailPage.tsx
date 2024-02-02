@@ -18,7 +18,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import { MovieDetailType, MovieType, SeasonMovieDetail } from "@/types";
 import CardMovie from "../homePage/cardSlider/CardMovie";
 import { getRecommendedMovieListAction } from "../actions";
-import {useInView} from "react-intersection-observer"
+import { useInView } from "react-intersection-observer";
 
 const rubik = Rubik_Dirt({
   subsets: ["latin"],
@@ -29,19 +29,19 @@ const rubik = Rubik_Dirt({
 interface MainDetailPage {
   movieDetail: MovieDetailType;
   initialRecommendedMovie: MovieType[];
-  totalItems:number
+  totalItems: number;
 }
 
 export default function MainDetailPage(props: MainDetailPage) {
   const { movieDetail, initialRecommendedMovie, totalItems } = props;
-  console.log("initialRecommendedMovie: ", initialRecommendedMovie);
-  console.log("totalItems: ", totalItems);
-  
-  const [ref, inView] = useInView()
-  
+
+  const [ref, inView] = useInView();
+
   const dispatch = useDispatch();
 
-  const [recommendedMovie, setRecommendedMovie] = useState<MovieType[]>(initialRecommendedMovie);
+  const [recommendedMovie, setRecommendedMovie] = useState<MovieType[]>(
+    initialRecommendedMovie,
+  );
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [isSkeleton, setIsSkeleton] = useState<boolean>(false);
   const [loadingMovie, setLoadingMovie] = useState<boolean>(false);
@@ -70,20 +70,23 @@ export default function MainDetailPage(props: MainDetailPage) {
     }
   }, [movieDetail]);
 
-  useEffect(()=>{
-    if(inView) {
+  useEffect(() => {
+    if (inView) {
       loadMoreMovies();
     }
-  }, [inView])
+  }, [inView]);
 
-  const loadMoreMovies = async() => {
-    const next = pageNumber+1
+  const loadMoreMovies = async () => {
+    const next = pageNumber + 1;
     const data = await getRecommendedMovieListAction(movieDetail.movieId, next);
-      if(data.length) {
-        setPageNumber(next);
-        return setRecommendedMovie((prev:MovieType[] | undefined)=>([...(prev?.length ? prev:[]), ...data.data]))
-      } 
-  }
+    if (data.length) {
+      setPageNumber(next);
+      return setRecommendedMovie((prev: MovieType[] | undefined) => [
+        ...(prev?.length ? prev : []),
+        ...data.data,
+      ]);
+    }
+  };
 
   const showModal = async () => {
     setLoadingMovie(true);
@@ -319,39 +322,51 @@ export default function MainDetailPage(props: MainDetailPage) {
                 </div>
               </div>
               <div className="mt-8">
-                
-                {recommendedMovie?.length ? <><h3 className="text-2xl font-bold text-red-700">
-                  Recommended Movie
-                </h3>
-                <List
-                  dataSource={recommendedMovie}
-                  grid={{
-                    xs: 3,
-                    sm: 3,
-                    md: 3,
-                    lg: 4,
-                    xl: 5,
-                    xxl: 5,
-                    gutter: 12,
-                  }}
-                  renderItem={(val: MovieType, idx: number) => (
-                    <div onClick={() => setIsSkeleton(true)}>
-                      <CardMovie
-                        englishName={val.englishName}
-                        vietnamName={val.vietnamName}
-                        movieId={val.movieId}
-                        thumbnail={val.thumbnail}
-                        time={val.time}
-                        totalEpisodes={val.totalEpisodes}
-                        totalSeasons={val.totalSeasons}
-                      />
-                    </div>
-                  )}
-                /></> :<></>}
-                { totalItems>recommendedMovie.length  && totalItems>initialRecommendedMovie.length ? <div className="flex justify-center mt-6">
-                  <i ref={ref} className="fa-duotone fa-spinner-third text-5xl text-[red] animate-spin"></i>
-                </div>:<></>}
-                
+                {recommendedMovie?.length ? (
+                  <>
+                    <h3 className="text-2xl font-bold text-red-700">
+                      Recommended Movie
+                    </h3>
+                    <List
+                      dataSource={recommendedMovie}
+                      grid={{
+                        xs: 3,
+                        sm: 3,
+                        md: 3,
+                        lg: 4,
+                        xl: 5,
+                        xxl: 5,
+                        gutter: 12,
+                      }}
+                      renderItem={(val: MovieType, idx: number) => (
+                        <div onClick={() => setIsSkeleton(true)}>
+                          <CardMovie
+                            englishName={val.englishName}
+                            vietnamName={val.vietnamName}
+                            movieId={val.movieId}
+                            thumbnail={val.thumbnail}
+                            time={val.time}
+                            totalEpisodes={val.totalEpisodes}
+                            totalSeasons={val.totalSeasons}
+                          />
+                        </div>
+                      )}
+                    />
+                  </>
+                ) : (
+                  <></>
+                )}
+                {totalItems > recommendedMovie.length &&
+                totalItems > initialRecommendedMovie.length ? (
+                  <div className="mt-6 flex justify-center">
+                    <i
+                      ref={ref}
+                      className="fa-duotone fa-spinner-third animate-spin text-5xl text-[red]"
+                    ></i>
+                  </div>
+                ) : (
+                  <></>
+                )}
               </div>
             </div>
           </div>

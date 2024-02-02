@@ -11,6 +11,7 @@ import {
   movieIdSelector,
 } from "@/utils/redux/selector";
 import Axios from "@/utils/axios";
+import { revalidateTagAction } from "@/components/actions";
 
 interface VideoFormType {
   setCurrent: Function;
@@ -58,6 +59,7 @@ const VideoForm = ({
             await Axios.post("episode", season.episode, {
               params: { seasonId: seasonId.data },
             });
+            await revalidateTagAction("renew");
           } catch (error) {
             console.log(error);
             message.error("Create videoForm Error!");
@@ -165,7 +167,7 @@ const VideoForm = ({
                                 </Form.Item>
                                 {subFields.length > 0 ? (
                                   <MinusCircleOutlined
-                                    className="dynamic-delete-button ml-3 hover:text-[red] transition-colors"
+                                    className="dynamic-delete-button ml-3 transition-colors hover:text-[red]"
                                     onClick={() => {
                                       if (subFields.length === 1) {
                                         return remove(field.name);

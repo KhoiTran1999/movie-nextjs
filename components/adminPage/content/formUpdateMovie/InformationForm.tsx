@@ -20,7 +20,7 @@ import {
   isLoadingAIButtonSelector,
   movieIdSelector,
 } from "@/utils/redux/selector";
-import { revalidateTagMovieListAction } from "@/components/actions";
+import { revalidatePathAction } from "@/components/actions";
 import { deepEqual } from "assert";
 import Axios from "@/utils/axios";
 import { setmovieDetail } from "@/utils/redux/slices/data/movieDetailSlice";
@@ -194,12 +194,11 @@ const InformationForm = ({
 
         const res = await fetch(`${process.env.API_URL}/Movie/${movieId}`);
         const movie = await res.json();
-        console.log("movie: ", movie);
 
         dispatch(setmovieDetail(movie));
         //Add value into form
         const filterCategories = movie.categories.map(
-          (val: any) => val.categoryId
+          (val: any) => val.categoryId,
         );
 
         const filterdData = {
@@ -298,7 +297,7 @@ const InformationForm = ({
           },
         });
 
-        await revalidateTagMovieListAction();
+        await revalidatePathAction("admin/manageMovies");
         message.success("Movie have been updated successfully!");
 
         setTimeout(() => {
@@ -336,7 +335,7 @@ const InformationForm = ({
         try {
           dispatch(setIsLoadingAIButton(true));
           const res = await fetch(
-            `${process.env.API_URL}/Chat?content=${englishName}&nation=${nation}`
+            `${process.env.API_URL}/Chat?content=${englishName}&nation=${nation}`,
           );
           const movie = await res.json();
 
@@ -352,7 +351,7 @@ const InformationForm = ({
           });
           dispatch(setIsLoadingAIButton(false));
           message.success(
-            `AI have created the movie information, Click button "AI Create" again if you have unexpected result`
+            `AI have created the movie information, Click button "AI Create" again if you have unexpected result`,
           );
         } catch (error) {
           console.log(error);

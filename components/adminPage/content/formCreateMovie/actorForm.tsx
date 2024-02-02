@@ -25,6 +25,7 @@ import { setPersonList } from "@/utils/redux/slices/data/personListSlice";
 import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
 import Axios from "@/utils/axios";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import { revalidateTagAction } from "@/components/actions";
 
 interface DataType {
   key: React.Key;
@@ -84,7 +85,7 @@ const ActorForm = ({
       try {
         setLoading(true);
         const res = await fetch(
-          `${process.env.API_URL}/Persons?sortBy=CreatedDate&page=0`
+          `${process.env.API_URL}/Persons?sortBy=CreatedDate&page=0`,
         );
         const data = await res.json();
         dispatch(
@@ -92,8 +93,8 @@ const ActorForm = ({
             data.map((val: PersonType, idx: number) => ({
               ...val,
               key: idx,
-            }))
-          )
+            })),
+          ),
         );
         setLoading(false);
       } catch (error) {
@@ -129,7 +130,7 @@ const ActorForm = ({
   const handleSearch = (
     selectedKeys: string[],
     confirm: FilterDropdownProps["confirm"],
-    dataIndex: DataIndex
+    dataIndex: DataIndex,
   ) => {
     confirm();
     setSearchText(selectedKeys[0]);
@@ -159,13 +160,13 @@ const ActorForm = ({
         };
         return [...acc, person];
       },
-      []
+      [],
     );
 
     try {
       setIsLoadingNextButton(true);
       await Axios.post(`Cast/${movieId}`, selectedPersons);
-
+      await revalidateTagAction("renew");
       message.success("Add actors successfully!");
       setTimeout(() => {
         setIsLoadingNextButton(false);
@@ -191,14 +192,14 @@ const ActorForm = ({
   return (
     <>
       {loading ? (
-        <div className="w-full h-[70svh] flex justify-center items-center">
-          <i className="fa-duotone fa-spinner-third text-6xl animate-spin text-[red]"></i>
+        <div className="flex h-[70svh] w-full items-center justify-center">
+          <i className="fa-duotone fa-spinner-third animate-spin text-6xl text-[red]"></i>
         </div>
       ) : (
         <div>
           {contextHolder}
           <div
-            className="flex justify-between items-center"
+            className="flex items-center justify-between"
             style={{ marginBottom: 16 }}
           >
             <div>
@@ -224,7 +225,7 @@ const ActorForm = ({
               </Button>
             ) : (
               <Tooltip title="To add new person, you must Search or use Filter first!">
-                <Button disabled className="tracking-wide font-medium text-sm">
+                <Button disabled className="text-sm font-medium tracking-wide">
                   <i className="fa-regular fa-plus mr-2"></i> Add Person
                 </Button>
               </Tooltip>
@@ -242,7 +243,7 @@ const ActorForm = ({
                   dataIndex="thumbnail"
                   key="thumbnail"
                   render={(image: string, _, idx) => (
-                    <div className="w-fit h-[160px] overflow-hidden rounded-lg">
+                    <div className="h-[160px] w-fit overflow-hidden rounded-lg">
                       <LazyLoadImage
                         key={idx}
                         alt="Thumbnail"
@@ -283,7 +284,7 @@ const ActorForm = ({
                         value={selectedKeys[0]}
                         onChange={(e) =>
                           setSelectedKeys(
-                            e.target.value ? [e.target.value] : []
+                            e.target.value ? [e.target.value] : [],
                           )
                         }
                         style={{
@@ -297,7 +298,7 @@ const ActorForm = ({
                             handleSearch(
                               selectedKeys as string[],
                               confirm,
-                              "namePerson"
+                              "namePerson",
                             )
                           }
                           icon={<SearchOutlined />}

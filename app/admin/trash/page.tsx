@@ -33,7 +33,7 @@ export default async function page(props: any) {
   const res = await fetch(
     `${process.env.API_URL}Movies?filterBy=deleted&page=${page}&eachPage=${LIMIT}&sortBy=dayDeleted`,
     {
-      cache: "no-cache",
+      cache: "no-store",
     },
   );
   const data = await res.json();
