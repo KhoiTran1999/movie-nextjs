@@ -6,7 +6,6 @@ import CardMovie from "../homePage/cardSlider/CardMovie";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { useSearchParams } from "next/navigation";
-import { revalidatePathAction } from "../actions";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsLoadingFeature } from "@/utils/redux/slices/toggle/IsLoadingFeatureSlice ";
 import { isLoadingFeatureSelector } from "@/utils/redux/selector";
