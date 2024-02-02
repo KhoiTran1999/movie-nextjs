@@ -6,6 +6,7 @@ import CardMovie from "../homePage/cardSlider/CardMovie";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
 interface FeatureMovieList {
   initialRecommendedMovie: MovieType[];
@@ -55,54 +56,56 @@ const FeatureMovieList = (props: FeatureMovieList) => {
   };
 
   return (
-    <div className="mt-8">
-      {recommendedMovie?.length ? (
-        <List
-          dataSource={recommendedMovie}
-          grid={{
-            xs: 3,
-            sm: 3,
-            md: 3,
-            lg: 4,
-            xl: 5,
-            xxl: 5,
-            gutter: 12,
-          }}
-          renderItem={(val: MovieType, idx: number) => (
-            <div>
-              <CardMovie
-                englishName={val.englishName}
-                vietnamName={val.vietnamName}
-                movieId={val.movieId}
-                thumbnail={val.thumbnail}
-                time={val.time}
-                totalEpisodes={val.totalEpisodes}
-                totalSeasons={val.totalSeasons}
-              />
-            </div>
-          )}
-        />
-      ) : (
-        <div className="flex h-full w-full items-center justify-center">
-          <Result
-            status="error"
-            title="Something went wrong"
-            subTitle="Please wait a few minutes"
+    <Suspense>
+      <div className="mt-8">
+        {recommendedMovie?.length ? (
+          <List
+            dataSource={recommendedMovie}
+            grid={{
+              xs: 3,
+              sm: 3,
+              md: 3,
+              lg: 4,
+              xl: 5,
+              xxl: 5,
+              gutter: 12,
+            }}
+            renderItem={(val: MovieType, idx: number) => (
+              <div>
+                <CardMovie
+                  englishName={val.englishName}
+                  vietnamName={val.vietnamName}
+                  movieId={val.movieId}
+                  thumbnail={val.thumbnail}
+                  time={val.time}
+                  totalEpisodes={val.totalEpisodes}
+                  totalSeasons={val.totalSeasons}
+                />
+              </div>
+            )}
           />
-        </div>
-      )}
-      {totalItems > recommendedMovie.length &&
-      totalItems > initialRecommendedMovie.length ? (
-        <div className="mt-6 flex justify-center">
-          <i
-            ref={ref}
-            className="fa-duotone fa-spinner-third animate-spin text-5xl text-[red]"
-          ></i>
-        </div>
-      ) : (
-        <></>
-      )}
-    </div>
+        ) : (
+          <div className="flex h-full w-full items-center justify-center">
+            <Result
+              status="error"
+              title="Something went wrong"
+              subTitle="Please wait a few minutes"
+            />
+          </div>
+        )}
+        {totalItems > recommendedMovie.length &&
+        totalItems > initialRecommendedMovie.length ? (
+          <div className="mt-6 flex justify-center">
+            <i
+              ref={ref}
+              className="fa-duotone fa-spinner-third animate-spin text-5xl text-[red]"
+            ></i>
+          </div>
+        ) : (
+          <></>
+        )}
+      </div>
+    </Suspense>
   );
 };
 
