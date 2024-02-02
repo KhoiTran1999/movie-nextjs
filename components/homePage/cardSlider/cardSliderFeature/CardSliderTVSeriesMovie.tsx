@@ -5,7 +5,7 @@ import CardSlider from "../CardSlider";
 const CardSliderTVSeriesMovie = async () => {
   const res = await fetch(
     `${process.env.API_URL}/Movies?filterBy=feature&key=3&sortBy=produceddate&page=1&eachPage=10`,
-    { next: { revalidate: 172800 } },
+    { next: { revalidate: 900 } },
   );
   const TVSeriesMovieList = await res.json();
 

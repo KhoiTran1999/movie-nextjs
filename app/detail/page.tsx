@@ -8,7 +8,7 @@ export default async function Detail(props: any) {
   let movieDetail: MovieDetailType;
   try {
     const res = await fetch(`${process.env.API_URL}/Movie/${movieId}`, {
-      next: { revalidate: 172800 },
+      next: { revalidate: 900 },
     });
     movieDetail = await res.json();
   } catch (error) {
@@ -22,7 +22,7 @@ export default async function Detail(props: any) {
     const res = await fetch(
       `${process.env.API_URL}/Movies?filterBy=recommend&key=${movieDetail.movieId}&page=1&eachPage=10`,
       {
-        next: { revalidate: 172800 },
+        next: { revalidate: 900 },
       },
     );
     totalItems = Number(res.headers.get("x-total-element"));

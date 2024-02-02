@@ -48,7 +48,7 @@ export const getRecommendedMovieListAction = async(movieId: string, page?: numbe
         const res = await fetch(
       `${process.env.API_URL}/Movies?filterBy=recommend&key=${movieId}&page=${page}&eachPage=10`,
       {
-       next: { revalidate: 172800 },
+       next: { revalidate: 900 },
       },
     );
     const data = await res.json();
