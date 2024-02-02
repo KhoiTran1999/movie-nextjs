@@ -8,10 +8,12 @@ import "swiper/css/navigation";
 import "swiper/css/scrollbar";
 import "swiper/css/pagination";
 import CardMovie from "./CardMovie";
+import Link from "next/link";
 
 type cardSliderProps = {
   title: string;
   movieList: movieProps[];
+  href: string;
 };
 
 type movieProps = {
@@ -26,7 +28,7 @@ type movieProps = {
   dateCreated: string;
 };
 
-const CardSlider = ({ title, movieList }: cardSliderProps) => {
+const CardSlider = ({ title, movieList, href }: cardSliderProps) => {
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -46,19 +48,21 @@ const CardSlider = ({ title, movieList }: cardSliderProps) => {
   return (
     <div className="mb-3">
       <>
-        <div>
-          <div className="group inline-flex w-fit cursor-pointer items-center">
-            <h2 className="text-2xl font-bold hover:text-[#D1D0CF] max-[528px]:text-lg">
-              {title}
-            </h2>
-            <div
-              className={`invisible ml-3 flex translate-x-[-20px] items-center justify-center font-bold text-[#E50914] opacity-0 transition-all group-hover:visible group-hover:translate-x-[0px] group-hover:opacity-100`}
-            >
-              <span className="mr-2">See all </span>
-              <i className="fa-solid fa-angle-right text-sm"></i>
+        <Link href={href}>
+          <div>
+            <div className="group flex cursor-pointer items-center justify-between md:justify-start">
+              <h2 className="text-2xl font-bold hover:text-[#D1D0CF] max-[528px]:text-lg">
+                {title}
+              </h2>
+              <div
+                className={`visible ml-3 flex translate-x-0 items-center justify-center font-bold text-[#E50914] opacity-100 transition-all group-hover:translate-x-[0px] group-hover:opacity-100 md:invisible md:translate-x-[-20px] md:opacity-0 md:group-hover:visible`}
+              >
+                <span className="mr-2">See all </span>
+                <i className="fa-solid fa-angle-right text-sm"></i>
+              </div>
             </div>
           </div>
-        </div>
+        </Link>
 
         {isLoading ? (
           <div className="flex">

@@ -39,23 +39,21 @@ const FeatureMovieList = (props: FeatureMovieList) => {
   const loadMoreMovies = async () => {
     const next = pageNumber + 1;
     const res = await fetch(
-      `${process.env.API_URL}/Movies?filterBy=feature&key=${featureId}&status=All&sortBy=producedday&page=${next}&eachPage=10`,
-      {
-        next: { revalidate: 172800 },
-      },
+      `${process.env.API_URL}/Movies?filterBy=feature&key=${featureId}&status=All&sortBy=produceddate&page=${next}&eachPage=10`,
     );
     const data = await res.json();
+
     if (data.length) {
       setPageNumber(next);
       return setRecommendedMovie((prev: MovieType[] | undefined) => [
         ...(prev?.length ? prev : []),
-        ...data.data,
+        ...data,
       ]);
     }
   };
 
   return (
-    <div className="mt-8">
+    <div className="mt-14">
       {recommendedMovie?.length ? (
         <List
           dataSource={recommendedMovie}

@@ -24,10 +24,9 @@ const NavigationFeature = (props: any) => {
     <ul className="flex items-center justify-center">
       {homeItems?.map((val: homeItemProps, idx: number) => {
         return (
-          <Link href={val.href}>
+          <Link href={val.href} key={idx}>
             <li
               onClick={handleChangeRoute}
-              key={idx}
               className={` mr-4 border-b-2 border-transparent font-semibold transition-colors hover:border-b-[#ffffff8c] ${val.code === page && "border-b-red-600"}`}
             >
               {val.name}

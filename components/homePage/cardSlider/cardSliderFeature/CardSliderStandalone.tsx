@@ -10,7 +10,11 @@ const CardSliderStandalone = async () => {
   const standaloneMovieList = await res.json();
 
   return (
-    <CardSlider title="Standalone Movies" movieList={standaloneMovieList} />
+    <CardSlider
+      href="/feature?current=StandaloneFilm&featureId=2"
+      title="Standalone Movies"
+      movieList={standaloneMovieList}
+    />
   );
 };
 

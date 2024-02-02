@@ -9,7 +9,13 @@ const CardSliderNewMovie = async () => {
   );
   const newMovieList = await res.json();
 
-  return <CardSlider title="New Movies" movieList={newMovieList} />;
+  return (
+    <CardSlider
+      href="/feature?current=NewMovie"
+      title="New Movies"
+      movieList={newMovieList}
+    />
+  );
 };
 
 export default CardSliderNewMovie;

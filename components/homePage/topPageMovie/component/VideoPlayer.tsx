@@ -43,6 +43,10 @@ const VideoPlayer = ({ previewMovie }: VideoType) => {
         <img
           className="h-full w-full object-cover brightness-50"
           src={previewMovie.thumbnail}
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = "/errorThumbnail.jpg";
+          }}
         ></img>
         <div className="absolute bottom-0 h-10 w-full bg-gradient-to-b from-transparent to-black"></div>
       </div>
