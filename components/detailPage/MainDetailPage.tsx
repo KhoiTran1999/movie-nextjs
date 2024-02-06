@@ -83,7 +83,7 @@ export default function MainDetailPage(props: MainDetailPage) {
       setPageNumber(next);
       return setRecommendedMovie((prev: MovieType[] | undefined) => [
         ...(prev?.length ? prev : []),
-        ...data.data,
+        ...data,
       ]);
     }
   };

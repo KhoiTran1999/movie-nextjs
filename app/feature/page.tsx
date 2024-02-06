@@ -49,6 +49,7 @@ export default async function Feature(props: any) {
         <FeatureMovieList
           initialRecommendedMovie={movieList}
           totalItems={totalItems}
+          current={current}
         />
       </SuspenseComp>
     </div>

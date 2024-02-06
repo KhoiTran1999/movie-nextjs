@@ -13,10 +13,11 @@ import { isLoadingFeatureSelector } from "@/utils/redux/selector";
 interface FeatureMovieList {
   initialRecommendedMovie: MovieType[];
   totalItems: number;
+  current: string;
 }
 
 const FeatureMovieList = (props: FeatureMovieList) => {
-  const { initialRecommendedMovie, totalItems } = props;
+  const { initialRecommendedMovie, totalItems, current } = props;
 
   const searchParams = useSearchParams();
 
@@ -86,7 +87,19 @@ const FeatureMovieList = (props: FeatureMovieList) => {
           </div>
         </div>
       ) : (
-        <div className="mt-14">
+        <div className="mt-14 px-4">
+          {current === "NewMovie" && (
+            <h2 className="font-bold md:hidden">New Movie</h2>
+          )}
+          {current === "CinemaFilm" && (
+            <h2 className="font-bold md:hidden">Cinema Film</h2>
+          )}
+          {current === "StandaloneFilm" && (
+            <h2 className="font-bold md:hidden">Standalone Film</h2>
+          )}
+          {current === "TVSeries" && (
+            <h2 className="font-bold md:hidden">TV Series</h2>
+          )}
           {recommendedMovie?.length ? (
             <List
               dataSource={recommendedMovie}
