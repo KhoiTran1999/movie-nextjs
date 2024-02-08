@@ -17,7 +17,7 @@ export async function generateMetadata(
     title: movieDetail.englishName,
     description: movieDetail.description,
     openGraph: {
-      images: [movieDetail.thumbnail, ...previousImages],
+      images: [movieDetail.thumbnail, "/errorThumbnail.jpg"],
       title: movieDetail.englishName,
       description: movieDetail.description,
       type: "website",
