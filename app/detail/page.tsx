@@ -1,6 +1,29 @@
 import MainDetailPage from "@/components/detailPage/MainDetailPage";
 import { SuspenseComp } from "@/components/wrapper/SuspenseComp";
 import { MovieDetailType, MovieType } from "@/types";
+import type { Metadata, ResolvingMetadata } from "next";
+
+export async function generateMetadata(
+  props: any,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const movieId = props?.searchParams?.id ?? "";
+  const res = await fetch(`${process.env.API_URL}/Movie/${movieId}`);
+  const movieDetail: MovieDetailType = await res.json();
+
+  const previousImages = (await parent).openGraph?.images || [];
+
+  return {
+    title: movieDetail.englishName,
+    description: movieDetail.description,
+    openGraph: {
+      images: [movieDetail.thumbnail, ...previousImages],
+      title: movieDetail.englishName,
+      description: movieDetail.description,
+      type: "website",
+    },
+  };
+}
 
 export default async function Detail(props: any) {
   const movieId = props?.searchParams?.id ?? "";
