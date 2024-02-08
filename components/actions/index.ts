@@ -58,3 +58,35 @@ export const getRecommendedMovieListAction = async(movieId: string, page?: numbe
         throw Error("Failed to fetch get Recommended Movie List")
     }
 }
+
+export const getLoadMoreNewMovieListAction = async(next: number)=> {
+    
+    try {
+        const res = await fetch(
+        `${process.env.API_URL}/Movies?sortBy=produceddate&page=${next}&eachPage=10`, {
+       next: { revalidate: 900 },
+      },
+      );
+      const data = await res.json();
+    
+      return data;
+    } catch (error) {
+        throw Error("Failed to fetch get Recommended Movie List")
+    }
+}
+
+export const getLoadMoreFeatureMovieListAction = async(featureId: string, next: number)=> {
+    
+    try {
+        const res = await fetch(
+        `${process.env.API_URL}/Movies?filterBy=feature&key=${featureId}&status=All&sortBy=produceddate&page=${next}&eachPage=10`,  {
+       next: { revalidate: 900 },
+      },
+      );
+      const data = await res.json();
+    
+      return data;
+    } catch (error) {
+        throw Error("Failed to fetch get Recommended Movie List")
+    }
+}

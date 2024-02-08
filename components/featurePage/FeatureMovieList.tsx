@@ -9,6 +9,10 @@ import { useSearchParams } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsLoadingFeature } from "@/utils/redux/slices/toggle/IsLoadingFeatureSlice ";
 import { isLoadingFeatureSelector } from "@/utils/redux/selector";
+import {
+  getLoadMoreFeatureMovieListAction,
+  getLoadMoreNewMovieListAction,
+} from "../actions";
 
 interface FeatureMovieList {
   initialRecommendedMovie: MovieType[];
@@ -52,15 +56,9 @@ const FeatureMovieList = (props: FeatureMovieList) => {
     const next = pageNumber + 1;
     let data: MovieType[];
     if (featureId) {
-      const res = await fetch(
-        `${process.env.API_URL}/Movies?filterBy=feature&key=${featureId}&status=All&sortBy=produceddate&page=${next}&eachPage=10`,
-      );
-      data = await res.json();
+      data = await getLoadMoreFeatureMovieListAction(featureId, next);
     } else {
-      const res = await fetch(
-        `${process.env.API_URL}/Movies?sortBy=produceddate&page=${next}&eachPage=10`,
-      );
-      data = await res.json();
+      data = await getLoadMoreNewMovieListAction(next);
     }
 
     if (data.length) {
@@ -138,7 +136,7 @@ const FeatureMovieList = (props: FeatureMovieList) => {
           {totalItems > recommendedMovie.length &&
           totalItems > initialRecommendedMovie.length &&
           !isOutOfRange ? (
-            <div className="mt-6 flex justify-center">
+            <div className="mt-6 flex justify-center py-3">
               <i
                 ref={ref}
                 className="fa-duotone fa-spinner-third animate-spin text-5xl text-[red]"

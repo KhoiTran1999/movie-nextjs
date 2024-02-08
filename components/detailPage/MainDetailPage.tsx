@@ -65,16 +65,16 @@ export default function MainDetailPage(props: MainDetailPage) {
   });
 
   useEffect(() => {
-    if (movieDetail) {
-      setIsSkeleton(false);
-    }
-  }, [movieDetail]);
-
-  useEffect(() => {
     if (inView) {
       loadMoreMovies();
     }
   }, [inView]);
+
+  useEffect(() => {
+    setRecommendedMovie(initialRecommendedMovie);
+    setPageNumber(0);
+    setIsSkeleton(false);
+  }, [initialRecommendedMovie]);
 
   const loadMoreMovies = async () => {
     const next = pageNumber + 1;

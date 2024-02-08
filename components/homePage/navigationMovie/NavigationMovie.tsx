@@ -23,7 +23,9 @@ const NavigationMovie = () => {
           </SuspenseComp>
         </div>
         <div className="flex items-center justify-end pr-5">
-          <i className="fa-regular fa-magnifying-glass cursor-pointer text-xl text-[#D1D0CF]"></i>
+          <Link href={"/search"}>
+            <i className="fa-regular fa-magnifying-glass cursor-pointer text-xl text-[#D1D0CF]"></i>
+          </Link>
           <User />
         </div>
       </div>

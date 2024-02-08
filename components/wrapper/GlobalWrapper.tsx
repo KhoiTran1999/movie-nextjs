@@ -48,6 +48,7 @@ const GlobalWrapper = ({ children }: { children: React.ReactNode }) => {
           Select: {
             multipleItemBg: "#494848",
             colorTextDisabled: "#D1D0CF",
+            colorTextPlaceholder: "#7f7f7f",
           },
           Dropdown: {
             controlItemBgActive: "#2d2c2d",
@@ -63,8 +64,8 @@ const GlobalWrapper = ({ children }: { children: React.ReactNode }) => {
             colorText: "white",
           },
           List: {
-            colorText: "white"
-          }
+            colorText: "white",
+          },
         },
       }}
     >
