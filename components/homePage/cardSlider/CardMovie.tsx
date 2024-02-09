@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import slugify from "slugify";
 
 type movieProps = {
   movieId: string;
@@ -29,12 +30,20 @@ const CardMovie = (props: movieProps) => {
 
   const [imageState, setImageState] = useState<string>(thumbnail);
 
+  const slug = useMemo(() => {
+    return slugify(`${englishName}-${vietnamName}`, {
+      lower: true,
+      locale: "vi",
+      strict: true,
+    });
+  }, []);
+
   useEffect(() => {
     setImageState(thumbnail);
   }, [thumbnail]);
 
   return (
-    <Link href={`/detail?id=${movieId}`} className="group/card">
+    <Link href={`/detail/${slug}-${movieId}.html`} className="group/card">
       <div
         className={`relative m-3 flex cursor-pointer flex-col items-center justify-center overflow-hidden rounded-md`}
       >

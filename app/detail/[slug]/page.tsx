@@ -7,17 +7,20 @@ export async function generateMetadata(
   props: any,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const movieId = props?.searchParams?.id ?? "";
+  const { params } = props;
+
+  const myArray1 = params.slug.split(".html");
+  const myArray2 = myArray1[0].split("-");
+  const movieId = myArray2[myArray2.length - 1];
+
   const res = await fetch(`${process.env.API_URL}/Movie/${movieId}`);
   const movieDetail: MovieDetailType = await res.json();
-
-  const previousImages = (await parent).openGraph?.images || [];
 
   return {
     title: movieDetail.englishName,
     description: movieDetail.description,
     openGraph: {
-      images: [movieDetail.thumbnail, "/errorThumbnail.jpg"],
+      images: [movieDetail.thumbnail],
       title: movieDetail.englishName,
       description: movieDetail.description,
       type: "website",
@@ -26,7 +29,11 @@ export async function generateMetadata(
 }
 
 export default async function Detail(props: any) {
-  const movieId = props?.searchParams?.id ?? "";
+  const { params } = props;
+
+  const myArray1 = params.slug.split(".html");
+  const myArray2 = myArray1[0].split("-");
+  const movieId = myArray2[myArray2.length - 1];
 
   let movieDetail: MovieDetailType;
   try {
