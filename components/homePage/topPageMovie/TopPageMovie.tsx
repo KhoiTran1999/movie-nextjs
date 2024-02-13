@@ -3,6 +3,8 @@ import Link from "next/link";
 import VideoPlayer from "./component/VideoPlayer";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { CategoryType } from "@/types";
+import { useMemo } from "react";
+import slugify from "slugify";
 
 const rubik = Rubik_Dirt({
   subsets: ["latin"],
@@ -26,6 +28,16 @@ interface TopPageMovieProps {
 }
 
 const TopPageMovie = async ({ previewMovie }: TopPageMovieProps) => {
+  const slug = useMemo(() => {
+    return slugify(
+      `${previewMovie?.englishName}-${previewMovie?.vietnamName}`,
+      {
+        lower: true,
+        locale: "vi",
+        strict: true,
+      },
+    );
+  }, []);
   return (
     <div className="relative overflow-hidden text-white">
       <>
@@ -73,7 +85,7 @@ const TopPageMovie = async ({ previewMovie }: TopPageMovieProps) => {
               )}
             </ul>
             <div className="order-4 mt-0 flex md:order-5 md:mt-4">
-              <Link href={`/detail?id=${previewMovie?.movieId}`}>
+              <Link href={`/detail/${slug}.html?id=${previewMovie?.movieId}`}>
                 <button className="rounded-md bg-[#b2afaf94] px-3 py-2 text-xs text-white transition-colors hover:bg-[#adaaaa64] md:w-32 md:text-base">
                   <InfoCircleOutlined className="mr-3" />
                   Details
