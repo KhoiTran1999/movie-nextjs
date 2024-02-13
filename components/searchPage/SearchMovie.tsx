@@ -1,8 +1,7 @@
 "use client";
 
 import { MovieType } from "@/types";
-import Axios from "@/utils/axios";
-import { AutoComplete, Input, List } from "antd";
+import { AutoComplete, List } from "antd";
 import debounce from "lodash.debounce";
 import { useEffect, useState } from "react";
 import CardMovie from "../homePage/cardSlider/CardMovie";
@@ -58,6 +57,7 @@ const SearchMovie = () => {
           style={{ width: 200 }}
           placeholder="What is your favorite movie?"
           onSearch={debounce(handleSearch, 1000)}
+          autoFocus
         />
       </div>
       {isLoadingSearch ? (
