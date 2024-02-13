@@ -43,7 +43,7 @@ const CardMovie = (props: movieProps) => {
   }, [thumbnail]);
 
   return (
-    <Link href={`/detail/${slug}-${movieId}.html`} className="group/card">
+    <Link href={`/detail/${slug}.html?id=${movieId}`} className="group/card">
       <div
         className={`relative m-3 flex cursor-pointer flex-col items-center justify-center overflow-hidden rounded-md`}
       >

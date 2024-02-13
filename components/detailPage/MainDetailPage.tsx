@@ -72,7 +72,6 @@ export default function MainDetailPage(props: MainDetailPage) {
 
   useEffect(() => {
     setRecommendedMovie(initialRecommendedMovie);
-    setPageNumber(0);
     setIsSkeleton(false);
   }, [initialRecommendedMovie]);
 
@@ -81,6 +80,7 @@ export default function MainDetailPage(props: MainDetailPage) {
     const data = await getRecommendedMovieListAction(movieDetail.movieId, next);
     if (data.length) {
       setPageNumber(next);
+
       return setRecommendedMovie((prev: MovieType[] | undefined) => [
         ...(prev?.length ? prev : []),
         ...data,

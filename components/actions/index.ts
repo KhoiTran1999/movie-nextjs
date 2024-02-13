@@ -1,6 +1,5 @@
 "use server"
 
-import { MovieType } from "@/types";
 import { revalidatePath, revalidateTag } from "next/cache";
 
 export const deleteMovieAction = async(movieId: string):Promise<boolean>=>{
@@ -71,7 +70,7 @@ export const getLoadMoreNewMovieListAction = async(next: number)=> {
     
       return data;
     } catch (error) {
-        throw Error("Failed to fetch get Recommended Movie List")
+        throw Error("Failed to fetch get Load More NewMovie List")
     }
 }
 
@@ -87,6 +86,23 @@ export const getLoadMoreFeatureMovieListAction = async(featureId: string, next: 
     
       return data;
     } catch (error) {
-        throw Error("Failed to fetch get Recommended Movie List")
+        throw Error("Failed to fetch get Load More Feature Movie List")
+    }
+}
+
+export const getSearchMovieListAction = async(text: string, next?: number)=> {
+    try {
+        const res = await fetch(
+        `${process.env.API_URL}Movies?key=${encodeURIComponent(text)}&page=${next?next:1}&eachPage=10`,  {
+       next: { revalidate: 900 },
+      },
+      );
+
+      const totalItems = Number(res.headers.get("x-total-element"));
+      const data = await res.json();
+    
+      return {data, totalItems};
+    } catch (error) {
+        throw Error("Failed to fetch get Search Movie List")
     }
 }

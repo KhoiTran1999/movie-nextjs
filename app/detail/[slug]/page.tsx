@@ -7,11 +7,7 @@ export async function generateMetadata(
   props: any,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const { params } = props;
-
-  const myArray1 = params.slug.split(".html");
-  const myArray2 = myArray1[0].split("-");
-  const movieId = myArray2[myArray2.length - 1];
+  const movieId = props?.searchParams?.id ?? "";
 
   const res = await fetch(`${process.env.API_URL}/Movie/${movieId}`);
   const movieDetail: MovieDetailType = await res.json();
@@ -29,11 +25,7 @@ export async function generateMetadata(
 }
 
 export default async function Detail(props: any) {
-  const { params } = props;
-
-  const myArray1 = params.slug.split(".html");
-  const myArray2 = myArray1[0].split("-");
-  const movieId = myArray2[myArray2.length - 1];
+  const movieId = props?.searchParams?.id ?? "";
 
   let movieDetail: MovieDetailType;
   try {
