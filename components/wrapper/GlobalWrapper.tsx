@@ -66,6 +66,11 @@ const GlobalWrapper = ({ children }: { children: React.ReactNode }) => {
           List: {
             colorText: "white",
           },
+          Spin: {
+            colorPrimary: "red",
+            colorBgContainer: "red",
+            colorWhite: "red",
+          },
         },
       }}
     >
