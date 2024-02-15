@@ -1,4 +1,4 @@
-import { Rubik_Dirt } from "@next/font/google";
+import { Rubik_Dirt } from "next/font/google";
 import Link from "next/link";
 import VideoPlayer from "./component/VideoPlayer";
 import { InfoCircleOutlined } from "@ant-design/icons";

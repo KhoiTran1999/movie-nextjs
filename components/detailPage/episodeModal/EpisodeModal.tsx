@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Select, Spin, Modal } from "antd";
 import { CaretRightFilled } from "@ant-design/icons";
-import { Rubik_Dirt } from "@next/font/google";
+import { Rubik_Dirt } from "next/font/google";
 import { useRouter } from "next/navigation";
 import { WatchModal } from "../watchModal/WatchModal";
 

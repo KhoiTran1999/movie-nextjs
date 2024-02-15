@@ -2,7 +2,7 @@
 
 import NavigationMovie from "@/components/homePage/navigationMovie/NavigationMovie";
 import dynamic from "next/dynamic";
-import { Rubik_Dirt } from "@next/font/google";
+import { Rubik_Dirt } from "next/font/google";
 import { StarFilled, FireFilled, InfoCircleOutlined } from "@ant-design/icons";
 import {
   Tabs,
