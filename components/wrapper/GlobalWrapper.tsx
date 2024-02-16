@@ -3,9 +3,15 @@
 import { Providers } from "@/utils/redux/provider";
 import { ConfigProvider } from "antd";
 import { AnimatePresence, motion } from "framer-motion";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const GlobalWrapper = ({ children }: { children: React.ReactNode }) => {
+  const [href, setHref] = useState("");
+
+  useEffect(() => {
+    setHref(window.location.href);
+  }, []);
+
   return (
     <ConfigProvider
       theme={{
@@ -107,7 +113,7 @@ const GlobalWrapper = ({ children }: { children: React.ReactNode }) => {
       <Providers>
         <AnimatePresence mode="wait">
           <motion.div
-            key={window.location.href}
+            key={href}
             initial="initialState"
             animate="animateState"
             exit="exitState"
