@@ -2,9 +2,12 @@
 
 import { Providers } from "@/utils/redux/provider";
 import { ConfigProvider } from "antd";
+import { AnimatePresence, motion } from "framer-motion";
+import { usePathname } from "next/navigation";
 import React from "react";
 
 const GlobalWrapper = ({ children }: { children: React.ReactNode }) => {
+  const pathname = usePathname();
   return (
     <ConfigProvider
       theme={{
@@ -104,7 +107,22 @@ const GlobalWrapper = ({ children }: { children: React.ReactNode }) => {
         href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-light.css"
       />
       <Providers>
-        <div className="overflow-hidden">{children}</div>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={pathname}
+            initial="initialState"
+            animate="animateState"
+            exit="exitState"
+            transition={{ duration: 0.75 }}
+            variants={{
+              initialState: { opacity: 0 },
+              animateState: { opacity: 1 },
+              exitState: {},
+            }}
+          >
+            <div className="overflow-hidden">{children}</div>
+          </motion.div>
+        </AnimatePresence>
       </Providers>
     </ConfigProvider>
   );

@@ -28,6 +28,7 @@ import { MovieDetailType, MovieType, SeasonMovieDetail } from "@/types";
 import CardMovie from "../homePage/cardSlider/CardMovie";
 import { getRecommendedMovieListAction } from "../actions";
 import { useInView } from "react-intersection-observer";
+import { motion } from "framer-motion";
 
 const rubik = Rubik_Dirt({
   subsets: ["latin"],
@@ -186,69 +187,76 @@ export default function MainDetailPage(props: MainDetailPage) {
         <div className="backdrop-blur-sm">
           <div className={`m-auto w-full max-w-[1200px] px-3 py-8`}>
             <div className="m-auto mt-14 w-full max-w-[700px] text-[#D1D0CF]">
-              <div className="flex items-center justify-start">
-                <div className="w-fit">
-                  <h1
-                    className={`${rubik.className} my-2 w-full text-2xl tracking-wider [word-spacing:5px] md:my-4 md:text-4xl`}
-                  >
-                    {movieDetail.englishName}
-                  </h1>
-                  <h2 className="font-bold">{movieDetail.vietnamName}</h2>
-                  <div className="my-4">
-                    <span>{movieDetail.producedDate.slice(0, 4)}</span>
-                    <span className="mx-4">
-                      {movieDetail.totalSeasons > 1
-                        ? `${movieDetail.totalSeasons} seasons`
-                        : movieDetail.totalEpisodes > 1
-                          ? `${movieDetail.totalEpisodes} episodes`
-                          : `${movieDetail.time} minutes`}
-                    </span>
-                    <span>
-                      {movieDetail.mark}/10{" "}
-                      <StarFilled className="text-yellow-400" />
-                    </span>
-                    <ul className="mt-2 flex flex-wrap items-center">
-                      {movieDetail.categories.map(
-                        (
-                          val: { categoryId: number; name: string },
-                          idx: number,
-                        ) => {
-                          if (idx + 1 < movieDetail.categories.length) {
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <div className="flex items-center justify-start">
+                  <div className="w-fit">
+                    <h1
+                      className={`${rubik.className} my-2 w-full text-2xl tracking-wider [word-spacing:5px] md:my-4 md:text-4xl`}
+                    >
+                      {movieDetail.englishName}
+                    </h1>
+                    <h2 className="font-bold">{movieDetail.vietnamName}</h2>
+                    <div className="my-4">
+                      <span>{movieDetail.producedDate.slice(0, 4)}</span>
+                      <span className="mx-4">
+                        {movieDetail.totalSeasons > 1
+                          ? `${movieDetail.totalSeasons} seasons`
+                          : movieDetail.totalEpisodes > 1
+                            ? `${movieDetail.totalEpisodes} episodes`
+                            : `${movieDetail.time} minutes`}
+                      </span>
+                      <span>
+                        {movieDetail.mark}/10{" "}
+                        <StarFilled className="text-yellow-400" />
+                      </span>
+                      <ul className="mt-2 flex flex-wrap items-center">
+                        {movieDetail.categories.map(
+                          (
+                            val: { categoryId: number; name: string },
+                            idx: number,
+                          ) => {
+                            if (idx + 1 < movieDetail.categories.length) {
+                              return (
+                                <li className="mr-2" key={val.categoryId}>
+                                  <span className="mr-2 cursor-pointer hover:text-[#E50914]">
+                                    {val.name}
+                                  </span>
+                                  <FireFilled className="text-xs text-[#E50914]" />
+                                </li>
+                              );
+                            }
                             return (
                               <li className="mr-2" key={val.categoryId}>
-                                <span className="mr-2 cursor-pointer hover:text-[#E50914]">
+                                <span className=" cursor-pointer hover:text-[#E50914]">
                                   {val.name}
                                 </span>
-                                <FireFilled className="text-xs text-[#E50914]" />
                               </li>
                             );
-                          }
-                          return (
-                            <li className="mr-2" key={val.categoryId}>
-                              <span className=" cursor-pointer hover:text-[#E50914]">
-                                {val.name}
-                              </span>
-                            </li>
-                          );
-                        },
-                      )}
-                    </ul>
+                          },
+                        )}
+                      </ul>
+                    </div>
+                  </div>
+                  <div className="ml-3 w-[30%] overflow-hidden">
+                    <LazyLoadImage
+                      alt="Thumbnail"
+                      src={movieDetail.thumbnail}
+                      effect="blur"
+                      loading="lazy"
+                      className="h-full w-full rounded-md object-cover"
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = "/errorThumbnail.jpg";
+                      }}
+                    />
                   </div>
                 </div>
-                <div className="ml-3 w-[30%] overflow-hidden">
-                  <LazyLoadImage
-                    alt="Thumbnail"
-                    src={movieDetail.thumbnail}
-                    effect="blur"
-                    loading="lazy"
-                    className="h-full w-full rounded-md object-cover"
-                    onError={(e) => {
-                      e.currentTarget.onerror = null;
-                      e.currentTarget.src = "/errorThumbnail.jpg";
-                    }}
-                  />
-                </div>
-              </div>
+              </motion.div>
 
               <Tabs
                 type="card"
