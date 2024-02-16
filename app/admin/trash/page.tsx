@@ -32,7 +32,7 @@ export default async function page(props: any) {
 
   revalidatePath("admin/Trash");
   const res = await fetch(
-    `${process.env.API_URL}Movies?filterBy=deleted&page=${page}&eachPage=${LIMIT}&sortBy=dayDeleted`,
+    `${process.env.API_URL}Movies?filterBy=deleted&page=${page}&eachPage=${LIMIT}&sortBy=DeletedDate`,
     {
       cache: "no-store",
     },
