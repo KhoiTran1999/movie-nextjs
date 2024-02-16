@@ -3,11 +3,9 @@
 import { Providers } from "@/utils/redux/provider";
 import { ConfigProvider } from "antd";
 import { AnimatePresence, motion } from "framer-motion";
-import { usePathname } from "next/navigation";
 import React from "react";
 
 const GlobalWrapper = ({ children }: { children: React.ReactNode }) => {
-  const pathname = usePathname();
   return (
     <ConfigProvider
       theme={{
@@ -109,7 +107,7 @@ const GlobalWrapper = ({ children }: { children: React.ReactNode }) => {
       <Providers>
         <AnimatePresence mode="wait">
           <motion.div
-            key={pathname}
+            key={window.location.href}
             initial="initialState"
             animate="animateState"
             exit="exitState"
