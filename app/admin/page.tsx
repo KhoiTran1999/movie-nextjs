@@ -8,13 +8,30 @@ interface StatisticType {
   account: number;
 }
 
+interface FeatureDataType{
+  cinema: number;
+  standalone: number;
+  tvSeries: number;
+}
+
 export default async function page() {
-  let data: StatisticType;
+  let statisticsData: StatisticType;
   try {
     const res = await fetch(`${process.env.API_URL}/Admin/Statistics`, {
       cache: "no-store",
     });
-    data = await res.json();
+    statisticsData = await res.json();
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to fetch Statistics");
+  }
+
+  let featuresData: FeatureDataType;
+  try {
+    const res = await fetch(`${process.env.API_URL}/Admin/Features`, {
+      cache: "no-store",
+    });
+    featuresData = await res.json();
   } catch (error) {
     console.log(error);
     throw new Error("Failed to fetch Statistics");
@@ -22,11 +39,8 @@ export default async function page() {
 
   return (
     <Dashboard
-      upcoming={data.upcoming}
-      pending={data.pending}
-      released={data.released}
-      deleted={data.deleted}
-      account={data.account}
+    statisticsData={statisticsData}
+    featuresData={featuresData}
     />
   );
 }
