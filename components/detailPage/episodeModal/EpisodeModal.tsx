@@ -153,6 +153,7 @@ export const EpisodeModal = ({
                 seasonNumber={watchMovie.seasonNumber}
                 name={watchMovie.name}
                 video={watchMovie.video}
+                movieId={movieId}
               />
             </Modal>
           </ul>

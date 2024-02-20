@@ -4,13 +4,20 @@ import { Chart } from "react-google-charts";
 
 import { CategoryType, StatisticType } from "@/types";
 
+interface featureType {
+  CinemaFilm: string;
+  StandaloneFilm: string;
+  TVSeries: string;
+}
+
 interface DashboardType {
   statisticsData: StatisticType;
   categoryData: CategoryType;
+  featureData: featureType;
 }
 
 const Dashboard = async (props: DashboardType) => {
-  const { categoryData, statisticsData } = props;
+  const { categoryData, statisticsData, featureData } = props;
 
   const categoryDataChart = [
     ["Element", "Density", { role: "style" }],
@@ -32,14 +39,32 @@ const Dashboard = async (props: DashboardType) => {
     ["Science", categoryData.Science, "#00FA9A"],
   ];
 
-  const featureDataChart = {
-    labels: ["Cinema", "Stanalone", "TV Series"],
-    datasets: [
-      {
-        data: [12, 4, 8],
-        backgroundColor: ["#FF5733", "#33FF57", "#5733FF"],
-      },
-    ],
+  const featureDataChart = [
+    ["Task", "Hours per Day"],
+    ["Cinema", featureData.CinemaFilm],
+    ["Stanalone", featureData.StandaloneFilm],
+    ["TV Series", featureData.TVSeries],
+  ];
+
+  const optionsBarChart = {
+    hAxis: {
+      //use style for horizontal axis
+      textStyle: { color: "white" },
+    },
+    vAxis: {
+      //use style for horizontal axis
+      textStyle: { color: "white" },
+    },
+    chartArea: {
+      width: "90%",
+    },
+    legend: "none",
+    backgroundColor: "transparent",
+  };
+
+  const optionsPieChart = {
+    backgroundColor: "transparent",
+    legend: { textStyle: { color: "white" } },
   };
 
   return (
@@ -94,20 +119,27 @@ const Dashboard = async (props: DashboardType) => {
       </div>
       <div className="mt-7">
         <Chart
-          className="bg-transparent"
           chartType="ColumnChart"
           width="100%"
           height={"400px"}
           data={categoryDataChart}
-          options={{
-            legend: "none",
-          }}
+          options={optionsBarChart}
         />
-        <div className="w-1/4">
-          {/* <Pie
+        <div className="flex justify-around">
+          <Chart
+            chartType="PieChart"
+            width="100%"
+            height={"400px"}
             data={featureDataChart}
-            options={{ plugins: { legend: { labels: { color: "white" } } } }}
-          /> */}
+            options={optionsPieChart}
+          />
+          <Chart
+            chartType="PieChart"
+            width="100%"
+            height={"400px"}
+            data={featureDataChart}
+            options={optionsPieChart}
+          />
         </div>
       </div>
     </div>

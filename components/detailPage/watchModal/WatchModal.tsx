@@ -1,10 +1,14 @@
 "use client";
 
+import Axios from "@/utils/axios";
+import { useEffect } from "react";
+
 type movieProps = {
   seasonNumber: number;
   episodeNumber: number;
   name: string;
   video: string;
+  movieId: string;
 };
 
 export const WatchModal = ({
@@ -12,7 +16,18 @@ export const WatchModal = ({
   episodeNumber,
   name,
   video,
+  movieId,
 }: movieProps) => {
+  useEffect(() => {
+    const fetchApi = async () => {
+      try {
+        await Axios.post("Analyst/AddViewerMovie", "", { params: { movieId } });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchApi();
+  }, []);
   return (
     <div className="md:h-[70svh]">
       <iframe

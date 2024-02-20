@@ -410,6 +410,7 @@ export default function MainDetailPage(props: MainDetailPage) {
             seasonNumber={watchMovie?.seasonNumber}
             name={watchMovie?.episodes[0]?.name}
             video={watchMovie?.episodes[0]?.video}
+            movieId={movieDetail.movieId}
           />
         </Modal>
         <Modal
