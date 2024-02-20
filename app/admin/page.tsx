@@ -1,18 +1,6 @@
 import Dashboard from "@/components/adminPage/content/Dashboard";
+import { CategoryType, StatisticType } from "@/types";
 
-interface StatisticType {
-  upcoming: number;
-  pending: number;
-  released: number;
-  deleted: number;
-  account: number;
-}
-
-interface FeatureDataType{
-  cinema: number;
-  standalone: number;
-  tvSeries: number;
-}
 
 export default async function page() {
   let statisticsData: StatisticType;
@@ -26,12 +14,12 @@ export default async function page() {
     throw new Error("Failed to fetch Statistics");
   }
 
-  let featuresData: FeatureDataType;
+  let categoryData: CategoryType;
   try {
-    const res = await fetch(`${process.env.API_URL}/Admin/Features`, {
+    const res = await fetch(`${process.env.API_URL}/Admin/Categories`, {
       cache: "no-store",
     });
-    featuresData = await res.json();
+    categoryData = await res.json();
   } catch (error) {
     console.log(error);
     throw new Error("Failed to fetch Statistics");
@@ -40,7 +28,7 @@ export default async function page() {
   return (
     <Dashboard
     statisticsData={statisticsData}
-    featuresData={featuresData}
+    categoryData={categoryData}
     />
   );
 }

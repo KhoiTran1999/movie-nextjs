@@ -37,7 +37,7 @@ export interface MovieAntdTableType {
 
 export interface EpisodeType {
   episodeId: string;
-  episodeNumber: number,
+  episodeNumber: number;
   name: number;
   video: string;
   dateCreated: string;
@@ -48,14 +48,14 @@ export interface SeasonType {
   seasonId: string;
   seasonNumber: number;
   name: string;
-  episodes: EpisodeType[]
+  episodes: EpisodeType[];
 }
 
 export interface castCharacteryType {
   personId: string;
   namePerson: string;
   characterName: string;
-  thumbnail: string
+  thumbnail: string;
 }
 
 export interface nationType {
@@ -98,4 +98,31 @@ export interface EpisodeMovieDetail {
   video: string;
   dateCreated: string;
   dateUpdated: string;
+}
+
+export interface StatisticType {
+  upcoming: number;
+  pending: number;
+  released: number;
+  deleted: number;
+  account: number;
+}
+
+export interface CategoryType {
+  Action: number;
+  Adventure: number;
+  Anime: number;
+  Comedy: number;
+  Drama: number;
+  Fantasy: number;
+  Horror: number;
+  Musical: number;
+  Mystery: number;
+  Romance: number;
+  Thriller: number;
+  Historical: number;
+  War: number;
+  Violence: number;
+  Nudity: number;
+  Science: number;
 }
