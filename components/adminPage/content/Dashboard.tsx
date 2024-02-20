@@ -1,16 +1,8 @@
 "use client";
 
-import { Pie } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-  Legend,
-  Colors,
-} from "chart.js";
-import { CategoryType, StatisticType } from "@/types";
+import { Chart } from "react-google-charts";
 
-ChartJS.register(ArcElement, Tooltip, Legend, Colors);
+import { CategoryType, StatisticType } from "@/types";
 
 interface DashboardType {
   statisticsData: StatisticType;
@@ -20,73 +12,34 @@ interface DashboardType {
 const Dashboard = async (props: DashboardType) => {
   const { categoryData, statisticsData } = props;
 
-  const data = {
-    labels: [
-      "Action",
-      "Adventure",
-      "Anime",
-      "Comedy",
-      "Drama",
-      "Fantasy",
-      "Horror",
-      "Musical",
-      "Mystery",
-      "Romance",
-      "Thriller",
-      "Historical",
-      "War",
-      "Violence",
-      "Nudity",
-      "Science",
-    ],
+  const categoryDataChart = [
+    ["Element", "Density", { role: "style" }],
+    ["Action", categoryData.Action, "#FFC0CB"],
+    ["Adventure", categoryData.Adventure, "#FFA07A"],
+    ["Anime", categoryData.Anime, "#FFD700"],
+    ["Comedy", categoryData.Comedy, "#32CD32"],
+    ["Drama", categoryData.Drama, "#00BFFF"],
+    ["Fantasy", categoryData.Fantasy, "#87CEEB"],
+    ["Horror", categoryData.Horror, "#40E0D0"],
+    ["Musical", categoryData.Musical, "#9370DB"],
+    ["Mystery", categoryData.Mystery, "#FF8C00"],
+    ["Romance", categoryData.Romance, "#FF1493"],
+    ["Thriller", categoryData.Thriller, "#7B68EE"],
+    ["Historical", categoryData.Historical, "#FFDAB9"],
+    ["War", categoryData.War, "#FF6347"],
+    ["Violence", categoryData.Violence, "#FF69B4"],
+    ["Nudity", categoryData.Nudity, "#20B2AA"],
+    ["Science", categoryData.Science, "#00FA9A"],
+  ];
+
+  const featureDataChart = {
+    labels: ["Cinema", "Stanalone", "TV Series"],
     datasets: [
       {
-        data: [
-          categoryData.Action,
-          categoryData.Adventure,
-          categoryData.Anime,
-          categoryData.Comedy,
-          categoryData.Drama,
-          categoryData.Fantasy,
-          categoryData.Historical,
-          categoryData.Horror,
-          categoryData.Musical,
-          categoryData.Mystery,
-          categoryData.Nudity,
-          categoryData.Romance,
-          categoryData.Science,
-          categoryData.Thriller,
-          categoryData.Violence,
-          categoryData.War,
-        ],
-        backgroundColor: [
-          "#FFC0CB", // Pink
-          "#FFA07A", // Light Salmon
-          "#FFD700", // Gold
-          "#32CD32", // Lime Green
-          "#00BFFF", // Deep Sky Blue
-          "#87CEEB", // Sky Blue
-          "#FF6347", // Tomato
-          "#40E0D0", // Turquoise
-          "#9370DB", // Medium Purple
-          "#FF8C00", // Dark Orange
-          "#FF1493", // Deep Pink
-          "#7B68EE", // Medium Slate Blue
-          "#FFDAB9", // Peach Puff
-          "#FF69B4", // Hot Pink
-          "#20B2AA", // Light Sea Green
-          "#00FA9A", // Medium Spring Green
-        ],
+        data: [12, 4, 8],
+        backgroundColor: ["#FF5733", "#33FF57", "#5733FF"],
       },
     ],
-  };
-
-  const options = {
-    plugins: {
-      tooltip: {
-        callbacks: {},
-      },
-    },
   };
 
   return (
@@ -139,16 +92,22 @@ const Dashboard = async (props: DashboardType) => {
           <i className="fa-solid fa-users absolute right-3 top-3 text-2xl text-[#9F8772]"></i>
         </div>
       </div>
-      <div>
-        <div className="flex justify-center">
-          <div className="flex w-1/2 ">
-            <Pie data={data} options={options} />
-          </div>
-        </div>
-        <div className="flex justify-center">
-          <div className="flex w-1/2 ">
-            <Pie data={data} />
-          </div>
+      <div className="mt-7">
+        <Chart
+          className="bg-transparent"
+          chartType="ColumnChart"
+          width="100%"
+          height={"400px"}
+          data={categoryDataChart}
+          options={{
+            legend: "none",
+          }}
+        />
+        <div className="w-1/4">
+          {/* <Pie
+            data={featureDataChart}
+            options={{ plugins: { legend: { labels: { color: "white" } } } }}
+          /> */}
         </div>
       </div>
     </div>
