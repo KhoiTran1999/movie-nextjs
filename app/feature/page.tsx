@@ -13,7 +13,7 @@ export default async function Feature(props: any) {
   if (!featureId && current === "NewMovie") {
     try {
       const res = await fetch(
-        `${process.env.API_URL}/Movies?sortBy=produceddate&page=1&eachPage=10`,
+        `${process.env.NEXT_PUBLIC_API_URL}/Movies?sortBy=produceddate&page=1&eachPage=10`,
         {
           next: { revalidate: 900 },
         },
@@ -28,7 +28,7 @@ export default async function Feature(props: any) {
   } else {
     try {
       const res = await fetch(
-        `${process.env.API_URL}/Movies?filterBy=feature&key=${featureId}&status=All&sortBy=produceddate&page=1&eachPage=10`,
+        `${process.env.NEXT_PUBLIC_API_URL}/Movies?filterBy=feature&key=${featureId}&status=All&sortBy=produceddate&page=1&eachPage=10`,
         {
           next: { revalidate: 900 },
         },

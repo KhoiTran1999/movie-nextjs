@@ -52,7 +52,9 @@ const CreatePersonModal = ({
   //Call Api Feature, Category-----------------------
   useEffect(() => {
     const fetchApi = async () => {
-      const res = await fetch(`${process.env.API_URL}nations?page=0`);
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}nations?page=0`,
+      );
       const data = await res.json();
       const newNationOption = data.map((val: NationType) => ({
         value: val.nationId,
@@ -129,7 +131,7 @@ const CreatePersonModal = ({
     try {
       setIsLoadingCreateButton(true);
 
-      await fetch(`${process.env.API_URL}/Person`, {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/Person`, {
         method: "POST",
         headers: { "Content-Type": "multipart/form-data" },
         body: JSON.stringify(data),
@@ -138,7 +140,7 @@ const CreatePersonModal = ({
       try {
         //update personList
         const res = await fetch(
-          `${process.env.API_URL}/Persons?sortBy=CreatedDate&page=0`
+          `${process.env.NEXT_PUBLIC_API_URL}/Persons?sortBy=CreatedDate&page=0`,
         );
         const data = await res.json();
         dispatch(
@@ -146,8 +148,8 @@ const CreatePersonModal = ({
             data.map((val: any, idx: number) => ({
               ...val,
               key: idx,
-            }))
-          )
+            })),
+          ),
         );
       } catch (error) {
         console.log(error);

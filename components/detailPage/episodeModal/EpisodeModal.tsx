@@ -72,7 +72,7 @@ export const EpisodeModal = ({
     const fetchAPI = async () => {
       setIsLoading(true);
       const res = await fetch(
-        `${process.env.API_URL}/Seasons?movieId=${movieId}&seasonNumber=${seasonNumber}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/Seasons?movieId=${movieId}&seasonNumber=${seasonNumber}`,
       );
       const data = await res.json();
 

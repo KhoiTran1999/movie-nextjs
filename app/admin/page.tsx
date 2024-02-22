@@ -10,9 +10,12 @@ interface featureType {
 export default async function page() {
   let statisticsData: StatisticType;
   try {
-    const res = await fetch(`${process.env.API_URL}/Admin/Statistics`, {
-      cache: "no-store",
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/Admin/Statistics`,
+      {
+        cache: "no-store",
+      },
+    );
     statisticsData = await res.json();
   } catch (error) {
     console.log(error);
@@ -21,9 +24,12 @@ export default async function page() {
 
   let categoryData: CategoryType;
   try {
-    const res = await fetch(`${process.env.API_URL}/Admin/Categories`, {
-      cache: "no-store",
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/Admin/Categories`,
+      {
+        cache: "no-store",
+      },
+    );
     categoryData = await res.json();
   } catch (error) {
     console.log(error);
@@ -32,9 +38,12 @@ export default async function page() {
 
   let featureData: featureType;
   try {
-    const res = await fetch(`${process.env.API_URL}/Admin/Features`, {
-      cache: "no-store",
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/Admin/Features`,
+      {
+        cache: "no-store",
+      },
+    );
     featureData = await res.json();
   } catch (error) {
     console.log(error);

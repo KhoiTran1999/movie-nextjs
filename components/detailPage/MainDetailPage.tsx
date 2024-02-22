@@ -108,7 +108,7 @@ export default function MainDetailPage(props: MainDetailPage) {
 
     try {
       const res = await fetch(
-        `${process.env.API_URL}/Seasons?movieId=${movieDetail.movieId}&seasonNumber=1`,
+        `${process.env.NEXT_PUBLIC_API_URL}/Seasons?movieId=${movieDetail.movieId}&seasonNumber=1`,
       );
       const data = await res.json();
       if (!data || data.length === 0) {

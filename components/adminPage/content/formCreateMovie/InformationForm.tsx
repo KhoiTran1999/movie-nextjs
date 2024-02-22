@@ -155,9 +155,9 @@ const InformationForm = ({
   useEffect(() => {
     const fetchApi = async () => {
       const res = await Promise.all([
-        fetch(`${process.env.API_URL}/Features`),
-        fetch(`${process.env.API_URL}/Categories`),
-        fetch(`${process.env.API_URL}/nations?page=0`),
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/Features`),
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/Categories`),
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/nations?page=0`),
       ]);
       const feature = await res[0].json();
       const categories = await res[1].json();
@@ -276,7 +276,7 @@ const InformationForm = ({
         try {
           dispatch(setIsLoadingAIButton(true));
           const res = await fetch(
-            `${process.env.API_URL}/Chat?content=${englishName}&${paramNation}`,
+            `${process.env.NEXT_PUBLIC_API_URL}/Chat?content=${englishName}&${paramNation}`,
           );
           const movie = await res.json();
 

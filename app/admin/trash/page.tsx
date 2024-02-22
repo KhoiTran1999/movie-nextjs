@@ -1,7 +1,6 @@
 import { revalidatePath } from "next/cache";
 import Trash from "../../../components/adminPage/content/Trash";
 import { CategoryType, MovieAntdTableType, MovieType } from "@/types";
-import Axios from "@/utils/axios";
 import { SuspenseComp } from "@/components/wrapper/SuspenseComp";
 
 export default async function page(props: any) {
@@ -32,7 +31,7 @@ export default async function page(props: any) {
 
   revalidatePath("admin/Trash");
   const res = await fetch(
-    `${process.env.API_URL}Movies?filterBy=deleted&page=${page}&eachPage=${LIMIT}&sortBy=DeletedDate`,
+    `${process.env.NEXT_PUBLIC_API_URL}Movies?filterBy=deleted&page=${page}&eachPage=${LIMIT}&sortBy=DeletedDate`,
     {
       cache: "no-store",
     },

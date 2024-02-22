@@ -95,7 +95,7 @@ const ActorForm = ({
       try {
         setLoading(true);
         const res = await fetch(
-          `${process.env.API_URL}/Persons?sortBy=CreatedDate&page=0`,
+          `${process.env.NEXT_PUBLIC_API_URL}/Persons?sortBy=CreatedDate&page=0`,
         );
         const data = await res.json();
         dispatch(

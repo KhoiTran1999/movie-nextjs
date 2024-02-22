@@ -1,5 +1,6 @@
 "use client";
 
+import { addViewerMovieAction } from "@/components/actions";
 import Axios from "@/utils/axios";
 import { useEffect } from "react";
 
@@ -21,7 +22,7 @@ export const WatchModal = ({
   useEffect(() => {
     const fetchApi = async () => {
       try {
-        await Axios.post("Analyst/AddViewerMovie", "", { params: { movieId } });
+        await addViewerMovieAction(movieId);
       } catch (error) {
         console.log(error);
       }
