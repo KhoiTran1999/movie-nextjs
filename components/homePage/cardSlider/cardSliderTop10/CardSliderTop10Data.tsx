@@ -13,7 +13,7 @@ const CardSliderTop10Data = async () => {
     <>
       {top10.length > 3 ? (
         <CardSliderTop10
-          title={`Top ${top10.length} Movie This Week`}
+          title={`Top ${top10.length} Movies This Week`}
           movieList={top10}
           icon={
             <i className="fa-sharp fa-regular fa-arrow-down-wide-short mr-2 text-[red] sm:text-2xl"></i>
