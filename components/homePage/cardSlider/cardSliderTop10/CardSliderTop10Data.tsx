@@ -10,13 +10,19 @@ const CardSliderTop10Data = async () => {
   const top10 = await res.json();
 
   return (
-    <CardSliderTop10
-      title="Top 10"
-      movieList={top10}
-      icon={
-        <i className="fa-sharp fa-regular fa-arrow-down-wide-short mr-2 text-[red] sm:text-2xl"></i>
-      }
-    />
+    <>
+      {top10.length > 3 ? (
+        <CardSliderTop10
+          title={`Top ${top10.length} Movie This Week`}
+          movieList={top10}
+          icon={
+            <i className="fa-sharp fa-regular fa-arrow-down-wide-short mr-2 text-[red] sm:text-2xl"></i>
+          }
+        />
+      ) : (
+        <></>
+      )}
+    </>
   );
 };
 
