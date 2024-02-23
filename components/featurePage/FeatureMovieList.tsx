@@ -118,10 +118,10 @@ const FeatureMovieList = (props: FeatureMovieList) => {
                 grid={{
                   xs: 3,
                   sm: 3,
-                  md: 3,
-                  lg: 4,
-                  xl: 5,
-                  xxl: 5,
+                  md: 4,
+                  lg: 5,
+                  xl: 6,
+                  xxl: 8,
                   gutter: 12,
                 }}
                 renderItem={(val: MovieType, idx: number) => (
