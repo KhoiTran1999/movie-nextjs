@@ -7,13 +7,11 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/scrollbar";
 import "swiper/css/pagination";
-import CardMovie from "./CardMovie";
-import Link from "next/link";
+import CardMovieTop10 from "./CardMovieTop10";
 
 type cardSliderProps = {
   title: string;
   movieList: movieProps[];
-  href: string;
   icon: React.ReactNode;
 };
 
@@ -29,7 +27,7 @@ type movieProps = {
   dateCreated: string;
 };
 
-const CardSlider = ({ title, movieList, href, icon }: cardSliderProps) => {
+const CardSliderTop10 = ({ title, movieList, icon }: cardSliderProps) => {
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -49,24 +47,16 @@ const CardSlider = ({ title, movieList, href, icon }: cardSliderProps) => {
   return (
     <div className="mb-3">
       <>
-        <Link href={href}>
-          <div>
-            <div className="group flex cursor-pointer items-center justify-between md:justify-start">
-              <div className="flex items-center">
-                {icon}
-                <h2 className="text-2xl font-bold hover:text-[#D1D0CF] max-[528px]:text-lg">
-                  {title}
-                </h2>
-              </div>
-              <div
-                className={`visible ml-3 flex translate-x-0 items-center justify-center font-bold text-[#E50914] opacity-100 transition-all group-hover:translate-x-[0px] group-hover:opacity-100 md:invisible md:translate-x-[-20px] md:opacity-0 md:group-hover:visible`}
-              >
-                <span className="mr-2">See all </span>
-                <i className="fa-solid fa-angle-right text-sm"></i>
-              </div>
+        <div>
+          <div className="group flex items-center justify-between md:justify-start">
+            <div className="flex items-center">
+              {icon}
+              <h2 className="text-2xl font-bold max-[528px]:text-lg">
+                {title}
+              </h2>
             </div>
           </div>
-        </Link>
+        </div>
 
         {isLoading ? (
           <div className="flex">
@@ -78,35 +68,37 @@ const CardSlider = ({ title, movieList, href, icon }: cardSliderProps) => {
           <div onMouseEnter={handleOnMouseEnter} onMouseLeave={onMouseLeave}>
             <Swiper
               lazyPreloadPrevNext={5}
-              slidesPerView={3}
+              slidesPerView={1}
               breakpoints={{
-                930: {
+                320: {
+                  slidesPerView: 2,
+                },
+                768: {
+                  slidesPerView: 3,
+                },
+                1000: {
                   slidesPerView: 4,
                 },
-                1130: {
+                1400: {
                   slidesPerView: 5,
                 },
-                1400: {
+                1600: {
                   slidesPerView: 6,
                 },
-                1600: {
+                1940: {
                   slidesPerView: 7,
                 },
-                1940: {
-                  slidesPerView: 8,
-                },
                 2150: {
-                  slidesPerView: 9,
+                  slidesPerView: 8,
                 },
               }}
               navigation={isHover && screen.width > 930}
               modules={[Navigation, Scrollbar, A11y, Pagination]}
-              loop
               longSwipes={true}
             >
               {movieList.map((val: movieProps, idx: number) => (
                 <SwiperSlide key={idx}>
-                  <CardMovie
+                  <CardMovieTop10
                     englishName={val.englishName}
                     vietnamName={val.vietnamName}
                     movieId={val.movieId}
@@ -114,6 +106,7 @@ const CardSlider = ({ title, movieList, href, icon }: cardSliderProps) => {
                     time={val.time}
                     totalEpisodes={val.totalEpisodes}
                     totalSeasons={val.totalSeasons}
+                    idx={idx}
                   />
                 </SwiperSlide>
               ))}
@@ -125,4 +118,4 @@ const CardSlider = ({ title, movieList, href, icon }: cardSliderProps) => {
   );
 };
 
-export default CardSlider;
+export default CardSliderTop10;

@@ -79,16 +79,28 @@ const FeatureMovieList = (props: FeatureMovieList) => {
     <>
       <div className="mt-14 px-4">
         {current === "NewMovie" && (
-          <h2 className="font-bold md:hidden">New Movie</h2>
+          <div className="flex items-center">
+            <i className="fa-solid fa-sparkles mr-2 text-[red] sm:text-2xl"></i>
+            <h2 className="font-bold md:hidden">New Movie</h2>
+          </div>
         )}
         {current === "CinemaFilm" && (
-          <h2 className="font-bold md:hidden">Cinema Film</h2>
+          <div className="flex items-center">
+            <i className="fa-solid fa-popcorn mr-2 text-[red] sm:text-2xl"></i>
+            <h2 className="font-bold md:hidden">Cinema Film</h2>
+          </div>
         )}
         {current === "StandaloneFilm" && (
-          <h2 className="font-bold md:hidden">Standalone Film</h2>
+          <div className="flex items-center">
+            <i className="fa-regular fa-film mr-2 text-[red] sm:text-2xl"></i>
+            <h2 className="font-bold md:hidden">Standalone Film</h2>
+          </div>
         )}
         {current === "TVSeries" && (
-          <h2 className="font-bold md:hidden">TV Series</h2>
+          <div className="flex items-center">
+            <i className="fa-solid fa-camera-movie mr-2 text-[red] sm:text-2xl"></i>
+            <h2 className="font-bold md:hidden">TV Series</h2>
+          </div>
         )}
         {recommendedMovie?.length ? (
           <AnimatePresence>

@@ -14,6 +14,7 @@ const CardSliderCinemaMovie = async () => {
       href="/feature?current=CinemaFilm&featureId=1"
       title="Cinema Movies"
       movieList={cinemaMovieList}
+      icon={<i className="fa-solid fa-popcorn mr-2 text-[red] sm:text-2xl"></i>}
     />
   );
 };

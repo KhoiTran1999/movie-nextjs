@@ -9,6 +9,7 @@ const nextConfig = {
         pathname: "/streaming-movie/**",
       },
     ],
+    dangerouslyAllowSVG: true,
   },
 };
 

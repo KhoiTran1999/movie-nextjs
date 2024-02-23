@@ -14,6 +14,9 @@ const CardSliderNewMovie = async () => {
       href="/feature?current=NewMovie"
       title="New Movies"
       movieList={newMovieList}
+      icon={
+        <i className="fa-solid fa-sparkles mr-2 text-[red] sm:text-2xl"></i>
+      }
     />
   );
 };

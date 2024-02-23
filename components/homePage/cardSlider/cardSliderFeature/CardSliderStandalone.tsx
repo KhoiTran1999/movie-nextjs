@@ -14,6 +14,7 @@ const CardSliderStandalone = async () => {
       href="/feature?current=StandaloneFilm&featureId=2"
       title="Standalone Movies"
       movieList={standaloneMovieList}
+      icon={<i className="fa-regular fa-film mr-2 text-[red] sm:text-2xl"></i>}
     />
   );
 };

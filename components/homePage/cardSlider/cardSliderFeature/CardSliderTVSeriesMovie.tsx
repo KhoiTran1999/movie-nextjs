@@ -14,6 +14,9 @@ const CardSliderTVSeriesMovie = async () => {
       href="/feature?current=TVSeries&featureId=3"
       title="TV Series Movies"
       movieList={TVSeriesMovieList}
+      icon={
+        <i className="fa-solid fa-camera-movie mr-2 text-[red] sm:text-2xl"></i>
+      }
     />
   );
 };
