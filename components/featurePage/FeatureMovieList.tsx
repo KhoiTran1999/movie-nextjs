@@ -79,25 +79,25 @@ const FeatureMovieList = (props: FeatureMovieList) => {
     <>
       <div className="mt-14 px-4">
         {current === "NewMovie" && (
-          <div className="flex items-center">
+          <div className="flex items-center md:hidden">
             <i className="fa-solid fa-sparkles mr-2 text-[red] sm:text-2xl"></i>
-            <h2 className="font-bold md:hidden">New Movie</h2>
+            <h2 className="font-bold">New Movie</h2>
           </div>
         )}
         {current === "CinemaFilm" && (
-          <div className="flex items-center">
+          <div className="flex items-center md:hidden">
             <i className="fa-solid fa-popcorn mr-2 text-[red] sm:text-2xl"></i>
             <h2 className="font-bold md:hidden">Cinema Film</h2>
           </div>
         )}
         {current === "StandaloneFilm" && (
-          <div className="flex items-center">
+          <div className="flex items-center md:hidden">
             <i className="fa-regular fa-film mr-2 text-[red] sm:text-2xl"></i>
             <h2 className="font-bold md:hidden">Standalone Film</h2>
           </div>
         )}
         {current === "TVSeries" && (
-          <div className="flex items-center">
+          <div className="flex items-center md:hidden">
             <i className="fa-solid fa-camera-movie mr-2 text-[red] sm:text-2xl"></i>
             <h2 className="font-bold md:hidden">TV Series</h2>
           </div>
