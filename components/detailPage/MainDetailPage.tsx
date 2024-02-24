@@ -4,16 +4,7 @@ import NavigationMovie from "@/components/homePage/navigationMovie/NavigationMov
 import dynamic from "next/dynamic";
 import { Rubik_Dirt } from "next/font/google";
 import { StarFilled, FireFilled, InfoCircleOutlined } from "@ant-design/icons";
-import {
-  Tabs,
-  Tooltip,
-  Modal,
-  message,
-  Button,
-  Result,
-  List,
-  Spin,
-} from "antd";
+import { Tabs, Tooltip, Modal, message, List, Spin } from "antd";
 import { Actor } from "@/components/detailPage/actorList/Actor";
 import { useEffect, useRef, useState } from "react";
 import { EpisodeModal } from "@/components/detailPage/episodeModal/EpisodeModal";
@@ -26,8 +17,6 @@ const ReactPlayer = dynamic(() => import("react-player/youtube"), {
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { MovieDetailType, MovieType, SeasonMovieDetail } from "@/types";
 import CardMovie from "../homePage/cardSlider/CardMovie";
-import { getRecommendedMovieListAction } from "../actions";
-import { useInView } from "react-intersection-observer";
 import { motion } from "framer-motion";
 
 const rubik = Rubik_Dirt({
@@ -43,16 +32,13 @@ interface MainDetailPage {
 }
 
 export default function MainDetailPage(props: MainDetailPage) {
-  const { movieDetail, initialRecommendedMovie, totalItems } = props;
-
-  const [ref, inView] = useInView();
+  const { movieDetail, initialRecommendedMovie } = props;
 
   const dispatch = useDispatch();
 
   const [recommendedMovie, setRecommendedMovie] = useState<MovieType[]>(
     initialRecommendedMovie,
   );
-  const [pageNumber, setPageNumber] = useState<number>(1);
   const [isSkeleton, setIsSkeleton] = useState<boolean>(false);
   const [loadingMovie, setLoadingMovie] = useState<boolean>(false);
   const [isEpisodeModalOpen, setIsEpisodeModalOpen] = useState<boolean>(false);
@@ -75,28 +61,9 @@ export default function MainDetailPage(props: MainDetailPage) {
   });
 
   useEffect(() => {
-    if (inView) {
-      loadMoreMovies();
-    }
-  }, [inView]);
-
-  useEffect(() => {
     setRecommendedMovie(initialRecommendedMovie);
     setIsSkeleton(false);
   }, [initialRecommendedMovie]);
-
-  const loadMoreMovies = async () => {
-    const next = pageNumber + 1;
-    const data = await getRecommendedMovieListAction(movieDetail.movieId, next);
-    if (data.length) {
-      setPageNumber(next);
-
-      return setRecommendedMovie((prev: MovieType[] | undefined) => [
-        ...(prev?.length ? prev : []),
-        ...data,
-      ]);
-    }
-  };
 
   const showModal = async () => {
     setLoadingMovie(true);
@@ -148,7 +115,6 @@ export default function MainDetailPage(props: MainDetailPage) {
     console.log("hahaha");
 
     const url: string = window.location.href;
-    console.log(url);
 
     try {
       await navigator.clipboard.writeText(url);
@@ -365,17 +331,6 @@ export default function MainDetailPage(props: MainDetailPage) {
                     )}
                   />
                 </>
-              ) : (
-                <></>
-              )}
-              {totalItems > recommendedMovie.length &&
-              totalItems > initialRecommendedMovie.length ? (
-                <div className="mt-6 flex justify-center">
-                  <i
-                    ref={ref}
-                    className="fa-duotone fa-spinner-third animate-spin text-5xl text-[red]"
-                  ></i>
-                </div>
               ) : (
                 <></>
               )}
