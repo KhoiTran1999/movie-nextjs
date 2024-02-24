@@ -436,7 +436,7 @@ export default function MainDetailPage(props: MainDetailPage) {
           </div>
         </Modal>
       </div>
-      <Spin spinning={isSkeleton} size="large" fullscreen />
+      {isSkeleton && <Spin spinning={isSkeleton} size="large" fullscreen />}
     </div>
   );
 }

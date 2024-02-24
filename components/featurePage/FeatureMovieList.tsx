@@ -149,7 +149,9 @@ const FeatureMovieList = (props: FeatureMovieList) => {
           <></>
         )}
       </div>
-      <Spin spinning={isLoadingFeature} size="large" fullscreen />
+      {isLoadingFeature && (
+        <Spin spinning={isLoadingFeature} size="large" fullscreen />
+      )}
     </>
   );
 };
