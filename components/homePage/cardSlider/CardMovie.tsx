@@ -29,8 +29,6 @@ const CardMovie = (props: movieProps) => {
     totalEpisodes,
   } = props;
 
-  const [imageState, setImageState] = useState<string>(thumbnail);
-
   const slug = useMemo(() => {
     return slugify(`${englishName}-${vietnamName}`, {
       lower: true,
@@ -38,10 +36,6 @@ const CardMovie = (props: movieProps) => {
       strict: true,
     });
   }, []);
-
-  useEffect(() => {
-    setImageState(thumbnail);
-  }, [thumbnail]);
 
   return (
     <motion.div
@@ -56,16 +50,13 @@ const CardMovie = (props: movieProps) => {
         >
           <div className="aspect-[60/100] w-full max-w-[200px]">
             <Image
-              src={imageState}
+              src={thumbnail}
               alt="Thumbnail"
               fill
               priority
               className="rounded object-cover"
               quality={100}
               sizes="(min-width: 1024px) 100vw, (min-width: 625px) 30vw, 40vw"
-              onError={(e) => {
-                setImageState("/errorThumbnail.jpg");
-              }}
             />
           </div>
 
