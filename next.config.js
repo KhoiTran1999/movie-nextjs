@@ -4,9 +4,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "storage.googleapis.com",
-        port: "",
-        pathname: "/streaming-movie/**",
+        hostname: "**",
       },
     ],
     dangerouslyAllowSVG: true,

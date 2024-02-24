@@ -215,7 +215,7 @@ const InformationForm = ({
           Nation: movie.nation.nationId,
           Feature: movie.feature.featureId,
           Category: filterCategories,
-          Thumbnail: undefined,
+          Thumbnail: movie.thumbnail,
           MovieId: movieId,
         };
 
@@ -233,37 +233,10 @@ const InformationForm = ({
     if (movieId) fetchApi();
   }, [movieId]);
 
-  //Upload Thumbnail----------------------
-
-  const beforeUpload = (file: RcFile) => {
-    const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-    if (!isJpgOrPng) {
-      message.error("You can only upload JPG/PNG file!");
-      setLoadingThumnail(true);
-    }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-      message.error("Image must smaller than 2MB!");
-      setLoadingThumnail(true);
-    }
-
-    return false;
+  //Check Thumnail ------------------------------------
+  const handleInputLinkThumnail = (e: any) => {
+    setImageUrl(e.target.value);
   };
-
-  const handleChange = (info: any) => {
-    if (!loadingThumnail) {
-      setImageUrl(URL.createObjectURL(info.file));
-      info.fileList = [{ ...info.file }];
-    }
-    setLoadingThumnail(false);
-  };
-
-  const uploadButton = (
-    <button style={{ border: 0, background: "none" }} type="button">
-      <PlusOutlined />
-      <div style={{ marginTop: 8 }}>Upload</div>
-    </button>
-  );
   //-------------------------------------------------
 
   const onFinish = async (values: ValueFormType) => {
@@ -278,7 +251,7 @@ const InformationForm = ({
       FeatureId: values.Feature,
       Mark: values.Mark,
       NationId: values.Nation,
-      Thumbnail: values.Thumbnail?.file,
+      Thumbnail: values.Thumbnail,
       Trailer: values.Trailer,
       Viewer: values.Viewer,
     };
@@ -553,25 +526,47 @@ const InformationForm = ({
 
         <Form.Item<FieldType>
           validateDebounce={1000}
-          label="Thumbnail"
+          label="Link Thumnail"
           name="Thumbnail"
+          rules={[
+            {
+              required: true,
+              message: "This field is required.",
+            },
+            {
+              type: "url",
+              warningOnly: true,
+            },
+          ]}
         >
-          <Upload
-            name="upload"
-            listType="picture-card"
-            className="avatar-uploader"
-            showUploadList={false}
-            beforeUpload={beforeUpload}
-            onChange={handleChange}
+          <Input
+            placeholder="https://example.com"
+            className="inputCustom"
             disabled={isLoadingNextButton || isLoadingAIButton}
-          >
-            {imageUrl ? (
-              <img src={imageUrl} alt="avatar" style={{ width: "100%" }} />
-            ) : (
-              uploadButton
-            )}
-          </Upload>
+            onInput={handleInputLinkThumnail}
+          />
         </Form.Item>
+
+        {imageUrl ? (
+          <div className="mb-6 flex justify-center">
+            <div className="relative aspect-[3/5] w-1/3 rounded border border-dotted">
+              <img
+                src={imageUrl}
+                alt="Thumnail"
+                className="h-full w-full object-cover"
+                onError={(e) => {
+                  setImageUrl("/errorThumbnail.jpg");
+                }}
+              />
+            </div>
+          </div>
+        ) : (
+          <div className="mb-6 flex justify-center">
+            <div className="flex aspect-[4/5] w-1/3 items-center justify-center rounded border border-dotted">
+              <span className="font-semibold">Preview</span>
+            </div>
+          </div>
+        )}
 
         <Form.Item<FieldType>
           validateDebounce={1000}
