@@ -13,7 +13,6 @@ import {
   getLoadMoreFeatureMovieListAction,
   getLoadMoreNewMovieListAction,
 } from "../actions";
-import { motion, AnimatePresence } from "framer-motion";
 
 interface FeatureMovieList {
   initialRecommendedMovie: MovieType[];
@@ -103,43 +102,31 @@ const FeatureMovieList = (props: FeatureMovieList) => {
           </div>
         )}
         {recommendedMovie?.length ? (
-          <AnimatePresence>
-            <motion.div
-              key={recommendedMovie.length}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{
-                opacity: { ease: "linear" },
-                duration: 0.75,
-              }}
-            >
-              <List
-                dataSource={recommendedMovie}
-                grid={{
-                  xs: 3,
-                  sm: 3,
-                  md: 4,
-                  lg: 5,
-                  xl: 6,
-                  xxl: 8,
-                  gutter: 12,
-                }}
-                renderItem={(val: MovieType, idx: number) => (
-                  <div>
-                    <CardMovie
-                      englishName={val.englishName}
-                      vietnamName={val.vietnamName}
-                      movieId={val.movieId}
-                      thumbnail={val.thumbnail}
-                      time={val.time}
-                      totalEpisodes={val.totalEpisodes}
-                      totalSeasons={val.totalSeasons}
-                    />
-                  </div>
-                )}
-              />
-            </motion.div>
-          </AnimatePresence>
+          <List
+            dataSource={recommendedMovie}
+            grid={{
+              xs: 3,
+              sm: 3,
+              md: 4,
+              lg: 5,
+              xl: 6,
+              xxl: 8,
+              gutter: 12,
+            }}
+            renderItem={(val: MovieType, idx: number) => (
+              <div>
+                <CardMovie
+                  englishName={val.englishName}
+                  vietnamName={val.vietnamName}
+                  movieId={val.movieId}
+                  thumbnail={val.thumbnail}
+                  time={val.time}
+                  totalEpisodes={val.totalEpisodes}
+                  totalSeasons={val.totalSeasons}
+                />
+              </div>
+            )}
+          />
         ) : (
           <div className="flex h-full w-full items-center justify-center">
             <Result
