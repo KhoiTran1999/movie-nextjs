@@ -75,7 +75,7 @@ const CardSlider = ({ title, movieList, href, icon }: cardSliderProps) => {
             <div className="h-[140px] w-[120px] animate-pulse rounded-md bg-[#ffffff3f] md:h-[200px] md:w-[150px]"></div>
           </div>
         ) : (
-          <div onMouseEnter={handleOnMouseEnter} onMouseLeave={onMouseLeave}>
+          <div className="flex overflow-x-auto" onMouseEnter={handleOnMouseEnter} onMouseLeave={onMouseLeave}>
             <Swiper
               direction="horizontal"
               lazyPreloadPrevNext={5}
