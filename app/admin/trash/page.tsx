@@ -1,5 +1,5 @@
 import { revalidatePath } from "next/cache";
-import Trash from "../../../components/adminPage/content/Trash";
+import Trash from "../../../components/adminPage/content/Trash/Trash";
 import { CategoryType, MovieAntdTableType, MovieType } from "@/types";
 import { SuspenseComp } from "@/components/wrapper/SuspenseComp";
 

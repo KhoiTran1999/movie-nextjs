@@ -52,6 +52,13 @@ const SiderAdmin = () => {
             label: <Link href={"/admin/manageMovies"}>Manage Movies</Link>,
           },
           {
+            key: "/admin/ManageGeminiKey",
+            icon: <i className="fa-sharp fa-regular fa-key font-[20px]"></i>,
+            label: (
+              <Link href={"/admin/manageGeminiKey"}>Manage GeminiKey</Link>
+            ),
+          },
+          {
             key: "/admin/trash",
             icon: <DeleteOutlined style={{ fontSize: "20px" }} />,
             label: <Link href={"/admin/trash"}>Trash</Link>,

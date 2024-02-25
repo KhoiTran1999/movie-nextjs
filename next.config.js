@@ -4,10 +4,11 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "**",
+        hostname: "gitlab.com",
+        port: "",
+        pathname: "movie-porject/streamit-movie/**"
       },
     ],
-    dangerouslyAllowSVG: true,
   },
 };
 

@@ -29,7 +29,6 @@ type movieProps = {
 
 const CardSliderTop10 = ({ title, movieList, icon }: cardSliderProps) => {
   const [isHover, setIsHover] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const handleOnMouseEnter = () => {
     setIsHover(true);
@@ -37,12 +36,6 @@ const CardSliderTop10 = ({ title, movieList, icon }: cardSliderProps) => {
   const onMouseLeave = () => {
     setIsHover(false);
   };
-
-  useEffect(() => {
-    if (movieList) {
-      setIsLoading(false);
-    }
-  }, [movieList]);
 
   return (
     <div className="mb-3">
@@ -58,62 +51,54 @@ const CardSliderTop10 = ({ title, movieList, icon }: cardSliderProps) => {
           </div>
         </div>
 
-        {isLoading ? (
-          <div className="flex">
-            <div className="mr-3 h-[140px] w-[120px] animate-pulse rounded-md bg-[#ffffff3f] md:h-[200px] md:w-[150px]"></div>
-            <div className="mr-3 h-[140px] w-[120px] animate-pulse rounded-md bg-[#ffffff3f] md:h-[200px] md:w-[150px]"></div>
-            <div className="h-[140px] w-[120px] animate-pulse rounded-md bg-[#ffffff3f] md:h-[200px] md:w-[150px]"></div>
-          </div>
-        ) : (
-          <div onMouseEnter={handleOnMouseEnter} onMouseLeave={onMouseLeave}>
-            <Swiper
-              lazyPreloadPrevNext={5}
-              slidesPerView={1}
-              breakpoints={{
-                320: {
-                  slidesPerView: 2,
-                },
-                768: {
-                  slidesPerView: 3,
-                },
-                1000: {
-                  slidesPerView: 4,
-                },
-                1400: {
-                  slidesPerView: 5,
-                },
-                1600: {
-                  slidesPerView: 6,
-                },
-                1940: {
-                  slidesPerView: 7,
-                },
-                2150: {
-                  slidesPerView: 8,
-                },
-              }}
-              navigation={isHover && screen.width > 930}
-              modules={[Navigation, Scrollbar, A11y, Pagination]}
-              longSwipes={true}
-              direction="horizontal"
-            >
-              {movieList.map((val: movieProps, idx: number) => (
-                <SwiperSlide key={idx}>
-                  <CardMovieTop10
-                    englishName={val.englishName}
-                    vietnamName={val.vietnamName}
-                    movieId={val.movieId}
-                    thumbnail={val.thumbnail}
-                    time={val.time}
-                    totalEpisodes={val.totalEpisodes}
-                    totalSeasons={val.totalSeasons}
-                    idx={idx}
-                  />
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
-        )}
+        <div onMouseEnter={handleOnMouseEnter} onMouseLeave={onMouseLeave}>
+          <Swiper
+            lazyPreloadPrevNext={5}
+            slidesPerView={1}
+            breakpoints={{
+              320: {
+                slidesPerView: 2,
+              },
+              768: {
+                slidesPerView: 3,
+              },
+              1000: {
+                slidesPerView: 4,
+              },
+              1400: {
+                slidesPerView: 5,
+              },
+              1600: {
+                slidesPerView: 6,
+              },
+              1940: {
+                slidesPerView: 7,
+              },
+              2150: {
+                slidesPerView: 8,
+              },
+            }}
+            navigation={isHover && screen.width > 930}
+            modules={[Navigation, Scrollbar, A11y, Pagination]}
+            longSwipes={true}
+            direction="horizontal"
+          >
+            {movieList.map((val: movieProps, idx: number) => (
+              <SwiperSlide key={idx}>
+                <CardMovieTop10
+                  englishName={val.englishName}
+                  vietnamName={val.vietnamName}
+                  movieId={val.movieId}
+                  thumbnail={val.thumbnail}
+                  time={val.time}
+                  totalEpisodes={val.totalEpisodes}
+                  totalSeasons={val.totalSeasons}
+                  idx={idx}
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
       </>
     </div>
   );

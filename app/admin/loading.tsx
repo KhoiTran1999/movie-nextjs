@@ -1,4 +1,4 @@
-import Dashboard from "@/components/adminPage/content/Dashboard";
+import Dashboard from "@/components/adminPage/content/Dashboard/Dashboard";
 
 export default function Loading() {
   return (

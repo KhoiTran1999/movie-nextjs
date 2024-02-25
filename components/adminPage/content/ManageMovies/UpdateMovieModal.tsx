@@ -1,11 +1,11 @@
 import { Form, Input, Button, Modal, Popconfirm, Tooltip, Steps } from "antd";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import InformationForm from "./formUpdateMovie/InformationForm";
-import VideoForm from "./formUpdateMovie/videoForm";
+import InformationForm from "./Form/formUpdateMovie/InformationForm";
+import VideoForm from "./Form/formUpdateMovie/videoForm";
 import { isLoadingAIButtonSelector } from "@/utils/redux/selector";
 import { setIsCancelButtonModal } from "@/utils/redux/slices/toggle/IsCancelButtonModalSlice";
-import ActorForm from "./formUpdateMovie/actorForm";
+import ActorForm from "./Form/formUpdateMovie/actorForm";
 import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
 import { InfoCircleOutlined } from "@ant-design/icons";
 

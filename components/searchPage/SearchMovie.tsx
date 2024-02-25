@@ -72,28 +72,28 @@ const SearchMovie = () => {
         <>
           {movieSearch.length === 0 ? (
             <div className="mt-7 flex h-full w-full justify-center">
-              <div className="relative">
-              {valueSearch ? (
-                <Image
-                  src={"/EmptyMovie.png"}
-                  alt="EmptyMovie"
-                  fill
-                  priority
-                  className="rounded object-cover"
-                  quality={100}
-                  sizes="(min-width: 1024px) 100vw, (min-width: 625px) 30vw, 40vw"
-                />
-              ) : (
-                <Image
-                  src={"/SearchMovie.png"}
-                  alt="SearchMovie"
-                  fill
-                  priority
-                  className="rounded object-cover"
-                  quality={100}
-                  sizes="(min-width: 1024px) 100vw, (min-width: 625px) 30vw, 40vw"
-                />
-              )}
+              <div className="relative aspect-[5/3] w-[400px]">
+                {valueSearch ? (
+                  <Image
+                    src={"/EmptyMovie.png"}
+                    alt="EmptyMovie"
+                    fill
+                    priority
+                    className="rounded object-cover"
+                    quality={100}
+                    sizes="(min-width: 1024px) 100vw, (min-width: 625px) 30vw, 40vw"
+                  />
+                ) : (
+                  <Image
+                    src={"/SearchMovie.png"}
+                    alt="SearchMovie"
+                    fill
+                    priority
+                    className="rounded object-cover"
+                    quality={100}
+                    sizes="(min-width: 1024px) 100vw, (min-width: 625px) 30vw, 40vw"
+                  />
+                )}
               </div>
             </div>
           ) : (

@@ -1,4 +1,4 @@
-import Dashboard from "@/components/adminPage/content/Dashboard";
+import Dashboard from "@/components/adminPage/content/Dashboard/Dashboard";
 import { CategoryType, StatisticType } from "@/types";
 
 interface featureType {

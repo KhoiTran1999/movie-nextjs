@@ -1,4 +1,4 @@
-import ManageMovies from "@/components/adminPage/content/ManageMovies";
+import ManageMovies from "@/components/adminPage/content/ManageMovies/ManageMovies";
 import { SuspenseComp } from "@/components/wrapper/SuspenseComp";
 import { CategoryType, MovieAntdTableType, MovieType } from "@/types";
 import { revalidatePath } from "next/cache";
