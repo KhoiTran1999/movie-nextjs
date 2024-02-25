@@ -28,7 +28,6 @@ const VideoPlayer = ({ previewMovie }: VideoType) => {
       setScreenWidth(screen.width);
     }
   }, []);
-  console.log(screenWidth);
 
   return (
     <div className="h-[50svh] sm:h-[70svh]">

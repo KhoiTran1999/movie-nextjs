@@ -13,6 +13,7 @@ import {
   getLoadMoreFeatureMovieListAction,
   getLoadMoreNewMovieListAction,
 } from "../actions";
+import { motion } from "framer-motion";
 
 interface FeatureMovieList {
   initialRecommendedMovie: MovieType[];
@@ -75,7 +76,12 @@ const FeatureMovieList = (props: FeatureMovieList) => {
   };
 
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <div className="mt-14 px-4">
         {current === "NewMovie" && (
           <div className="flex items-center md:hidden">
@@ -152,7 +158,7 @@ const FeatureMovieList = (props: FeatureMovieList) => {
       {isLoadingFeature && (
         <Spin spinning={isLoadingFeature} size="large" fullscreen />
       )}
-    </>
+    </motion.div>
   );
 };
 

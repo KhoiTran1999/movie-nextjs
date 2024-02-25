@@ -30,7 +30,7 @@ const SiderAdmin = () => {
       collapsed={isToggleSider}
     >
       <Link href={"/"}>
-        <div className="flex justify-center items-center p-2">
+        <div className="flex items-center justify-center p-2">
           <Image src="/logo.png" alt="logo" width={100} height={50} />
         </div>
       </Link>

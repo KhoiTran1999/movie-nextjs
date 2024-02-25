@@ -31,8 +31,6 @@ const CardMovieTop10 = (props: movieProps) => {
     idx,
   } = props;
 
-  const [imageState, setImageState] = useState<string>(thumbnail);
-
   const slug = useMemo(() => {
     return slugify(`${englishName}-${vietnamName}`, {
       lower: true,
@@ -40,10 +38,6 @@ const CardMovieTop10 = (props: movieProps) => {
       strict: true,
     });
   }, []);
-
-  useEffect(() => {
-    setImageState(thumbnail);
-  }, [thumbnail]);
 
   return (
     <motion.div
@@ -62,6 +56,8 @@ const CardMovieTop10 = (props: movieProps) => {
               src={`/top10/number${idx + 1}.png`}
               alt="Number"
               fill
+              sizes="(min-width: 1024px) , (min-width: 625px) 30vw, 40vw"
+              quality={100}
               priority
               className="object-contain"
             />
@@ -71,18 +67,15 @@ const CardMovieTop10 = (props: movieProps) => {
         <div
           className={`relative w-[50%] cursor-pointer overflow-hidden rounded-md`}
         >
-          <div className="aspect-[60/100] w-full">
+          <div className="relative aspect-[60/100] w-full">
             <Image
-              src={imageState}
+              src={thumbnail}
               alt="Thumbnail"
               fill
               priority
               className="rounded object-cover"
               quality={100}
               sizes="(min-width: 1024px) 100vw, (min-width: 625px) 30vw, 40vw"
-              onError={(e) => {
-                setImageState("/errorThumbnail.jpg");
-              }}
             />
           </div>
 

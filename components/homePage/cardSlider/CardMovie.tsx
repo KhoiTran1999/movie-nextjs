@@ -48,7 +48,7 @@ const CardMovie = (props: movieProps) => {
         <div
           className={`relative m-3 flex cursor-pointer flex-col items-center justify-center overflow-hidden rounded-md`}
         >
-          <div className="aspect-[60/100] w-full max-w-[200px]">
+          <div className="relative aspect-[60/100] w-full max-w-[200px]">
             <Image
               src={thumbnail}
               alt="Thumbnail"
@@ -56,7 +56,7 @@ const CardMovie = (props: movieProps) => {
               priority
               className="rounded object-cover"
               quality={100}
-              sizes="(min-width: 1024px) 100vw, (min-width: 625px) 30vw, 40vw"
+              sizes="(min-width: 1024px) , (min-width: 625px) 30vw, 40vw"
             />
           </div>
 
