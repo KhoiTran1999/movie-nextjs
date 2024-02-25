@@ -26,8 +26,8 @@ import { setPersonList } from "@/utils/redux/slices/data/personListSlice";
 import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
 import Axios from "@/utils/axios";
 import { deepEqual } from "assert";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 import { revalidatePathAction } from "@/components/actions";
+import Image from "next/image";
 
 interface DataType {
   key: React.Key;
@@ -283,18 +283,16 @@ const ActorForm = ({
                   dataIndex="thumbnail"
                   key="thumbnail"
                   render={(image: string, _, idx) => (
-                    <div className="h-[160px] w-fit overflow-hidden rounded-lg">
-                      <LazyLoadImage
+                    <div className="relative ml-3 aspect-[60/100] h-[160px] w-full">
+                      <Image
                         key={idx}
-                        alt="Thumbnail"
                         src={image}
-                        effect="blur"
-                        loading="lazy"
-                        className="h-[160px] rounded-md object-contain"
-                        onError={(e) => {
-                          e.currentTarget.onerror = null;
-                          e.currentTarget.src = "/errorThumbnail.jpg";
-                        }}
+                        alt="Thumbnail"
+                        fill
+                        priority
+                        className="rounded object-cover"
+                        quality={100}
+                        sizes="(min-width: 1024px) , (min-width: 625px) 30vw, 40vw"
                       />
                     </div>
                   )}

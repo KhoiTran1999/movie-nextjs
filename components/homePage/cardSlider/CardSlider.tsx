@@ -77,6 +77,7 @@ const CardSlider = ({ title, movieList, href, icon }: cardSliderProps) => {
         ) : (
           <div onMouseEnter={handleOnMouseEnter} onMouseLeave={onMouseLeave}>
             <Swiper
+              direction="horizontal"
               lazyPreloadPrevNext={5}
               slidesPerView={3}
               breakpoints={{

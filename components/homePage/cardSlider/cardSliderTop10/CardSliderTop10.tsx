@@ -95,6 +95,7 @@ const CardSliderTop10 = ({ title, movieList, icon }: cardSliderProps) => {
               navigation={isHover && screen.width > 930}
               modules={[Navigation, Scrollbar, A11y, Pagination]}
               longSwipes={true}
+              direction="horizontal"
             >
               {movieList.map((val: movieProps, idx: number) => (
                 <SwiperSlide key={idx}>

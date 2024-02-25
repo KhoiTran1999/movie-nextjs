@@ -14,10 +14,10 @@ import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
 const ReactPlayer = dynamic(() => import("react-player/youtube"), {
   ssr: false,
 });
-import { LazyLoadImage } from "react-lazy-load-image-component";
 import { MovieDetailType, MovieType, SeasonMovieDetail } from "@/types";
 import CardMovie from "../homePage/cardSlider/CardMovie";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 const rubik = Rubik_Dirt({
   subsets: ["latin"],
@@ -112,16 +112,14 @@ export default function MainDetailPage(props: MainDetailPage) {
   };
 
   const handleCopyUrl = async () => {
-    console.log("hahaha");
-
     const url: string = window.location.href;
 
     try {
       await navigator.clipboard.writeText(url);
-      message.success("Url have been copied to clipboard!");
+      message.success("Copied");
     } catch (error) {
       console.log(error);
-      message.error("Can not copy url to clipboard!");
+      message.error("Can not copy Link to clipboard!");
     }
   };
 
@@ -208,17 +206,15 @@ export default function MainDetailPage(props: MainDetailPage) {
                       </ul>
                     </div>
                   </div>
-                  <div className="ml-3 w-[30%] overflow-hidden">
-                    <LazyLoadImage
-                      alt="Thumbnail"
+                  <div className="relative ml-3 aspect-[60/100] w-[30%]">
+                    <Image
                       src={movieDetail.thumbnail}
-                      effect="blur"
-                      loading="lazy"
-                      className="h-full w-full rounded-md object-cover"
-                      onError={(e) => {
-                        e.currentTarget.onerror = null;
-                        e.currentTarget.src = "/errorThumbnail.jpg";
-                      }}
+                      alt="Thumbnail"
+                      fill
+                      priority
+                      className="rounded object-cover"
+                      quality={100}
+                      sizes="(min-width: 1024px) , (min-width: 625px) 30vw, 40vw"
                     />
                   </div>
                 </div>
@@ -226,6 +222,8 @@ export default function MainDetailPage(props: MainDetailPage) {
                 <Tabs
                   type="card"
                   defaultActiveKey="Description"
+                  animated
+                  style={{ height: "fit-content" }}
                   items={[
                     {
                       key: "Description",
@@ -288,13 +286,13 @@ export default function MainDetailPage(props: MainDetailPage) {
                     </span>
                   </Tooltip>
 
-                  <Tooltip color="#b2afaf2e" title="Share">
+                  <Tooltip color="#b2afaf2e" title="Copy Link">
                     <span
                       className={`flex h-11 w-11 cursor-pointer items-center justify-center rounded-full  bg-[#b2afaf2e] p-3 transition-colors hover:bg-[#adaaaa64]`}
                     >
                       <i
                         onClick={handleCopyUrl}
-                        className="fa-light fa-share-from-square text-xl"
+                        className="fa-sharp fa-light fa-paste text-xl"
                       ></i>
                     </span>
                   </Tooltip>

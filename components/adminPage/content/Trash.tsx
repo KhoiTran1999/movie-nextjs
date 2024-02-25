@@ -8,8 +8,8 @@ import { useDispatch } from "react-redux";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { MovieAntdTableType } from "@/types";
 import { restoreMovieAction, revalidatePathAction } from "@/components/actions";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 import Axios from "@/utils/axios";
+import Image from "next/image";
 
 interface IProps {
   movieList: MovieAntdTableType[] | [];
@@ -113,18 +113,18 @@ const Trash = (props: IProps) => {
           dataIndex="thumbnail"
           key="thumbnail"
           render={(image: string, _, idx) => (
-            <LazyLoadImage
-              key={idx}
-              alt="Thumbnail"
-              src={image}
-              effect="blur"
-              loading="lazy"
-              className="h-[160px] rounded-md object-contain"
-              onError={(e) => {
-                e.currentTarget.onerror = null;
-                e.currentTarget.src = "/errorThumbnail.jpg";
-              }}
-            />
+            <div className="relative ml-3 aspect-[60/100] h-[160px] w-full">
+              <Image
+                key={idx}
+                src={image}
+                alt="Thumbnail"
+                fill
+                priority
+                className="rounded object-cover"
+                quality={100}
+                sizes="(min-width: 1024px) , (min-width: 625px) 30vw, 40vw"
+              />
+            </div>
           )}
         />
         <Column
