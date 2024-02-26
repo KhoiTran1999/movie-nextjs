@@ -69,49 +69,6 @@ const CardSlider = ({ title, movieList, href, icon }: cardSliderProps) => {
         </Link>
 
         <div onMouseEnter={handleOnMouseEnter} onMouseLeave={onMouseLeave}>
-          {/* <Swiper
-            direction="horizontal"
-            lazyPreloadPrevNext={5}
-            slidesPerView={3}
-            breakpoints={{
-              930: {
-                slidesPerView: 4,
-              },
-              1130: {
-                slidesPerView: 5,
-              },
-              1400: {
-                slidesPerView: 6,
-              },
-              1600: {
-                slidesPerView: 7,
-              },
-              1940: {
-                slidesPerView: 8,
-              },
-              2150: {
-                slidesPerView: 9,
-              },
-            }}
-            navigation={isHover && screen.width > 930}
-            modules={[Navigation, Scrollbar, A11y, Pagination]}
-            loop
-            longSwipes={true}
-          >
-            {movieList.map((val: movieProps, idx: number) => (
-              <SwiperSlide key={idx}>
-                <CardMovie
-                  englishName={val.englishName}
-                  vietnamName={val.vietnamName}
-                  movieId={val.movieId}
-                  thumbnail={val.thumbnail}
-                  time={val.time}
-                  totalEpisodes={val.totalEpisodes}
-                  totalSeasons={val.totalSeasons}
-                />
-              </SwiperSlide>
-            ))}
-          </Swiper> */}
           <Carousel
             opts={{
               align: "start",
@@ -123,7 +80,7 @@ const CardSlider = ({ title, movieList, href, icon }: cardSliderProps) => {
               {movieList.map((val: movieProps, idx: number) => (
                 <CarouselItem
                   key={idx}
-                  className="basis-[43%] sm:basis-[30%] min-[850px]:basis-[22%] min-[1210px]:basis-[18%] min-[1390px]:basis-[10%]"
+                  className="basis-[43%] sm:basis-[30%] min-[850px]:basis-[22%] min-[1210px]:basis-[18%] min-[1390px]:basis-[15%]"
                 >
                   <CardMovie
                     englishName={val.englishName}

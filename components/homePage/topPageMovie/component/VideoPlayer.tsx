@@ -49,8 +49,9 @@ const VideoPlayer = ({ previewMovie }: VideoType) => {
             }}
           />
         )}
+        <div className="absolute bottom-0 h-10 w-full bg-gradient-to-b from-transparent to-black"></div>
       </div>
-      <div className="relative inline-block h-screen w-screen brightness-50 sm:hidden">
+      <div className="absolute left-0 top-0 h-[50svh] w-screen brightness-[0.3] sm:hidden">
         <Image
           src={`${previewMovie.thumbnail}`}
           alt="Thumbnail"

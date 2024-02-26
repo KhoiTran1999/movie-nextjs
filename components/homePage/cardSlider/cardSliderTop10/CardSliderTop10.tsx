@@ -59,52 +59,6 @@ const CardSliderTop10 = ({ title, movieList, icon }: cardSliderProps) => {
         </div>
 
         <div onMouseEnter={handleOnMouseEnter} onMouseLeave={onMouseLeave}>
-          {/* <Swiper
-            lazyPreloadPrevNext={5}
-            slidesPerView={1}
-            breakpoints={{
-              320: {
-                slidesPerView: 2,
-              },
-              768: {
-                slidesPerView: 3,
-              },
-              1000: {
-                slidesPerView: 4,
-              },
-              1400: {
-                slidesPerView: 5,
-              },
-              1600: {
-                slidesPerView: 6,
-              },
-              1940: {
-                slidesPerView: 7,
-              },
-              2150: {
-                slidesPerView: 8,
-              },
-            }}
-            navigation={isHover && screen.width > 930}
-            modules={[Navigation, Scrollbar, A11y, Pagination]}
-            longSwipes={true}
-            direction="horizontal"
-          >
-            {movieList.map((val: movieProps, idx: number) => (
-              <SwiperSlide key={idx}>
-                <CardMovieTop10
-                  englishName={val.englishName}
-                  vietnamName={val.vietnamName}
-                  movieId={val.movieId}
-                  thumbnail={val.thumbnail}
-                  time={val.time}
-                  totalEpisodes={val.totalEpisodes}
-                  totalSeasons={val.totalSeasons}
-                  idx={idx}
-                />
-              </SwiperSlide>
-            ))}
-          </Swiper> */}
           <Carousel
             opts={{
               align: "start",
@@ -116,7 +70,7 @@ const CardSliderTop10 = ({ title, movieList, icon }: cardSliderProps) => {
               {movieList.map((val: movieProps, idx: number) => (
                 <CarouselItem
                   key={idx}
-                  className="basis-[70%] sm:basis-[40%] min-[850px]:basis-[28%] min-[1210px]:basis-[22%] min-[1390px]:basis-[10%]"
+                  className="basis-[70%] sm:basis-[40%] min-[850px]:basis-[28%] min-[1210px]:basis-[22%] min-[1390px]:basis-[15%]"
                 >
                   <CardMovieTop10
                     englishName={val.englishName}
