@@ -124,15 +124,15 @@ export default function MainDetailPage(props: MainDetailPage) {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-    >
+    <div>
+      <NavigationMovie />
       <div>
-        <NavigationMovie />
-        <div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
+        >
           <div className="absolute h-screen w-screen brightness-[0.3] ">
             <Image
               src={`${movieDetail.thumbnail}`}
@@ -382,9 +382,9 @@ export default function MainDetailPage(props: MainDetailPage) {
               />
             </div>
           </Modal>
-        </div>
-        {isSkeleton && <Spin spinning={isSkeleton} size="large" fullscreen />}
+        </motion.div>
       </div>
-    </motion.div>
+      {isSkeleton && <Spin spinning={isSkeleton} size="large" fullscreen />}
+    </div>
   );
 }

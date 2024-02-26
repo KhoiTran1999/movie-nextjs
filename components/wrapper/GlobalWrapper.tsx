@@ -114,15 +114,6 @@ const GlobalWrapper = ({ children }: { children: React.ReactNode }) => {
         <AnimatePresence mode="wait">
           <motion.div
             key={href}
-            // initial="initialState"
-            // animate="animateState"
-            // exit="exitState"
-            // transition={{ duration: 0.75 }}
-            // variants={{
-            //   initialState: { opacity: 0 },
-            //   animateState: { opacity: 1 },
-            //   exitState: {},
-            // }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
