@@ -111,17 +111,7 @@ const GlobalWrapper = ({ children }: { children: React.ReactNode }) => {
         href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-light.css"
       />
       <Providers>
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={href}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <div className="overflow-hidden">{children}</div>
-          </motion.div>
-        </AnimatePresence>
+        <div className="overflow-hidden">{children}</div>
       </Providers>
     </ConfigProvider>
   );

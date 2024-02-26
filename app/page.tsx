@@ -5,6 +5,7 @@ import CardSliderTVSeriesMovie from "@/components/homePage/cardSlider/cardSlider
 import CardSliderTop10Data from "@/components/homePage/cardSlider/cardSliderTop10/CardSliderTop10Data";
 import NavigationMovie from "@/components/homePage/navigationMovie/NavigationMovie";
 import TopPageMovie from "@/components/homePage/topPageMovie/TopPageMovie";
+import PageTransitionEffect from "@/components/ui/pageTransitionEffect";
 import { CategoryType } from "@/types";
 
 interface previewMovieProps {
@@ -27,15 +28,17 @@ export default async function Home() {
 
   return (
     <main>
-      <NavigationMovie />
-      <TopPageMovie previewMovie={previewMovie} />
-      <div className="absolute top-[40%] h-fit w-full px-3 pb-5 sm:top-[63%] sm:px-12">
-        <CardSliderNewMovie />
-        <CardSliderTop10Data />
-        <CardSliderStandalone />
-        <CardSliderCinemaMovie />
-        <CardSliderTVSeriesMovie />
-      </div>
+      <PageTransitionEffect>
+        <NavigationMovie />
+        <TopPageMovie previewMovie={previewMovie} />
+        <div className="absolute top-[40%] h-fit w-full px-3 pb-5 sm:top-[63%] sm:px-12">
+          <CardSliderNewMovie />
+          <CardSliderTop10Data />
+          <CardSliderStandalone />
+          <CardSliderCinemaMovie />
+          <CardSliderTVSeriesMovie />
+        </div>
+      </PageTransitionEffect>
     </main>
   );
 }

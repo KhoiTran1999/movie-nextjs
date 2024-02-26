@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import slugify from "slugify";
 import { motion } from "framer-motion";
+import PageTransitionEffect from "@/components/ui/pageTransitionEffect";
 
 type movieProps = {
   movieId: string;
@@ -38,12 +39,7 @@ const CardMovie = (props: movieProps) => {
   }, []);
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-    >
+    <PageTransitionEffect>
       <Link href={`/detail/${slug}.html?id=${movieId}`} className="group/card">
         <div
           className={`relative m-3 flex cursor-pointer flex-col items-center justify-center overflow-hidden rounded-md`}
@@ -77,7 +73,7 @@ const CardMovie = (props: movieProps) => {
           </div>
         </div>
       </Link>
-    </motion.div>
+    </PageTransitionEffect>
   );
 };
 

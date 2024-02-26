@@ -16,8 +16,8 @@ const ReactPlayer = dynamic(() => import("react-player/youtube"), {
 });
 import { MovieDetailType, MovieType, SeasonMovieDetail } from "@/types";
 import CardMovie from "../homePage/cardSlider/CardMovie";
-import { motion } from "framer-motion";
 import Image from "next/image";
+import PageTransitionEffect from "../ui/pageTransitionEffect";
 
 const rubik = Rubik_Dirt({
   subsets: ["latin"],
@@ -127,12 +127,7 @@ export default function MainDetailPage(props: MainDetailPage) {
     <div>
       <NavigationMovie />
       <div>
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
-        >
+        <PageTransitionEffect>
           <div className="absolute h-screen w-screen brightness-[0.3] ">
             <Image
               src={`${movieDetail.thumbnail}`}
@@ -382,7 +377,7 @@ export default function MainDetailPage(props: MainDetailPage) {
               />
             </div>
           </Modal>
-        </motion.div>
+        </PageTransitionEffect>
       </div>
       {isSkeleton && <Spin spinning={isSkeleton} size="large" fullscreen />}
     </div>
