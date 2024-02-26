@@ -133,26 +133,18 @@ export default function MainDetailPage(props: MainDetailPage) {
       <div>
         <NavigationMovie />
         <div>
-          <div
-            className="absolute h-screen w-screen brightness-[0.3]"
-            style={{
-              backgroundImage: `url("/errorThumbnail.jpg")`,
-              backgroundSize: "cover",
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: "center center",
-              boxShadow: "0px -240px 44px -215px rgba(0,0,0,1) inset",
-            }}
-          ></div>
-          <div
-            className="absolute h-screen w-screen brightness-[0.3]"
-            style={{
-              background: `url("${movieDetail.thumbnail}"`,
-              backgroundSize: "cover",
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: "center center",
-              boxShadow: "0px -240px 44px -215px rgba(0,0,0,1) inset",
-            }}
-          ></div>
+          <div className="absolute h-screen w-screen brightness-[0.3] ">
+            <Image
+              src={`${movieDetail.thumbnail}`}
+              alt="Thumbnail"
+              fill
+              priority
+              className="rounded object-cover"
+              quality={100}
+              sizes="(min-width: 1024px) 100vw , (min-width: 625px) 30vw, 40vw"
+            />
+            <div className="absolute bottom-0 h-10 w-full bg-gradient-to-b from-transparent to-black"></div>
+          </div>
 
           <div className="backdrop-blur-sm">
             <div className={`m-auto w-full max-w-[1200px] px-3 py-8`}>
@@ -214,7 +206,7 @@ export default function MainDetailPage(props: MainDetailPage) {
                       priority
                       className="rounded object-cover"
                       quality={100}
-                      sizes="(min-width: 1024px) , (min-width: 625px) 30vw, 40vw"
+                      sizes="(min-width: 1024px) 100vw , (min-width: 625px) 30vw, 40vw"
                     />
                   </div>
                 </div>

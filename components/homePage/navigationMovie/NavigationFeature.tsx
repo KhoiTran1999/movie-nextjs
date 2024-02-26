@@ -4,7 +4,7 @@ import { revalidatePathAction } from "@/components/actions";
 import { homeItems } from "@/constant/homeItem";
 import { setIsLoadingFeature } from "@/utils/redux/slices/toggle/IsLoadingFeatureSlice ";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useDispatch } from "react-redux";
 
 interface homeItemProps {
@@ -16,8 +16,12 @@ interface homeItemProps {
 const NavigationFeature = (props: any) => {
   const searchParams = useSearchParams();
   const dispatch = useDispatch();
+  const pathname = usePathname();
 
-  const page = searchParams.get("current") ?? "Home";
+  let page = searchParams.get("current");
+  if (!page) {
+    if (!pathname.includes("detail")) page = "Home";
+  }
 
   const handleChangeRoute = async () => {
     await revalidatePathAction("feature");

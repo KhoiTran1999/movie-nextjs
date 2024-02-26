@@ -6,7 +6,7 @@ const nextConfig = {
         protocol: "https",
         hostname: "gitlab.com",
         port: "",
-        pathname: "movie-porject/streamit-movie/**"
+        pathname: "/movie-porject/streamit-movie/**"
       },
     ],
   },

@@ -50,15 +50,16 @@ const VideoPlayer = ({ previewMovie }: VideoType) => {
           />
         )}
       </div>
-      <div className="relative inline-block h-full w-full sm:hidden">
-        <img
-          className="h-full w-full object-cover brightness-50"
-          src={previewMovie.thumbnail}
-          onError={(e) => {
-            e.currentTarget.onerror = null;
-            e.currentTarget.src = "/errorThumbnail.jpg";
-          }}
-        ></img>
+      <div className="relative inline-block h-screen w-screen brightness-50 sm:hidden">
+        <Image
+          src={`${previewMovie.thumbnail}`}
+          alt="Thumbnail"
+          fill
+          priority
+          className="rounded object-cover"
+          quality={100}
+          sizes="(min-width: 1024px) 100vw , (min-width: 625px) 30vw, 40vw"
+        />
         <div className="absolute bottom-0 h-10 w-full bg-gradient-to-b from-transparent to-black"></div>
       </div>
     </div>
