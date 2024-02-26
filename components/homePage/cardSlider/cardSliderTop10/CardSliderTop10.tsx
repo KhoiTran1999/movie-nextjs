@@ -8,6 +8,13 @@ import "swiper/css/navigation";
 import "swiper/css/scrollbar";
 import "swiper/css/pagination";
 import CardMovieTop10 from "./CardMovieTop10";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 type cardSliderProps = {
   title: string;
@@ -52,7 +59,7 @@ const CardSliderTop10 = ({ title, movieList, icon }: cardSliderProps) => {
         </div>
 
         <div onMouseEnter={handleOnMouseEnter} onMouseLeave={onMouseLeave}>
-          <Swiper
+          {/* <Swiper
             lazyPreloadPrevNext={5}
             slidesPerView={1}
             breakpoints={{
@@ -97,7 +104,40 @@ const CardSliderTop10 = ({ title, movieList, icon }: cardSliderProps) => {
                 />
               </SwiperSlide>
             ))}
-          </Swiper>
+          </Swiper> */}
+          <Carousel
+            opts={{
+              align: "start",
+            }}
+            orientation="horizontal"
+            className="w-full"
+          >
+            <CarouselContent>
+              {movieList.map((val: movieProps, idx: number) => (
+                <CarouselItem
+                  key={idx}
+                  className="basis-[70%] sm:basis-[40%] min-[850px]:basis-[28%] min-[1210px]:basis-[22%] min-[1390px]:basis-[10%]"
+                >
+                  <CardMovieTop10
+                    englishName={val.englishName}
+                    vietnamName={val.vietnamName}
+                    movieId={val.movieId}
+                    thumbnail={val.thumbnail}
+                    time={val.time}
+                    totalEpisodes={val.totalEpisodes}
+                    totalSeasons={val.totalSeasons}
+                    idx={idx}
+                  />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            {isHover && (
+              <>
+                <CarouselPrevious />
+                <CarouselNext />
+              </>
+            )}
+          </Carousel>
         </div>
       </>
     </div>

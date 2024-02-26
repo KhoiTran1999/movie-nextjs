@@ -9,6 +9,13 @@ import "swiper/css/scrollbar";
 import "swiper/css/pagination";
 import CardMovie from "./CardMovie";
 import Link from "next/link";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 type cardSliderProps = {
   title: string;
@@ -61,12 +68,8 @@ const CardSlider = ({ title, movieList, href, icon }: cardSliderProps) => {
           </div>
         </Link>
 
-        <div
-          // className="flex overflow-x-auto"
-          onMouseEnter={handleOnMouseEnter}
-          onMouseLeave={onMouseLeave}
-        >
-          <Swiper
+        <div onMouseEnter={handleOnMouseEnter} onMouseLeave={onMouseLeave}>
+          {/* <Swiper
             direction="horizontal"
             lazyPreloadPrevNext={5}
             slidesPerView={3}
@@ -108,7 +111,39 @@ const CardSlider = ({ title, movieList, href, icon }: cardSliderProps) => {
                 />
               </SwiperSlide>
             ))}
-          </Swiper>
+          </Swiper> */}
+          <Carousel
+            opts={{
+              align: "start",
+            }}
+            orientation="horizontal"
+            className="w-full"
+          >
+            <CarouselContent>
+              {movieList.map((val: movieProps, idx: number) => (
+                <CarouselItem
+                  key={idx}
+                  className="basis-[43%] sm:basis-[30%] min-[850px]:basis-[22%] min-[1210px]:basis-[18%] min-[1390px]:basis-[10%]"
+                >
+                  <CardMovie
+                    englishName={val.englishName}
+                    vietnamName={val.vietnamName}
+                    movieId={val.movieId}
+                    thumbnail={val.thumbnail}
+                    time={val.time}
+                    totalEpisodes={val.totalEpisodes}
+                    totalSeasons={val.totalSeasons}
+                  />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            {isHover && (
+              <>
+                <CarouselPrevious />
+                <CarouselNext />
+              </>
+            )}
+          </Carousel>
         </div>
       </>
     </div>
