@@ -301,8 +301,8 @@ export default function MainDetailPage(props: MainDetailPage) {
                       grid={{
                         xs: 3,
                         sm: 3,
-                        md: 3,
-                        lg: 4,
+                        md: 4,
+                        lg: 5,
                         xl: 5,
                         xxl: 5,
                         gutter: 12,
