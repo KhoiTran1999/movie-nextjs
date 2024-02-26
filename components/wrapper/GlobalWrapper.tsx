@@ -4,6 +4,7 @@ import { Providers } from "@/utils/redux/provider";
 import { ConfigProvider } from "antd";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
+import NavigationMovie from "../homePage/navigationMovie/NavigationMovie";
 
 const GlobalWrapper = ({ children }: { children: React.ReactNode }) => {
   const [href, setHref] = useState("");
@@ -111,7 +112,10 @@ const GlobalWrapper = ({ children }: { children: React.ReactNode }) => {
         href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-light.css"
       />
       <Providers>
-        <div className="overflow-hidden">{children}</div>
+        <div className="overflow-hidden">
+          <NavigationMovie />
+          {children}
+        </div>
       </Providers>
     </ConfigProvider>
   );

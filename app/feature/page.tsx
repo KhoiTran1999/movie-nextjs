@@ -45,7 +45,6 @@ export default async function Feature(props: any) {
   return (
     <div>
       <SuspenseComp>
-        <NavigationMovie />
         <FeatureMovieList
           initialRecommendedMovie={movieList}
           totalItems={totalItems}

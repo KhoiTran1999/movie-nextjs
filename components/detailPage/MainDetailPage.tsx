@@ -125,7 +125,6 @@ export default function MainDetailPage(props: MainDetailPage) {
 
   return (
     <div>
-      <NavigationMovie />
       <div>
         <PageTransitionEffect>
           <div className="absolute h-screen w-screen brightness-[0.3] ">
