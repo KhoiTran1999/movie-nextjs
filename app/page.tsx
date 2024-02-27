@@ -4,10 +4,10 @@ import CardSliderStandalone from "@/components/homePage/cardSlider/cardSliderFea
 import CardSliderTVSeriesMovie from "@/components/homePage/cardSlider/cardSliderFeature/CardSliderTVSeriesMovie";
 import CardSliderUpcomingMovie from "@/components/homePage/cardSlider/cardSliderFeature/CardSliderUpcomingMovie";
 import CardSliderTop10Data from "@/components/homePage/cardSlider/cardSliderTop10/CardSliderTop10Data";
-import NavigationMovie from "@/components/homePage/navigationMovie/NavigationMovie";
 import TopPageMovie from "@/components/homePage/topPageMovie/TopPageMovie";
 import PageTransitionEffect from "@/components/ui/pageTransitionEffect";
 import { CategoryType } from "@/types";
+import { unstable_noStore as noStore } from "next/cache";
 
 interface previewMovieProps {
   description: string;
@@ -21,6 +21,7 @@ interface previewMovieProps {
 }
 
 export default async function Home() {
+  noStore();
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/Movies/Newest`, {
     next: { revalidate: 900 },
   });

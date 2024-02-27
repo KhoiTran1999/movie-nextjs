@@ -1,8 +1,10 @@
 "use server";
 
 import CardSlider from "../CardSlider";
+import { unstable_noStore as noStore } from "next/cache";
 
 const CardSliderNewMovie = async () => {
+  noStore();
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/Movies?sortBy=produceddate&page=1&eachPage=10`,
     { next: { revalidate: 900 } },

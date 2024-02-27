@@ -1,8 +1,10 @@
 "use server";
 
 import CardSliderTop10 from "./CardSliderTop10";
+import { unstable_noStore as noStore } from "next/cache";
 
 const CardSliderTop10Data = async () => {
+  noStore();
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/Analyst/GetViewerMovie`,
     { next: { revalidate: 900 } },

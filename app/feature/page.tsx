@@ -1,8 +1,10 @@
 import FeatureMovieList from "@/components/featurePage/FeatureMovieList";
 import { SuspenseComp } from "@/components/wrapper/SuspenseComp";
 import { MovieType } from "@/types";
+import { unstable_noStore as noStore } from "next/cache";
 
 export default async function Feature(props: any) {
+  noStore();
   const featureId = props?.searchParams?.featureId;
   const current = props?.searchParams?.current;
 
