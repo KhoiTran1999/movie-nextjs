@@ -14,12 +14,35 @@ import {
   getLoadMoreNewMovieListAction,
 } from "../actions";
 import PageTransitionEffect from "../ui/pageTransitionEffect";
+import { LampContainer } from "../ui/lamp";
+import { motion } from "framer-motion";
 
 interface FeatureMovieList {
   initialRecommendedMovie: MovieType[];
   totalItems: number;
   current: string;
 }
+
+interface TileType {
+  title: string;
+}
+
+export const Tile = ({ title }: TileType) => (
+  <LampContainer>
+    <motion.h1
+      initial={{ opacity: 0.5, y: 100 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{
+        delay: 0.3,
+        duration: 0.8,
+        ease: "easeInOut",
+      }}
+      className="mt-8 bg-gradient-to-br from-slate-300 to-slate-500 bg-clip-text py-4 text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl"
+    >
+      {title}
+    </motion.h1>
+  </LampContainer>
+);
 
 const FeatureMovieList = (props: FeatureMovieList) => {
   const { initialRecommendedMovie, totalItems, current } = props;
@@ -78,56 +101,37 @@ const FeatureMovieList = (props: FeatureMovieList) => {
   return (
     <PageTransitionEffect>
       <div className="mt-14 px-4">
-        {current === "NewMovie" && (
-          <div className="flex items-center md:hidden">
-            <i className="fa-solid fa-sparkles mr-2 text-[red] sm:text-2xl"></i>
-            <h2 className="font-bold">New Movie</h2>
-          </div>
-        )}
-        {current === "CinemaFilm" && (
-          <div className="flex items-center md:hidden">
-            <i className="fa-solid fa-popcorn mr-2 text-[red] sm:text-2xl"></i>
-            <h2 className="font-bold md:hidden">Cinema Film</h2>
-          </div>
-        )}
-        {current === "StandaloneFilm" && (
-          <div className="flex items-center md:hidden">
-            <i className="fa-regular fa-film mr-2 text-[red] sm:text-2xl"></i>
-            <h2 className="font-bold md:hidden">Standalone Film</h2>
-          </div>
-        )}
-        {current === "TVSeries" && (
-          <div className="flex items-center md:hidden">
-            <i className="fa-solid fa-camera-movie mr-2 text-[red] sm:text-2xl"></i>
-            <h2 className="font-bold md:hidden">TV Series</h2>
-          </div>
-        )}
+        <div className="h-[500px]">
+          <Tile title={current} />
+        </div>
         {recommendedMovie?.length ? (
-          <List
-            dataSource={recommendedMovie}
-            grid={{
-              xs: 3,
-              sm: 3,
-              md: 4,
-              lg: 5,
-              xl: 6,
-              xxl: 8,
-              gutter: 12,
-            }}
-            renderItem={(val: MovieType, idx: number) => (
-              <div>
-                <CardMovie
-                  englishName={val.englishName}
-                  vietnamName={val.vietnamName}
-                  movieId={val.movieId}
-                  thumbnail={val.thumbnail}
-                  time={val.time}
-                  totalEpisodes={val.totalEpisodes}
-                  totalSeasons={val.totalSeasons}
-                />
-              </div>
-            )}
-          />
+          <div className="mt-[-100px]">
+            <List
+              dataSource={recommendedMovie}
+              grid={{
+                xs: 3,
+                sm: 3,
+                md: 4,
+                lg: 5,
+                xl: 6,
+                xxl: 8,
+                gutter: 12,
+              }}
+              renderItem={(val: MovieType, idx: number) => (
+                <div>
+                  <CardMovie
+                    englishName={val.englishName}
+                    vietnamName={val.vietnamName}
+                    movieId={val.movieId}
+                    thumbnail={val.thumbnail}
+                    time={val.time}
+                    totalEpisodes={val.totalEpisodes}
+                    totalSeasons={val.totalSeasons}
+                  />
+                </div>
+              )}
+            />
+          </div>
         ) : (
           <div className="flex h-full w-full items-center justify-center">
             <Result

@@ -2,6 +2,7 @@ import CardSliderCinemaMovie from "@/components/homePage/cardSlider/cardSliderFe
 import CardSliderNewMovie from "@/components/homePage/cardSlider/cardSliderFeature/CardSliderNewMovie";
 import CardSliderStandalone from "@/components/homePage/cardSlider/cardSliderFeature/CardSliderStandalone";
 import CardSliderTVSeriesMovie from "@/components/homePage/cardSlider/cardSliderFeature/CardSliderTVSeriesMovie";
+import CardSliderUpcomingMovie from "@/components/homePage/cardSlider/cardSliderFeature/CardSliderUpcomingMovie";
 import CardSliderTop10Data from "@/components/homePage/cardSlider/cardSliderTop10/CardSliderTop10Data";
 import NavigationMovie from "@/components/homePage/navigationMovie/NavigationMovie";
 import TopPageMovie from "@/components/homePage/topPageMovie/TopPageMovie";
@@ -33,6 +34,7 @@ export default async function Home() {
         <div className="absolute top-[40%] h-fit w-full px-3 pb-5 sm:top-[63%] sm:px-12">
           <CardSliderNewMovie />
           <CardSliderTop10Data />
+          <CardSliderUpcomingMovie />
           <CardSliderStandalone />
           <CardSliderCinemaMovie />
           <CardSliderTVSeriesMovie />
