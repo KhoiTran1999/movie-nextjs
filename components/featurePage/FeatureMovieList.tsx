@@ -14,8 +14,7 @@ import {
   getLoadMoreNewMovieListAction,
 } from "../actions";
 import PageTransitionEffect from "../ui/pageTransitionEffect";
-import { LampContainer } from "../ui/lamp";
-import { motion } from "framer-motion";
+import { Spotlight } from "../ui/Spotlight";
 
 interface FeatureMovieList {
   initialRecommendedMovie: MovieType[];
@@ -28,20 +27,12 @@ interface TileType {
 }
 
 export const Tile = ({ title }: TileType) => (
-  <LampContainer>
-    <motion.h1
-      initial={{ opacity: 0.5, y: 100 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{
-        delay: 0.3,
-        duration: 0.8,
-        ease: "easeInOut",
-      }}
-      className="mt-8 bg-gradient-to-br from-slate-300 to-slate-500 bg-clip-text py-4 text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl"
-    >
+  <div className="bg-grid-white/[0.02] relative h-[10rem] w-full rounded-md bg-black/[0.96] antialiased md:h-[15rem]">
+    <Spotlight className="-top-10 left-1/3 md:left-[45%]" fill="white" />
+    <h1 className="mt-0 bg-opacity-50 bg-gradient-to-b from-neutral-50 to-neutral-400 bg-clip-text text-center text-4xl font-bold text-transparent md:mt-20 md:text-7xl">
       {title}
-    </motion.h1>
-  </LampContainer>
+    </h1>
+  </div>
 );
 
 const FeatureMovieList = (props: FeatureMovieList) => {
@@ -101,9 +92,7 @@ const FeatureMovieList = (props: FeatureMovieList) => {
   return (
     <PageTransitionEffect>
       <div className="mt-14 px-4">
-        <div className="h-[500px]">
-          <Tile title={current} />
-        </div>
+        <Tile title={current} />
         {recommendedMovie?.length ? (
           <div className="mt-[-100px]">
             <List

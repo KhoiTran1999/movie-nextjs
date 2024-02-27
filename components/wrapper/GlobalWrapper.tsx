@@ -112,7 +112,7 @@ const GlobalWrapper = ({ children }: { children: React.ReactNode }) => {
         href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-light.css"
       />
       <Providers>
-        <div className="overflow-hidden">
+        <div>
           <NavigationMovie />
           {children}
         </div>

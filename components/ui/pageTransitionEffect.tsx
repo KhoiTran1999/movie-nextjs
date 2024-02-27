@@ -20,7 +20,7 @@ const PageTransitionEffect = ({ children }: { children: React.ReactNode }) => {
         variants={variants}
         transition={{ type: "linear" }}
       >
-        <div className="overflow-hidden">{children}</div>
+        <div>{children}</div>
       </motion.div>
     </AnimatePresence>
   );
