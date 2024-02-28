@@ -2,13 +2,11 @@ import MainDetailPage from "@/components/detailPage/MainDetailPage";
 import { SuspenseComp } from "@/components/wrapper/SuspenseComp";
 import { MovieDetailType, MovieType } from "@/types";
 import type { Metadata, ResolvingMetadata } from "next";
-import { unstable_noStore as noStore } from "next/cache";
 
 export async function generateMetadata(
   props: any,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  noStore();
 
   const movieId = props?.searchParams?.id ?? "";
 
@@ -30,7 +28,6 @@ export async function generateMetadata(
 }
 
 export default async function Detail(props: any) {
-  noStore();
   const movieId = props?.searchParams?.id ?? "";
 
   let movieDetail: MovieDetailType;
