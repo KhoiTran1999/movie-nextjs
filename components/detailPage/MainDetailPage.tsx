@@ -17,6 +17,9 @@ import { MovieDetailType, MovieType, SeasonMovieDetail } from "@/types";
 import CardMovie from "../homePage/cardSlider/CardMovie";
 import Image from "next/image";
 import PageTransitionEffect from "../ui/pageTransitionEffect";
+import { Typography } from "antd";
+
+const { Paragraph } = Typography;
 
 const rubik = Rubik_Dirt({
   subsets: ["latin"],
@@ -213,7 +216,17 @@ export default function MainDetailPage(props: MainDetailPage) {
                     {
                       key: "Description",
                       label: "Description",
-                      children: movieDetail.description,
+                      children: (
+                        <Paragraph
+                          ellipsis={{
+                            rows: 3,
+                            expandable: true,
+                            symbol: "more",
+                          }}
+                        >
+                          {movieDetail.description}
+                        </Paragraph>
+                      ),
                     },
                     {
                       key: "Actors",
