@@ -66,7 +66,6 @@ const CardSliderTop10 = ({ title, movieList, icon }: cardSliderProps) => {
             opts={{
               align: "start",
               loop: true,
-              slidesToScroll: 2,
             }}
             orientation="horizontal"
             className="w-full"
