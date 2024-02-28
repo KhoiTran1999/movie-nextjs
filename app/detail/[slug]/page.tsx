@@ -15,7 +15,7 @@ export async function generateMetadata(
   const movieDetail: MovieDetailType = await res.json();
 
   return {
-    title: `${movieDetail.englishName} - ${movieDetail.producedDate.slice(0, 4)} - ${movieDetail.categories.map((val) => `${val.name} `)}`,
+    title: `${movieDetail.englishName} ${movieDetail.producedDate.slice(0, 4)} - ${movieDetail.categories.map((val) => `${val.name} `)}`,
     description: movieDetail.description,
     openGraph: {
       images: [movieDetail.thumbnail],
