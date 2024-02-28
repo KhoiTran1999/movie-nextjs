@@ -19,7 +19,7 @@ export async function generateMetadata(
     description: movieDetail.description,
     openGraph: {
       images: [movieDetail.thumbnail],
-      title: `${movieDetail.englishName} - ${movieDetail.producedDate.slice(0, 4)} - ${movieDetail.categories.map((val) => `${val} `)}`,
+      title: `${movieDetail.englishName} ${movieDetail.producedDate.slice(0, 4)} - ${movieDetail.categories.map((val) => `${val.name} `)}`,
       description: movieDetail.description,
       type: "website",
     },
