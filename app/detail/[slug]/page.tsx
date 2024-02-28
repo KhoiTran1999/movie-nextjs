@@ -7,7 +7,6 @@ export async function generateMetadata(
   props: any,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-
   const movieId = props?.searchParams?.id ?? "";
 
   const res = await fetch(
@@ -16,7 +15,7 @@ export async function generateMetadata(
   const movieDetail: MovieDetailType = await res.json();
 
   return {
-    title: `${movieDetail.englishName} - ${movieDetail.producedDate.slice(0, 4)} - ${movieDetail.categories.map((val) => `${val} `)}`,
+    title: `${movieDetail.englishName} - ${movieDetail.producedDate.slice(0, 4)} - ${movieDetail.categories.map((val) => `${val.name} `)}`,
     description: movieDetail.description,
     openGraph: {
       images: [movieDetail.thumbnail],
