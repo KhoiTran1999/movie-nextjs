@@ -9,7 +9,7 @@ type castCharacteries = {
 
 export const Actor = ({ castCharacteries }: castCharacteries) => {
   return (
-    <div className="flex flex-wrap items-center justify-start">
+    <div className="flex flex-wrap items-start justify-start">
       {castCharacteries.length === 0
         ? "Empty Actor"
         : castCharacteries.map((val: castCharacteryType) => (
@@ -26,7 +26,7 @@ export const Actor = ({ castCharacteries }: castCharacteries) => {
                 />
               </div>
 
-              <span>{val.namePerson}</span>
+              <span className="text-[10px]">{val.namePerson}</span>
             </div>
           ))}
     </div>

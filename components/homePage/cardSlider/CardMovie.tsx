@@ -2,9 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import slugify from "slugify";
-import { motion } from "framer-motion";
 import PageTransitionEffect from "@/components/ui/pageTransitionEffect";
 
 type movieProps = {
@@ -49,7 +48,7 @@ const CardMovie = (props: movieProps) => {
               src={thumbnail}
               alt="Thumbnail"
               fill
-              loading="lazy"
+              priority
               className="rounded object-cover"
               quality={100}
               sizes="(min-width: 1024px) 100vw, (min-width: 625px) 30vw, 40vw"

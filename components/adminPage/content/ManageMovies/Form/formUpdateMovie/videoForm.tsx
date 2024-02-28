@@ -325,11 +325,6 @@ const VideoForm = ({
                 setIsLoadingNextButton(false);
               }
             } else {
-              //New Episode List < Old Episode List
-              console.log(
-                "season.episode.length < oldSeasonList[idx].episode.length",
-              );
-
               //Update New Episode
               try {
                 await Axios.put(
@@ -345,7 +340,6 @@ const VideoForm = ({
               const theRestOfOldEpisodeList = oldEpisodeList.slice(
                 season.episode.length,
               );
-              console.log("theRestOfOldEpisodeList: ", theRestOfOldEpisodeList);
 
               for (const [idx, episode] of theRestOfOldEpisodeList.entries()) {
                 try {
