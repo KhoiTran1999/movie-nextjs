@@ -68,7 +68,11 @@ const CardSlider = ({ title, movieList, href, icon }: cardSliderProps) => {
           </div>
         </Link>
 
-        <div onMouseEnter={handleOnMouseEnter} onMouseLeave={onMouseLeave}>
+        <div
+          className="mx-[-12px] sm:mx-[-48px]"
+          onMouseEnter={handleOnMouseEnter}
+          onMouseLeave={onMouseLeave}
+        >
           <Carousel
             opts={{
               align: "start",
