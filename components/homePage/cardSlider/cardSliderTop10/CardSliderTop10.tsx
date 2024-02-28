@@ -1,12 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Scrollbar, A11y, Pagination } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/scrollbar";
-import "swiper/css/pagination";
 import CardMovieTop10 from "./CardMovieTop10";
 import {
   Carousel,
@@ -36,6 +30,11 @@ type movieProps = {
 
 const CardSliderTop10 = ({ title, movieList, icon }: cardSliderProps) => {
   const [isHover, setIsHover] = useState<boolean>(false);
+  const [screenWidth, setScreenWidth] = useState<number>(0);
+
+  useEffect(() => {
+    setScreenWidth(screen.width);
+  }, []);
 
   const handleOnMouseEnter = () => {
     setIsHover(true);
@@ -66,6 +65,8 @@ const CardSliderTop10 = ({ title, movieList, icon }: cardSliderProps) => {
           <Carousel
             opts={{
               align: "start",
+              loop: true,
+              slidesToScroll: 2,
             }}
             orientation="horizontal"
             className="w-full"
@@ -89,7 +90,7 @@ const CardSliderTop10 = ({ title, movieList, icon }: cardSliderProps) => {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            {isHover && (
+            {isHover && screenWidth >= 640 && (
               <>
                 <CarouselPrevious />
                 <CarouselNext />
