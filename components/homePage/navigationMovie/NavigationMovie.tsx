@@ -7,6 +7,7 @@ import User from "./User";
 import { SuspenseComp } from "@/components/wrapper/SuspenseComp";
 import { usePathname } from "next/navigation";
 import { Logo } from "@/public/logo";
+import { Search } from "@/public/search";
 
 const NavigationMovie = () => {
   const pathname = usePathname();
@@ -32,7 +33,7 @@ const NavigationMovie = () => {
             </div>
             <div className="flex items-center justify-end pr-5">
               <Link href={"/search"}>
-                <i className="fa-regular fa-magnifying-glass cursor-pointer text-xl text-[#D1D0CF]"></i>
+                <Search />
               </Link>
               <User />
             </div>

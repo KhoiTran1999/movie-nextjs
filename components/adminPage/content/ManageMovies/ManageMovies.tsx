@@ -12,6 +12,8 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { MovieAntdTableType } from "@/types";
 import { deleteMovieAction, revalidatePathAction } from "@/components/actions";
 import Image from "next/image";
+import { PenSquare } from "@/public/penSquare";
+import { Trash } from "@/public/trash";
 
 interface IProps {
   movieList: MovieAntdTableType[] | [];
@@ -199,7 +201,7 @@ const ManageMovies = (props: IProps) => {
                   disabled={deleteLoadingState}
                   onClick={() => handleUpdateModalOpen(val)}
                 >
-                  <i className="fa-solid fa-pen-to-square text-2xl"></i>
+                  <PenSquare width={24} height={24} fill="#D1D0CF" />
                 </Button>
               </Tooltip>
               <Popconfirm
@@ -209,7 +211,7 @@ const ManageMovies = (props: IProps) => {
               >
                 <Tooltip title="Delete" placement="bottom">
                   <Button type="text" disabled={deleteLoadingState}>
-                    <i className="fa-solid fa-trash text-[22px]"></i>
+                    <Trash width={24} height={24} fill="#D1D0CF" />
                   </Button>
                 </Tooltip>
               </Popconfirm>

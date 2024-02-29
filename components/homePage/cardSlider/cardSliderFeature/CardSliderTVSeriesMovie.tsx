@@ -2,6 +2,7 @@
 
 import CardSlider from "../CardSlider";
 import { unstable_noStore as noStore } from "next/cache";
+import { Tv } from "@/public/tv";
 
 const CardSliderTVSeriesMovie = async () => {
   noStore();
@@ -16,9 +17,7 @@ const CardSliderTVSeriesMovie = async () => {
       href="/feature?current=TVSeries&featureId=3"
       title="TV Series Movies"
       movieList={TVSeriesMovieList}
-      icon={
-        <i className="fa-solid fa-camera-movie mr-2 text-[red] sm:text-2xl"></i>
-      }
+      icon={<Tv width={24} height={24} className="mr-2" />}
     />
   );
 };

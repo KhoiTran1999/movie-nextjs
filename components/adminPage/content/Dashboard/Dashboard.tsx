@@ -3,6 +3,12 @@
 import { Chart } from "react-google-charts";
 
 import { CategoryType, StatisticType } from "@/types";
+import { Rocket } from "@/public/rocket";
+import { LoadingIcon } from "@/public/loading";
+import { Stars } from "@/public/stars";
+import { Trash } from "@/public/trash";
+import { Movie } from "@/public/movie";
+import { GroupUser } from "@/public/groupUser";
 
 interface featureType {
   CinemaFilm: string;
@@ -75,28 +81,43 @@ const Dashboard = async (props: DashboardType) => {
           <p className="mt-2 text-4xl font-bold text-white">
             {statisticsData.upcoming ?? 0}
           </p>
-          <i className="fa-solid fa-rocket-launch absolute right-3 top-3 text-2xl text-[#DBCC95]"></i>
+          <Rocket width={24} height={24} className="absolute right-3 top-3" />
         </div>
         <div className="relative mb-5 mr-5  w-60 rounded-md bg-gradient-to-r from-[#AC87C5] to-[#756ab6] p-5 text-center shadow-[0_0_10px_5px_#756ab69f] transition-transform hover:scale-105">
           <h3 className="text-lg font-semibold text-white">Pending</h3>
           <p className="mt-2 text-4xl font-bold text-white">
             {statisticsData.pending ?? 0}
           </p>
-          <i className="fa-solid fa-loader absolute right-3 top-3 text-2xl text-[#AC87C5]"></i>
+          <LoadingIcon
+            width={24}
+            height={24}
+            fill="#AC87C5"
+            className="absolute right-3 top-3"
+          />
         </div>
         <div className="relative mb-5 mr-5 w-60 rounded-md bg-gradient-to-r from-[#AFC8AD] to-[#88AB8E] p-5 text-center shadow-[0_0_10px_5px_#88AB8E9f] transition-transform hover:scale-105">
           <h3 className="text-lg font-semibold text-white">Released</h3>
           <p className="mt-2 text-4xl font-bold text-white">
             {statisticsData.released ?? 0}
           </p>
-          <i className="fa-solid fa-sparkles absolute right-3 top-3 text-2xl text-[#AFC8AD]"></i>
+          <Stars
+            width={24}
+            height={24}
+            fill="#AFC8AD"
+            className="absolute right-3 top-3"
+          />
         </div>
         <div className="relative mb-5 mr-5 w-60 rounded-md bg-gradient-to-r from-[#FFC0D9] to-[#FF90BC] p-5 text-center shadow-[0_0_10px_5px_#FF90BC9f] transition-transform hover:scale-105">
           <h3 className="text-lg font-semibold text-white">Deleted</h3>
           <p className="mt-2 text-4xl font-bold text-white">
             {statisticsData.deleted ?? 0}
           </p>
-          <i className="fa-solid fa-trash absolute right-3 top-3 text-2xl text-[#FFC0D9]"></i>
+          <Trash
+            width={24}
+            height={24}
+            fill="#FFC0D9"
+            className="absolute right-3 top-3"
+          />
         </div>
         <div className="relative mb-5 mr-5 w-60 rounded-md bg-gradient-to-r from-[#EDDBC7] to-[#A7727D] p-5 text-center shadow-[0_0_10px_5px_#a7727da5] transition-transform hover:scale-105">
           <h3 className="text-lg font-semibold text-white">Total Movie</h3>
@@ -107,14 +128,24 @@ const Dashboard = async (props: DashboardType) => {
                 statisticsData.pending
               : 0}
           </p>
-          <i className="fa-solid fa-clapperboard-play absolute right-3 top-3 text-2xl text-[#EDDBC7]"></i>
+          <Movie
+            width={24}
+            height={24}
+            fill="#EDDBC7"
+            className="absolute right-3 top-3"
+          />
         </div>
         <div className="relative mb-5 mr-5 w-60 rounded-md bg-gradient-to-r from-[#9F8772] to-[#665A48] p-5 text-center shadow-[0_0_10px_5px_#665A489f] transition-transform hover:scale-105">
           <h3 className="text-lg font-semibold text-white">Total Account</h3>
           <p className="mt-2 text-4xl font-bold text-white">
             {statisticsData.account ?? 0}
           </p>
-          <i className="fa-solid fa-users absolute right-3 top-3 text-2xl text-[#9F8772]"></i>
+          <GroupUser
+            width={24}
+            height={24}
+            fill="#9F8772"
+            className="absolute right-3 top-3"
+          />
         </div>
       </div>
       <div className="mt-7">

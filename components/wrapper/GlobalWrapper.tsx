@@ -2,17 +2,9 @@
 
 import { Providers } from "@/utils/redux/provider";
 import { ConfigProvider } from "antd";
-import { AnimatePresence, motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
 import NavigationMovie from "../homePage/navigationMovie/NavigationMovie";
 
 const GlobalWrapper = ({ children }: { children: React.ReactNode }) => {
-  const [href, setHref] = useState("");
-
-  useEffect(() => {
-    setHref(window.location.href);
-  }, []);
-
   return (
     <ConfigProvider
       theme={{
@@ -80,37 +72,6 @@ const GlobalWrapper = ({ children }: { children: React.ReactNode }) => {
         },
       }}
     >
-      <link
-        rel="stylesheet"
-        data-purpose="Layout StyleSheet"
-        title="Web Awesome"
-        href="/css/app-wa-9846671ed7c9dd69b10c93f6b04b31fe.css?vsn=d"
-      />
-
-      <link
-        rel="stylesheet"
-        href="https://site-assets.fontawesome.com/releases/v6.5.1/css/all.css"
-      />
-
-      <link
-        rel="stylesheet"
-        href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-thin.css"
-      />
-
-      <link
-        rel="stylesheet"
-        href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-solid.css"
-      />
-
-      <link
-        rel="stylesheet"
-        href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-regular.css"
-      />
-
-      <link
-        rel="stylesheet"
-        href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-light.css"
-      />
       <Providers>
         <div>
           <NavigationMovie />

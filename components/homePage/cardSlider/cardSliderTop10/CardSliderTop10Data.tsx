@@ -2,6 +2,7 @@
 
 import CardSliderTop10 from "./CardSliderTop10";
 import { unstable_noStore as noStore } from "next/cache";
+import { Top } from "@/public/top";
 
 const CardSliderTop10Data = async () => {
   noStore();
@@ -17,9 +18,7 @@ const CardSliderTop10Data = async () => {
         <CardSliderTop10
           title={`Top ${top10.length} Movies This Week`}
           movieList={top10}
-          icon={
-            <i className="fa-sharp fa-regular fa-arrow-down-wide-short mr-2 text-[red] sm:text-2xl"></i>
-          }
+          icon={<Top width={24} height={24} className="mr-2" />}
         />
       ) : (
         <></>

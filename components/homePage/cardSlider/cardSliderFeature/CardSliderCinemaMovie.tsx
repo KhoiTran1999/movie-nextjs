@@ -2,6 +2,7 @@
 
 import CardSlider from "../CardSlider";
 import { unstable_noStore as noStore } from "next/cache";
+import { Popcorn } from "@/public/popcorn";
 
 const CardSliderCinemaMovie = async () => {
   noStore();
@@ -16,7 +17,7 @@ const CardSliderCinemaMovie = async () => {
       href="/feature?current=CinemaFilm&featureId=1"
       title="Cinema Movies"
       movieList={cinemaMovieList}
-      icon={<i className="fa-solid fa-popcorn mr-2 text-[red] sm:text-2xl"></i>}
+      icon={<Popcorn width={24} height={24} className="mr-2" />}
     />
   );
 };

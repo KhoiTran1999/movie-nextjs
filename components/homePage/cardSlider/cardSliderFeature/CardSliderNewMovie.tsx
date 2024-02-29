@@ -2,6 +2,7 @@
 
 import CardSlider from "../CardSlider";
 import { unstable_noStore as noStore } from "next/cache";
+import { Stars } from "@/public/stars";
 
 const CardSliderNewMovie = async () => {
   noStore();
@@ -16,9 +17,7 @@ const CardSliderNewMovie = async () => {
       href="/feature?current=NewMovie"
       title="New Movies"
       movieList={newMovieList}
-      icon={
-        <i className="fa-solid fa-sparkles mr-2 text-[red] sm:text-2xl"></i>
-      }
+      icon={<Stars width={24} height={24} className="mr-2" fill="red" />}
     />
   );
 };

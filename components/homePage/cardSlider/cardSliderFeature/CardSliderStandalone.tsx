@@ -2,6 +2,7 @@
 
 import CardSlider from "../CardSlider";
 import { unstable_noStore as noStore } from "next/cache";
+import { Movie } from "@/public/movie";
 
 const CardSliderStandalone = async () => {
   noStore();
@@ -16,7 +17,7 @@ const CardSliderStandalone = async () => {
       href="/feature?current=StandaloneFilm&featureId=2"
       title="Standalone Movies"
       movieList={standaloneMovieList}
-      icon={<i className="fa-regular fa-film mr-2 text-[red] sm:text-2xl"></i>}
+      icon={<Movie width={24} height={24} className="mr-2" fill="red" />}
     />
   );
 };

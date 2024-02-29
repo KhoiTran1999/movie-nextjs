@@ -3,6 +3,7 @@
 import React from "react";
 import { Dropdown, Divider, theme, Avatar } from "antd";
 import type { MenuProps } from "antd";
+import { UserIcon } from "@/public/user";
 
 const { useToken } = theme;
 import {
@@ -92,7 +93,7 @@ const User = () => {
         </div>
       )}
     >
-      <i className="fa-light fa-user ml-5 cursor-pointer text-xl text-[#D1D0CF]"></i>
+      <UserIcon className="ml-5 cursor-pointer" />
     </Dropdown>
   );
 };

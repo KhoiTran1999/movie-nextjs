@@ -18,6 +18,11 @@ import CardMovie from "../homePage/cardSlider/CardMovie";
 import Image from "next/image";
 import PageTransitionEffect from "../ui/pageTransitionEffect";
 import { Typography } from "antd";
+import { Play } from "@/public/play";
+import { Plus } from "@/public/plus";
+import { Heart } from "@/public/heart";
+import { Copy } from "@/public/copy";
+import { LoadingIcon } from "@/public/loading";
 
 const { Paragraph } = Typography;
 
@@ -248,12 +253,25 @@ export default function MainDetailPage(props: MainDetailPage) {
                     {movieDetail.totalSeasons > 0 ? (
                       <>
                         {loadingMovie ? (
-                          <i className="fa-duotone fa-spinner-third mr-2 animate-spin text-xl"></i>
+                          <div className="flex items-center justify-center">
+                            <LoadingIcon
+                              width={20}
+                              height={20}
+                              fill="white"
+                              className="mr-2 animate-spin"
+                            />
+                          </div>
                         ) : (
-                          <i className="fa-duotone fa-play mr-2 text-xl"></i>
+                          <div className="flex items-center justify-center">
+                            <Play
+                              width={20}
+                              height={20}
+                              fill="white"
+                              className="mr-2"
+                            />
+                            <span>Play</span>
+                          </div>
                         )}
-
-                        <span>Play</span>
                       </>
                     ) : (
                       <span>Upcoming...</span>
@@ -272,7 +290,7 @@ export default function MainDetailPage(props: MainDetailPage) {
                     <span
                       className={`flex h-11 w-11 cursor-pointer items-center justify-center rounded-full  bg-[#b2afaf2e] p-3 transition-colors hover:bg-[#adaaaa64]`}
                     >
-                      <i className="fa-regular fa-plus text-xl"></i>
+                      <Plus width={20} height={20} fill="#D1D0CF" />
                     </span>
                   </Tooltip>
 
@@ -281,6 +299,7 @@ export default function MainDetailPage(props: MainDetailPage) {
                       className={`mx-3 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full  bg-[#b2afaf2e] p-3 transition-colors hover:bg-[#adaaaa64]`}
                     >
                       <i className="fa-regular fa-heart text-xl"></i>
+                      <Heart width={20} height={20} fill="#D1D0CF" />
                     </span>
                   </Tooltip>
 
@@ -288,10 +307,9 @@ export default function MainDetailPage(props: MainDetailPage) {
                     <span
                       className={`flex h-11 w-11 cursor-pointer items-center justify-center rounded-full  bg-[#b2afaf2e] p-3 transition-colors hover:bg-[#adaaaa64]`}
                     >
-                      <i
-                        onClick={handleCopyUrl}
-                        className="fa-sharp fa-light fa-paste text-xl"
-                      ></i>
+                      <span onClick={handleCopyUrl}>
+                        <Copy width={20} height={20} fill="#D1D0CF" />
+                      </span>
                     </span>
                   </Tooltip>
                 </div>

@@ -11,6 +11,7 @@ import { isToggleSiderSelector } from "@/utils/redux/selector";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Logo } from "@/public/logo";
+import { Key } from "@/public/key";
 
 const { Sider } = Layout;
 
@@ -53,7 +54,7 @@ const SiderAdmin = () => {
           },
           {
             key: "/admin/ManageGeminiKey",
-            icon: <i className="fa-sharp fa-regular fa-key font-[20px]"></i>,
+            icon: <Key width={20} height={20} fill="#D1D0CF" />,
             label: (
               <Link href={"/admin/manageGeminiKey"}>Manage GeminiKey</Link>
             ),
