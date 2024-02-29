@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CardMovieTop10 from "./CardMovieTop10";
 import {
   Carousel,
@@ -9,6 +9,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { useInView } from "framer-motion";
 
 type cardSliderProps = {
   title: string;
@@ -32,6 +33,10 @@ const CardSliderTop10 = ({ title, movieList, icon }: cardSliderProps) => {
   const [isHover, setIsHover] = useState<boolean>(false);
   const [screenWidth, setScreenWidth] = useState<number>(0);
 
+  const sliderRef = useRef(null);
+
+  const isInView = useInView(sliderRef, { once: true });
+
   useEffect(() => {
     setScreenWidth(screen.width);
   }, []);
@@ -44,7 +49,15 @@ const CardSliderTop10 = ({ title, movieList, icon }: cardSliderProps) => {
   };
 
   return (
-    <div className="mb-3">
+    <div
+      ref={sliderRef}
+      style={{
+        transform: isInView ? "none" : "translateY(200px)",
+        opacity: isInView ? 1 : 0,
+        transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 0.5s",
+      }}
+      className="mb-3"
+    >
       <>
         <div>
           <div className="group flex items-center justify-between md:justify-start">
