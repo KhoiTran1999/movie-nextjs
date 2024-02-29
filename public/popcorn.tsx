@@ -15,7 +15,7 @@ export const Popcorn = (props: any) => {
         <clipPath id="7cbbcc018a">
           <path
             d="M 150.46875 23 L 599 23 L 599 312 L 150.46875 312 Z M 150.46875 23 "
-            clip-rule="nonzero"
+            clipRule="nonzero"
           />
         </clipPath>
       </defs>

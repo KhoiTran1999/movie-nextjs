@@ -15,13 +15,13 @@ export const Top = (props: any) => {
         <clipPath id="212bc26ddd">
           <path
             d="M 455 524 L 690.28125 524 L 690.28125 747.132812 L 455 747.132812 Z M 455 524 "
-            clip-rule="nonzero"
+            clipRule="nonzero"
           />
         </clipPath>
         <clipPath id="d911b2ef87">
           <path
             d="M 59.53125 530 L 300 530 L 300 748 L 59.53125 748 Z M 59.53125 530 "
-            clip-rule="nonzero"
+            clipRule="nonzero"
           />
         </clipPath>
       </defs>

@@ -15,7 +15,7 @@ export const Upcoming = (props: any) => {
         <clipPath id="ee8d8de3f7">
           <path
             d="M 0 87.65625 L 610 87.65625 L 610 661 L 0 661 Z M 0 87.65625 "
-            clip-rule="nonzero"
+            clipRule="nonzero"
           />
         </clipPath>
       </defs>
