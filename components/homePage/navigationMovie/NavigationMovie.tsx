@@ -6,6 +6,7 @@ import NavigationFeature from "./NavigationFeature";
 import User from "./User";
 import { SuspenseComp } from "@/components/wrapper/SuspenseComp";
 import { usePathname } from "next/navigation";
+import { Logo } from "@/public/logo";
 
 const NavigationMovie = () => {
   const pathname = usePathname();
@@ -22,7 +23,7 @@ const NavigationMovie = () => {
         >
           <div className="m-auto flex w-full max-w-[1200px] items-center justify-between ">
             <Link href="/">
-              <Image src="/logo.png" alt="logo" width={100} height={50} />
+              <Logo />
             </Link>
             <div className="hidden md:block">
               <SuspenseComp>

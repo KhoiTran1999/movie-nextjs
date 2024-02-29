@@ -1,16 +1,16 @@
 "use client";
 
-import { Layout, Menu, Button, theme } from "antd";
+import { Layout, Menu } from "antd";
 import {
   DeleteOutlined,
   HomeOutlined,
   AppstoreAddOutlined,
 } from "@ant-design/icons";
-import Image from "next/image";
 import { useSelector } from "react-redux";
 import { isToggleSiderSelector } from "@/utils/redux/selector";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Logo } from "@/public/logo";
 
 const { Sider } = Layout;
 
@@ -31,7 +31,7 @@ const SiderAdmin = () => {
     >
       <Link href={"/"}>
         <div className="flex items-center justify-center p-2">
-          <Image src="/logo.png" alt="logo" width={100} height={50} />
+          <Logo />
         </div>
       </Link>
 

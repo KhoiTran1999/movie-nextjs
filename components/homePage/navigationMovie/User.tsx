@@ -84,7 +84,7 @@ const User = () => {
             className="border-1 border-gray-500"
           />
           <div className="group flex cursor-pointer items-center justify-center">
-            <i className="fa-regular fa-arrow-right-from-bracket mr-2 text-lg group-hover:text-[#E50914]"></i>
+            <LogoutOutlined className="fa-regular fa-arrow-right-from-bracket mr-2 text-lg group-hover:text-[#E50914]" />
             <span className="font-medium group-hover:text-[#E50914]">
               Logout
             </span>
