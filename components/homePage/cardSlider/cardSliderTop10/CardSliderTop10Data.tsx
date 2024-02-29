@@ -1,6 +1,12 @@
 "use server";
 
-import CardSliderTop10 from "./CardSliderTop10";
+import dynamic from "next/dynamic";
+const CardSliderTop10 = dynamic(
+  () => import("../cardSliderTop10/CardSliderTop10"),
+  {
+    loading: () => <p>Loading...</p>,
+  },
+);
 import { unstable_noStore as noStore } from "next/cache";
 import { Top } from "@/public/top";
 

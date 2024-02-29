@@ -13,7 +13,6 @@ import {
   getLoadMoreFeatureMovieListAction,
   getLoadMoreNewMovieListAction,
 } from "../actions";
-import PageTransitionEffect from "../ui/pageTransitionEffect";
 
 interface FeatureMovieList {
   initialRecommendedMovie: MovieType[];
@@ -86,7 +85,7 @@ const FeatureMovieList = (props: FeatureMovieList) => {
   };
 
   return (
-    <PageTransitionEffect>
+    <>
       <div className="mt-14 px-4">
         <Tile title={current} />
 
@@ -142,7 +141,7 @@ const FeatureMovieList = (props: FeatureMovieList) => {
       {isLoadingFeature && (
         <Spin spinning={isLoadingFeature} size="large" fullscreen />
       )}
-    </PageTransitionEffect>
+    </>
   );
 };
 

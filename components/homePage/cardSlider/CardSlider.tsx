@@ -10,7 +10,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { useInView } from "framer-motion";
+import { RightOutlined } from "@ant-design/icons";
 
 type cardSliderProps = {
   title: string;
@@ -35,9 +35,7 @@ const CardSlider = ({ title, movieList, href, icon }: cardSliderProps) => {
   const [isHover, setIsHover] = useState<boolean>(false);
   const [screenWidth, setScreenWidth] = useState<number>(0);
 
-  const sliderRef = useRef(null);
-
-  const isInView = useInView(sliderRef, { once: true, margin: "100px" });
+  // const isInView = useInView(sliderRef, { once: true, margin: "100px" });
 
   useEffect(() => {
     setScreenWidth(screen.width);
@@ -51,15 +49,7 @@ const CardSlider = ({ title, movieList, href, icon }: cardSliderProps) => {
   };
 
   return (
-    <div
-      ref={sliderRef}
-      style={{
-        transform: isInView ? "none" : "translateY(200px)",
-        opacity: isInView ? 1 : 0,
-        transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1)",
-      }}
-      className="mb-3"
-    >
+    <div className="mb-3">
       <>
         <Link href={href}>
           <div>
@@ -71,10 +61,10 @@ const CardSlider = ({ title, movieList, href, icon }: cardSliderProps) => {
                 </h2>
               </div>
               <div
-                className={`visible ml-3 flex translate-x-0 items-center justify-center font-bold text-[#E50914] opacity-100 transition-all group-hover:translate-x-[0px] group-hover:opacity-100 md:invisible md:translate-x-[-20px] md:opacity-0 md:group-hover:visible`}
+                className={`visible ml-3 flex translate-x-0 items-center justify-center font-bold text-[red] opacity-100 transition-all group-hover:translate-x-[0px] group-hover:opacity-100 md:invisible md:translate-x-[-20px] md:opacity-0 md:group-hover:visible`}
               >
-                <span className="mr-2">See all </span>
-                <i className="fa-solid fa-angle-right text-sm"></i>
+                <span className="mr-2">See all</span>
+                <RightOutlined className="text-sm font-medium" />
               </div>
             </div>
           </div>
@@ -89,7 +79,8 @@ const CardSlider = ({ title, movieList, href, icon }: cardSliderProps) => {
             opts={{
               align: "start",
               loop: true,
-              slidesToScroll: 2,
+              slidesToScroll: 3,
+              dragFree: true,
             }}
             orientation="horizontal"
             className="w-full"

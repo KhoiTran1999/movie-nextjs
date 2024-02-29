@@ -15,7 +15,7 @@ export const Copy = (props: any) => {
         <clipPath id="aea9ea963e">
           <path
             d="M 50.15625 0 L 699.65625 0 L 699.65625 750 L 50.15625 750 Z M 50.15625 0 "
-            clip-rule="nonzero"
+            clipRule="nonzero"
           />
         </clipPath>
       </defs>

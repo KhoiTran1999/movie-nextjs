@@ -1,7 +1,6 @@
 "use client";
 
 import { addViewerMovieAction } from "@/components/actions";
-import Axios from "@/utils/axios";
 import { useEffect } from "react";
 
 type movieProps = {
@@ -12,7 +11,7 @@ type movieProps = {
   movieId: string;
 };
 
-export const WatchModal = ({
+const WatchModal = ({
   seasonNumber,
   episodeNumber,
   name,
@@ -44,3 +43,5 @@ export const WatchModal = ({
     </div>
   );
 };
+
+export default WatchModal;

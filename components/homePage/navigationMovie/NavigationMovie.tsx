@@ -23,7 +23,7 @@ const NavigationMovie = () => {
           } fixed left-0 top-0 z-[100] w-full px-4 pt-1 transition-all lg:px-12`}
         >
           <div className="m-auto flex w-full max-w-[1200px] items-center justify-between ">
-            <Link href="/">
+            <Link href="/" aria-label="Home Page">
               <Logo />
             </Link>
             <div className="hidden md:block">
@@ -32,7 +32,7 @@ const NavigationMovie = () => {
               </SuspenseComp>
             </div>
             <div className="flex items-center justify-end pr-5">
-              <Link href={"/search"}>
+              <Link href={"/search"} aria-label="Search Page">
                 <Search />
               </Link>
               <User />

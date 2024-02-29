@@ -9,7 +9,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { useInView } from "framer-motion";
 
 type cardSliderProps = {
   title: string;
@@ -33,10 +32,6 @@ const CardSliderTop10 = ({ title, movieList, icon }: cardSliderProps) => {
   const [isHover, setIsHover] = useState<boolean>(false);
   const [screenWidth, setScreenWidth] = useState<number>(0);
 
-  const sliderRef = useRef(null);
-
-  const isInView = useInView(sliderRef, { once: true, margin: "100px" });
-
   useEffect(() => {
     setScreenWidth(screen.width);
   }, []);
@@ -49,15 +44,7 @@ const CardSliderTop10 = ({ title, movieList, icon }: cardSliderProps) => {
   };
 
   return (
-    <div
-      ref={sliderRef}
-      style={{
-        transform: isInView ? "none" : "translateY(200px)",
-        opacity: isInView ? 1 : 0,
-        transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1)",
-      }}
-      className="mb-3"
-    >
+    <div className="mb-3">
       <>
         <div>
           <div className="group flex items-center justify-between md:justify-start">
@@ -79,6 +66,8 @@ const CardSliderTop10 = ({ title, movieList, icon }: cardSliderProps) => {
             opts={{
               align: "start",
               loop: true,
+              dragFree: true,
+              slidesToScroll: 2,
             }}
             orientation="horizontal"
             className="w-full"

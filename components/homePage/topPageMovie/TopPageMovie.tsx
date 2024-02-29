@@ -45,7 +45,7 @@ const TopPageMovie = async ({ previewMovie }: TopPageMovieProps) => {
         <VideoPlayer previewMovie={previewMovie} />
         <div className="z-9 absolute top-1/2 z-0 mt-6 flex h-[100%] w-[100%] translate-y-[-50%] flex-col items-center justify-center px-12 text-[#D1D0CF] md:mt-0 md:items-start">
           <>
-            <div className="order-1 mb-2 rounded bg-[red] p-1 text-[10px] font-medium text-white sm:text-xs ">
+            <div className="order-1 mb-2 rounded bg-[red] p-1 text-[10px] font-medium text-[white] sm:text-xs ">
               {previewMovie?.tag}
             </div>
             <h1

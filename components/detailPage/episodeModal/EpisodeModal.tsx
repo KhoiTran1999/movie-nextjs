@@ -1,11 +1,14 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import { Select, Spin, Modal } from "antd";
 import { CaretRightFilled } from "@ant-design/icons";
 import { Rubik_Dirt } from "next/font/google";
 import { useRouter } from "next/navigation";
-import { WatchModal } from "../watchModal/WatchModal";
+const WatchModal = dynamic(() => import("../watchModal/WatchModal"), {
+  ssr: false,
+});
 
 const rubik = Rubik_Dirt({
   subsets: ["latin"],
@@ -42,11 +45,7 @@ interface watchMovieType {
   video: string;
 }
 
-export const EpisodeModal = ({
-  movieId,
-  totalSeasons,
-  englishName,
-}: movieProps) => {
+const EpisodeModal = ({ movieId, totalSeasons, englishName }: movieProps) => {
   const router = useRouter();
 
   const [season, setSeason] = useState<seasonProps>();
@@ -162,3 +161,5 @@ export const EpisodeModal = ({
     </div>
   );
 };
+
+export default EpisodeModal;
