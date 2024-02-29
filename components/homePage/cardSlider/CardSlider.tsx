@@ -37,7 +37,7 @@ const CardSlider = ({ title, movieList, href, icon }: cardSliderProps) => {
 
   const sliderRef = useRef(null);
 
-  const isInView = useInView(sliderRef, { once: true });
+  const isInView = useInView(sliderRef, { once: true, margin: "100px" });
 
   useEffect(() => {
     setScreenWidth(screen.width);
@@ -56,7 +56,7 @@ const CardSlider = ({ title, movieList, href, icon }: cardSliderProps) => {
       style={{
         transform: isInView ? "none" : "translateY(200px)",
         opacity: isInView ? 1 : 0,
-        transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 0.2s",
+        transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1)",
       }}
       className="mb-3"
     >
