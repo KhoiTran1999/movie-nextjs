@@ -14,7 +14,7 @@ const CardSliderTop10Data = async () => {
   noStore();
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/Analyst/GetViewerMovie`,
-    { cache: "no-cache" },
+    { next: { revalidate: 900 } },
   );
   const top10 = await res.json();
 

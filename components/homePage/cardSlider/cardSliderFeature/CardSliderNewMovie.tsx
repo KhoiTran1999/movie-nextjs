@@ -8,7 +8,7 @@ const CardSliderNewMovie = async () => {
   noStore();
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/Movies?sortBy=produceddate&page=1&eachPage=10`,
-    { cache: "no-cache" },
+    { next: { revalidate: 900 } },
   );
   const newMovieList = await res.json();
 
