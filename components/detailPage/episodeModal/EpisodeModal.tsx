@@ -46,8 +46,6 @@ interface watchMovieType {
 }
 
 const EpisodeModal = ({ movieId, totalSeasons, englishName }: movieProps) => {
-  const router = useRouter();
-
   const [season, setSeason] = useState<seasonProps>();
   const [seasonNumber, setSeasonNumber] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -57,14 +55,6 @@ const EpisodeModal = ({ movieId, totalSeasons, englishName }: movieProps) => {
     seasonNumber: 1,
     name: "",
     video: "",
-  });
-
-  const iframeVideoRef = useRef<any>();
-  const optionSelectRef = useRef(() => {
-    const optionList = Array.from({ length: 3 }, (_, idx) => {
-      return { value: idx + 1, label: `Season ${idx + 1}` };
-    });
-    return optionList;
   });
 
   useEffect(() => {
@@ -102,11 +92,10 @@ const EpisodeModal = ({ movieId, totalSeasons, englishName }: movieProps) => {
           <Select
             defaultValue={1}
             onChange={(val: number) => setSeasonNumber(val)}
-            // options={optionSelectRef.current()}
             size="large"
           />
         ) : (
-          <h3 className="text-2xl">{season?.name}</h3>
+          <h3 className="text-2xl">{totalSeasons > 1 && season?.name}</h3>
         )}
       </div>
       <div className="mt-6">
