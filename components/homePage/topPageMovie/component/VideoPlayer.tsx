@@ -32,8 +32,8 @@ const VideoPlayer = ({ previewMovie }: VideoType) => {
 
   return (
     <div className="h-[50svh] sm:h-[70svh]">
-      <div className="hidden sm:block">
-        {screenWidth > 640 && (
+      <div className="hidden lg:block">
+        {screenWidth > 1024 && (
           <ReactPlayer
             url={previewMovie.trailer}
             loop
@@ -68,7 +68,7 @@ const VideoPlayer = ({ previewMovie }: VideoType) => {
         <div className="absolute bottom-0 h-10 w-full bg-gradient-to-b from-transparent to-black"></div>
       </div>
       {!isVideoOk && (
-        <div className="absolute left-0 top-0 h-[50svh] w-screen brightness-[0.5] sm:hidden">
+        <div className="absolute left-0 top-0 h-[50svh] w-screen brightness-[0.5] sm:h-[70svh] lg:hidden">
           <Image
             src={`${previewMovie.thumbnail}`}
             alt="Thumbnail"

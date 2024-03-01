@@ -3,17 +3,11 @@
 import dynamic from "next/dynamic";
 import { Rubik_Dirt } from "next/font/google";
 import { StarFilled, FireFilled, InfoCircleOutlined } from "@ant-design/icons";
-import { Tabs, Tooltip, Modal, message, List, Spin } from "antd";
+import { Tabs, Tooltip, Modal, message } from "antd";
 import { Actor } from "@/components/detailPage/actorList/Actor";
 import { useState } from "react";
-const EpisodeModal = dynamic(
-  () => import("@/components/detailPage/episodeModal/EpisodeModal"),
-  { ssr: false },
-);
-const WatchModal = dynamic(
-  () => import("@/components/detailPage/watchModal/WatchModal"),
-  { ssr: false },
-);
+import EpisodeModal from "@/components/detailPage/episodeModal/EpisodeModal";
+import WatchModal from "@/components/detailPage/watchModal/WatchModal";
 const RecommendedMovieList = dynamic(
   () => import("@/components/detailPage/RecommendedMovie"),
   {
@@ -31,7 +25,7 @@ import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
 const ReactPlayer = dynamic(() => import("react-player/youtube"), {
   ssr: false,
 });
-import { MovieDetailType, MovieType, SeasonMovieDetail } from "@/types";
+import { MovieDetailType, SeasonMovieDetail } from "@/types";
 import Image from "next/image";
 import { Typography } from "antd";
 import { Play } from "@/public/play";
@@ -56,7 +50,6 @@ export default function MainDetailPage(props: MainDetailPage) {
   const { movieDetail } = props;
 
   const dispatch = useDispatch();
-  const [isSkeleton, setIsSkeleton] = useState<boolean>(false);
   const [loadingMovie, setLoadingMovie] = useState<boolean>(false);
   const [isEpisodeModalOpen, setIsEpisodeModalOpen] = useState<boolean>(false);
   const [isWatchModalOpen, setIsWatchModalOpen] = useState<boolean>(false);
@@ -379,7 +372,6 @@ export default function MainDetailPage(props: MainDetailPage) {
           </div>
         </Modal>
       </div>
-      {isSkeleton && <Spin spinning={isSkeleton} size="large" fullscreen />}
     </div>
   );
 }

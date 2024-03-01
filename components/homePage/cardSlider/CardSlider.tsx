@@ -54,7 +54,7 @@ const CardSlider = ({ title, movieList, href, icon }: cardSliderProps) => {
             <div className="group flex cursor-pointer items-center justify-between md:justify-start">
               <div className="flex items-center">
                 {icon}
-                <h2 className="text-2xl font-bold hover:text-[#D1D0CF] max-[528px]:text-lg">
+                <h2 className="bg-opacity-50 bg-gradient-to-b from-neutral-50 to-neutral-500 bg-clip-text py-3 text-center text-lg font-bold text-transparent sm:text-2xl">
                   {title}
                 </h2>
               </div>
