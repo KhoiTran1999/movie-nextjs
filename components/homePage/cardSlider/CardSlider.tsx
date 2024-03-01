@@ -101,7 +101,7 @@ const CardSlider = ({ title, movieList, href, icon }: cardSliderProps) => {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            {isHover && screenWidth >= 640 && (
+            {isHover && screenWidth >= 1024 && (
               <>
                 <CarouselPrevious />
                 <CarouselNext />
