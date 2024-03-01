@@ -2,6 +2,7 @@ import TopPageMovie from "@/components/homePage/topPageMovie/TopPageMovie";
 import { CategoryType } from "@/types";
 import { unstable_noStore as noStore } from "next/cache";
 import { CardSlider } from "./CardSlider";
+import CardSliderNewMovie from "@/components/homePage/cardSlider/cardSliderFeature/CardSliderNewMovie";
 
 interface previewMovieProps {
   description: string;
@@ -26,6 +27,7 @@ export default async function Home() {
     <main>
       <TopPageMovie previewMovie={previewMovie} />
       <div className="absolute top-[40%] h-fit w-full px-3 pb-5 sm:top-[63%] sm:px-12">
+        <CardSliderNewMovie />
         <CardSlider />
       </div>
     </main>

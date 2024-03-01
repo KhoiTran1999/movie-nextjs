@@ -1,14 +1,9 @@
 import dynamic from "next/dynamic";
+
 const CardSliderCinemaMovie = dynamic(
   () =>
     import(
       "@/components/homePage/cardSlider/cardSliderFeature/CardSliderCinemaMovie"
-    ),
-);
-const CardSliderNewMovie = dynamic(
-  () =>
-    import(
-      "@/components/homePage/cardSlider/cardSliderFeature/CardSliderNewMovie"
     ),
 );
 const CardSliderStandalone = dynamic(
@@ -35,12 +30,10 @@ const CardSliderTop10Data = dynamic(
       "@/components/homePage/cardSlider/cardSliderTop10/CardSliderTop10Data"
     ),
 );
-import { Spin } from "antd";
 
 export const CardSlider = () => {
   return (
     <>
-      <CardSliderNewMovie />
       <CardSliderTop10Data />
       <CardSliderUpcomingMovie />
       <CardSliderStandalone />

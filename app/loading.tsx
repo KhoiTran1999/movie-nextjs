@@ -5,7 +5,9 @@ export default function Loading() {
   return (
     <div>
       <NavigationMovie />
-      <Spin spinning={true} size="large" fullscreen />
+      <div className="flex h-screen w-screen items-center justify-center">
+        <Spin spinning={true} size="large" />
+      </div>
     </div>
   );
 }

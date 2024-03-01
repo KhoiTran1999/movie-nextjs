@@ -12,13 +12,6 @@ const CardSliderStandalone = async () => {
   );
   const standaloneMovieList = await res.json();
 
-  setTimeout(async () => {
-    await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/Movies?sortBy=produceddate&page=1&eachPage=10`,
-      { cache: "no-cache" },
-    );
-  }, 10000);
-
   return (
     <CardSlider
       href="/feature?current=StandaloneFilm&featureId=2"
