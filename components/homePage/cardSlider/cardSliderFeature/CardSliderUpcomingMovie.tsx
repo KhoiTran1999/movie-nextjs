@@ -8,9 +8,16 @@ const CardSliderUpcomingMovie = async () => {
   noStore();
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/Movies?status=Upcoming&sortBy=produceddate&page=1&eachPage=10`,
-    { next: { revalidate: 900 } },
+    { cache: "no-cache" },
   );
   const UpcomingMovieList = await res.json();
+
+  setTimeout(async () => {
+    await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/Movies?sortBy=produceddate&page=1&eachPage=10`,
+      { cache: "no-cache" },
+    );
+  }, 10000);
 
   return (
     <CardSlider

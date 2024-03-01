@@ -14,9 +14,16 @@ const CardSliderTop10Data = async () => {
   noStore();
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/Analyst/GetViewerMovie`,
-    { next: { revalidate: 900 } },
+    { cache: "no-cache" },
   );
   const top10 = await res.json();
+
+  setTimeout(async () => {
+    await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/Movies?sortBy=produceddate&page=1&eachPage=10`,
+      { cache: "no-cache" },
+    );
+  }, 10000);
 
   return (
     <>

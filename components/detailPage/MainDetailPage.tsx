@@ -28,6 +28,7 @@ import { Plus } from "@/public/plus";
 import { Heart } from "@/public/heart";
 import { Copy } from "@/public/copy";
 import { LoadingIcon } from "@/public/loading";
+import { Suspense } from "react";
 
 const { Paragraph } = Typography;
 
@@ -322,31 +323,39 @@ export default function MainDetailPage(props: MainDetailPage) {
                   <h3 className="text-2xl font-bold text-red-700">
                     Recommended Movie
                   </h3>
-                  <List
-                    dataSource={recommendedMovie}
-                    grid={{
-                      xs: 3,
-                      sm: 3,
-                      md: 4,
-                      lg: 5,
-                      xl: 5,
-                      xxl: 5,
-                      gutter: 12,
-                    }}
-                    renderItem={(val: MovieType, idx: number) => (
-                      <div onClick={() => setIsSkeleton(true)}>
-                        <CardMovie
-                          englishName={val.englishName}
-                          vietnamName={val.vietnamName}
-                          movieId={val.movieId}
-                          thumbnail={val.thumbnail}
-                          time={val.time}
-                          totalEpisodes={val.totalEpisodes}
-                          totalSeasons={val.totalSeasons}
-                        />
+                  <Suspense
+                    fallback={
+                      <div className="flex h-full w-full items-center justify-center">
+                        <Spin spinning={true} size="large" />
                       </div>
-                    )}
-                  />
+                    }
+                  >
+                    <List
+                      dataSource={recommendedMovie}
+                      grid={{
+                        xs: 3,
+                        sm: 3,
+                        md: 4,
+                        lg: 5,
+                        xl: 5,
+                        xxl: 5,
+                        gutter: 12,
+                      }}
+                      renderItem={(val: MovieType, idx: number) => (
+                        <div onClick={() => setIsSkeleton(true)}>
+                          <CardMovie
+                            englishName={val.englishName}
+                            vietnamName={val.vietnamName}
+                            movieId={val.movieId}
+                            thumbnail={val.thumbnail}
+                            time={val.time}
+                            totalEpisodes={val.totalEpisodes}
+                            totalSeasons={val.totalSeasons}
+                          />
+                        </div>
+                      )}
+                    />
+                  </Suspense>
                 </>
               ) : (
                 <></>

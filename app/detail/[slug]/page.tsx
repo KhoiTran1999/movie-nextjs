@@ -1,5 +1,4 @@
 import MainDetailPage from "@/components/detailPage/MainDetailPage";
-import { SuspenseComp } from "@/components/wrapper/SuspenseComp";
 import { MovieDetailType, MovieType } from "@/types";
 import type { Metadata, ResolvingMetadata } from "next";
 
@@ -60,12 +59,10 @@ export default async function Detail(props: any) {
   }
 
   return (
-    <SuspenseComp>
-      <MainDetailPage
-        movieDetail={movieDetail}
-        initialRecommendedMovie={initialRecommendedMovie}
-        totalItems={totalItems}
-      />
-    </SuspenseComp>
+    <MainDetailPage
+      movieDetail={movieDetail}
+      initialRecommendedMovie={initialRecommendedMovie}
+      totalItems={totalItems}
+    />
   );
 }

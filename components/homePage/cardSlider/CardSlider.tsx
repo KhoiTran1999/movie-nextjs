@@ -35,8 +35,6 @@ const CardSlider = ({ title, movieList, href, icon }: cardSliderProps) => {
   const [isHover, setIsHover] = useState<boolean>(false);
   const [screenWidth, setScreenWidth] = useState<number>(0);
 
-  // const isInView = useInView(sliderRef, { once: true, margin: "100px" });
-
   useEffect(() => {
     setScreenWidth(screen.width);
   }, []);
