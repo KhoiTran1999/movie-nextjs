@@ -43,7 +43,6 @@ export default async function Detail(props: any) {
   }
 
   let initialRecommendedMovie: MovieType[] = [];
-  let totalItems: number = 0;
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/Movies?filterBy=recommend&key=${movieDetail.movieId}&page=1&eachPage=10`,
@@ -51,7 +50,6 @@ export default async function Detail(props: any) {
         next: { revalidate: 900 },
       },
     );
-    totalItems = Number(res.headers.get("x-total-element"));
     initialRecommendedMovie = await res.json();
   } catch (error) {
     console.log(error);
@@ -62,7 +60,6 @@ export default async function Detail(props: any) {
     <MainDetailPage
       movieDetail={movieDetail}
       initialRecommendedMovie={initialRecommendedMovie}
-      totalItems={totalItems}
     />
   );
 }
