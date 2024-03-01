@@ -67,18 +67,20 @@ const VideoPlayer = ({ previewMovie }: VideoType) => {
         )}
         <div className="absolute bottom-0 h-10 w-full bg-gradient-to-b from-transparent to-black"></div>
       </div>
-      <div className="absolute left-0 top-0 h-[50svh] w-screen brightness-[0.5] sm:hidden">
-        <Image
-          src={`${previewMovie.thumbnail}`}
-          alt="Thumbnail"
-          fill
-          priority
-          className="rounded object-cover"
-          quality={100}
-          sizes="(min-width: 1024px) 100vw , (min-width: 625px) 30vw, 40vw"
-        />
-        <div className="absolute bottom-0 h-10 w-full bg-gradient-to-b from-transparent to-black"></div>
-      </div>
+      {!isVideoOk && (
+        <div className="absolute left-0 top-0 h-[50svh] w-screen brightness-[0.5] sm:hidden">
+          <Image
+            src={`${previewMovie.thumbnail}`}
+            alt="Thumbnail"
+            fill
+            priority
+            className="rounded object-cover"
+            quality={100}
+            sizes="(min-width: 1024px) 100vw , (min-width: 625px) 30vw, 40vw"
+          />
+          <div className="absolute bottom-0 h-10 w-full bg-gradient-to-b from-transparent to-black"></div>
+        </div>
+      )}
     </div>
   );
 };

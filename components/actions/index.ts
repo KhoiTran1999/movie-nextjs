@@ -52,13 +52,10 @@ export const revalidateTagAction = async (tag: string) => {
   revalidateTag(tag);
 };
 
-export const getRecommendedMovieListAction = async (
-  movieId: string,
-  page?: number,
-) => {
+export const getRecommendedMovieListAction = async (movieId: string) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/Movies?filterBy=recommend&key=${movieId}&page=${page}&eachPage=10`,
+      `${process.env.NEXT_PUBLIC_API_URL}/Movies?filterBy=recommend&key=${movieId}&page=1&eachPage=10`,
       {
         next: { revalidate: 900 },
       },

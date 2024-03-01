@@ -5,7 +5,7 @@ import { Rubik_Dirt } from "next/font/google";
 import { StarFilled, FireFilled, InfoCircleOutlined } from "@ant-design/icons";
 import { Tabs, Tooltip, Modal, message, List, Spin } from "antd";
 import { Actor } from "@/components/detailPage/actorList/Actor";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 const EpisodeModal = dynamic(
   () => import("@/components/detailPage/episodeModal/EpisodeModal"),
   { ssr: false },
@@ -14,13 +14,24 @@ const WatchModal = dynamic(
   () => import("@/components/detailPage/watchModal/WatchModal"),
   { ssr: false },
 );
+const RecommendedMovieList = dynamic(
+  () => import("@/components/detailPage/RecommendedMovie"),
+  {
+    loading: () => (
+      <div className="flex items-center">
+        <div className="mr-3 h-[200px] w-[150px] animate-pulse rounded-md bg-[#ffffff3f]"></div>
+        <div className="mr-3 h-[200px] w-[150px] animate-pulse rounded-md bg-[#ffffff3f]"></div>
+        <div className="h-[200px] w-[150px] animate-pulse rounded-md bg-[#ffffff3f]"></div>
+      </div>
+    ),
+  },
+);
 import { useDispatch } from "react-redux";
 import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
 const ReactPlayer = dynamic(() => import("react-player/youtube"), {
   ssr: false,
 });
 import { MovieDetailType, MovieType, SeasonMovieDetail } from "@/types";
-import CardMovie from "../homePage/cardSlider/CardMovie";
 import Image from "next/image";
 import { Typography } from "antd";
 import { Play } from "@/public/play";
@@ -28,7 +39,6 @@ import { Plus } from "@/public/plus";
 import { Heart } from "@/public/heart";
 import { Copy } from "@/public/copy";
 import { LoadingIcon } from "@/public/loading";
-import { Suspense } from "react";
 
 const { Paragraph } = Typography;
 
@@ -40,18 +50,12 @@ const rubik = Rubik_Dirt({
 
 interface MainDetailPage {
   movieDetail: MovieDetailType;
-  initialRecommendedMovie: MovieType[];
-  totalItems: number;
 }
 
 export default function MainDetailPage(props: MainDetailPage) {
-  const { movieDetail, initialRecommendedMovie } = props;
+  const { movieDetail } = props;
 
   const dispatch = useDispatch();
-
-  const [recommendedMovie, setRecommendedMovie] = useState<MovieType[]>(
-    initialRecommendedMovie,
-  );
   const [isSkeleton, setIsSkeleton] = useState<boolean>(false);
   const [loadingMovie, setLoadingMovie] = useState<boolean>(false);
   const [isEpisodeModalOpen, setIsEpisodeModalOpen] = useState<boolean>(false);
@@ -72,11 +76,6 @@ export default function MainDetailPage(props: MainDetailPage) {
       },
     ],
   });
-
-  useEffect(() => {
-    setRecommendedMovie(initialRecommendedMovie);
-    setIsSkeleton(false);
-  }, [initialRecommendedMovie]);
 
   const showModal = async () => {
     setLoadingMovie(true);
@@ -318,48 +317,10 @@ export default function MainDetailPage(props: MainDetailPage) {
               </div>
             </div>
             <div className="mt-8">
-              {recommendedMovie?.length ? (
-                <>
-                  <h3 className="text-2xl font-bold text-red-700">
-                    Recommended Movie
-                  </h3>
-                  <Suspense
-                    fallback={
-                      <div className="flex h-full w-full items-center justify-center">
-                        <Spin spinning={true} size="large" />
-                      </div>
-                    }
-                  >
-                    <List
-                      dataSource={recommendedMovie}
-                      grid={{
-                        xs: 3,
-                        sm: 3,
-                        md: 4,
-                        lg: 5,
-                        xl: 5,
-                        xxl: 5,
-                        gutter: 12,
-                      }}
-                      renderItem={(val: MovieType, idx: number) => (
-                        <div onClick={() => setIsSkeleton(true)}>
-                          <CardMovie
-                            englishName={val.englishName}
-                            vietnamName={val.vietnamName}
-                            movieId={val.movieId}
-                            thumbnail={val.thumbnail}
-                            time={val.time}
-                            totalEpisodes={val.totalEpisodes}
-                            totalSeasons={val.totalSeasons}
-                          />
-                        </div>
-                      )}
-                    />
-                  </Suspense>
-                </>
-              ) : (
-                <></>
-              )}
+              <h3 className="text-2xl font-bold text-red-700">
+                Recommended Movie
+              </h3>
+              <RecommendedMovieList movieDetail={movieDetail} />
             </div>
           </div>
         </div>
