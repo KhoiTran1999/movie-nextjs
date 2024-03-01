@@ -150,12 +150,6 @@ const InformationForm = ({
 
   const [messageApi, contextHolder] = message.useMessage();
 
-  //Turn of the day of the future when choose Produced Date
-  const disabledDate = (current: any) => {
-    // Disable dates before today
-    return current && current > moment().endOf("day");
-  };
-
   //Call Api Feature, Category-----------------------
   useEffect(() => {
     const fetchApi = async () => {
@@ -483,7 +477,6 @@ const InformationForm = ({
           <DatePicker
             format={"YYYY/MM/DD"}
             placeholder="Pick a date"
-            disabledDate={disabledDate}
             className="inputCustom"
             disabled={isLoadingNextButton || isLoadingAIButton}
           />
