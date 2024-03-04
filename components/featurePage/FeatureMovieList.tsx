@@ -64,7 +64,7 @@ const FeatureMovieList = (props: FeatureMovieList) => {
 
   const loadMoreMovies = async () => {
     const next = pageNumber + 1;
-    let data: MovieType[];
+    let data: MovieType[] = [];
     if (featureId) {
       data = await getLoadMoreFeatureMovieListAction(featureId, next);
     } else {

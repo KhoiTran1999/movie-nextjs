@@ -1,12 +1,6 @@
 "use server";
 
-import dynamic from "next/dynamic";
-const CardSliderTop10 = dynamic(
-  () => import("../cardSliderTop10/CardSliderTop10"),
-  {
-    loading: () => <p>Loading...</p>,
-  },
-);
+import CardSliderTop10 from "../cardSliderTop10/CardSliderTop10";
 import { unstable_noStore as noStore } from "next/cache";
 import { Top } from "@/public/top";
 
@@ -16,7 +10,15 @@ const CardSliderTop10Data = async () => {
     `${process.env.NEXT_PUBLIC_API_URL}/Analyst/GetViewerMovie`,
     { next: { revalidate: 900 } },
   );
-  const top10 = await res.json();
+  let top10 = await res.json();
+
+  if (top10.length < 3) {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/Movies?filterBy=feature&key=3&sortBy=produceddate&page=1&eachPage=10`,
+      { next: { revalidate: 900 } },
+    );
+    top10 = await res.json();
+  }
 
   return (
     <>

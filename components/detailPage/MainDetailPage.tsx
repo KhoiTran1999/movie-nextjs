@@ -6,14 +6,8 @@ import { StarFilled, FireFilled, InfoCircleOutlined } from "@ant-design/icons";
 import { Tabs, Tooltip, Modal, message, List, Spin } from "antd";
 import { Actor } from "@/components/detailPage/actorList/Actor";
 import { useEffect, useState } from "react";
-const EpisodeModal = dynamic(
-  () => import("@/components/detailPage/episodeModal/EpisodeModal"),
-  { ssr: false },
-);
-const WatchModal = dynamic(
-  () => import("@/components/detailPage/watchModal/WatchModal"),
-  { ssr: false },
-);
+import EpisodeModal from "@/components/detailPage/episodeModal/EpisodeModal";
+import WatchModal from "@/components/detailPage/watchModal/WatchModal";
 import { useDispatch } from "react-redux";
 import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
 const ReactPlayer = dynamic(() => import("react-player/youtube"), {
@@ -28,7 +22,6 @@ import { Plus } from "@/public/plus";
 import { Heart } from "@/public/heart";
 import { Copy } from "@/public/copy";
 import { LoadingIcon } from "@/public/loading";
-import { Suspense } from "react";
 
 const { Paragraph } = Typography;
 

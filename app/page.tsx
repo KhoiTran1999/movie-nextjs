@@ -1,8 +1,12 @@
 import TopPageMovie from "@/components/homePage/topPageMovie/TopPageMovie";
 import { CategoryType } from "@/types";
 import { unstable_noStore as noStore } from "next/cache";
-import { CardSlider } from "./CardSlider";
+import CardSliderCinemaMovie from "@/components/homePage/cardSlider/cardSliderFeature/CardSliderCinemaMovie";
 import CardSliderNewMovie from "@/components/homePage/cardSlider/cardSliderFeature/CardSliderNewMovie";
+import CardSliderStandalone from "@/components/homePage/cardSlider/cardSliderFeature/CardSliderStandalone";
+import CardSliderTVSeriesMovie from "@/components/homePage/cardSlider/cardSliderFeature/CardSliderTVSeriesMovie";
+import CardSliderUpcomingMovie from "@/components/homePage/cardSlider/cardSliderFeature/CardSliderUpcomingMovie";
+import CardSliderTop10Data from "@/components/homePage/cardSlider/cardSliderTop10/CardSliderTop10Data";
 
 interface previewMovieProps {
   description: string;
@@ -28,7 +32,11 @@ export default async function Home() {
       <TopPageMovie previewMovie={previewMovie} />
       <div className="absolute top-[40%] h-fit w-full px-3 pb-5 sm:top-[63%] sm:px-12">
         <CardSliderNewMovie />
-        <CardSlider />
+        <CardSliderTop10Data />
+        <CardSliderUpcomingMovie />
+        <CardSliderStandalone />
+        <CardSliderCinemaMovie />
+        <CardSliderTVSeriesMovie />
       </div>
     </main>
   );
