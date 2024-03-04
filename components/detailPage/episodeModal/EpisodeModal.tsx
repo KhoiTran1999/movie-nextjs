@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Select, Spin, Modal } from "antd";
 import { CaretRightFilled } from "@ant-design/icons";
 import { Rubik_Dirt } from "next/font/google";
+import { getSeasonListAction } from "@/components/actions";
 const WatchModal = dynamic(() => import("../watchModal/WatchModal"), {
   ssr: false,
 });
@@ -59,10 +60,7 @@ const EpisodeModal = ({ movieId, totalSeasons, englishName }: movieProps) => {
   useEffect(() => {
     const fetchAPI = async () => {
       setIsLoading(true);
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/Seasons?movieId=${movieId}&seasonNumber=${seasonNumber}`,
-      );
-      const data = await res.json();
+      const data = await getSeasonListAction(movieId, seasonNumber, true);
 
       setSeason(data[0]);
       setIsLoading(false);

@@ -22,6 +22,7 @@ import { Plus } from "@/public/plus";
 import { Heart } from "@/public/heart";
 import { Copy } from "@/public/copy";
 import { LoadingIcon } from "@/public/loading";
+import { getSeasonListAction } from "../actions";
 
 const { Paragraph } = Typography;
 
@@ -79,10 +80,7 @@ export default function MainDetailPage(props: MainDetailPage) {
     }
 
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/Seasons?movieId=${movieDetail.movieId}&seasonNumber=1`,
-      );
-      const data = await res.json();
+      const data = await getSeasonListAction(movieDetail.movieId, 1, true);
       if (!data || data.length === 0) {
         setLoadingMovie(false);
         message.error("Movie is not ready!");

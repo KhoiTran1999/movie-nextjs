@@ -32,8 +32,17 @@ export const restoreMovieAction = async (movieId: string): Promise<boolean> => {
 export const getSeasonListAction = async (
   movieId: string,
   seasonNumber?: number,
+  isRevalidate?: boolean,
 ) => {
   try {
+    if (isRevalidate) {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/Seasons?movieId=${movieId}${seasonNumber ? `&seasonNumber=${seasonNumber}` : ""}`,
+        { next: { revalidate: 900 } },
+      );
+      return await res.json();
+    }
+
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/Seasons?movieId=${movieId}${seasonNumber ? `&seasonNumber=${seasonNumber}` : ""}`,
       { cache: "no-cache" },
