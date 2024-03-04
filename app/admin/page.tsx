@@ -1,6 +1,5 @@
 import Dashboard from "@/components/adminPage/content/Dashboard/Dashboard";
 import { CategoryType, StatisticType } from "@/types";
-import { unstable_noStore as noStore } from "next/cache";
 
 interface featureType {
   CinemaFilm: string;
@@ -9,7 +8,6 @@ interface featureType {
 }
 
 export default async function page() {
-  noStore();
   let statisticsData: StatisticType;
   try {
     const res = await fetch(

@@ -2,10 +2,8 @@ import { revalidatePath } from "next/cache";
 import Trash from "../../../components/adminPage/content/Trash/Trash";
 import { CategoryType, MovieAntdTableType, MovieType } from "@/types";
 import { SuspenseComp } from "@/components/wrapper/SuspenseComp";
-import { unstable_noStore as noStore } from "next/cache";
 
 export default async function page(props: any) {
-  noStore();
   const LIMIT = 5;
   const page = props?.searchParams?.page ?? 1;
 

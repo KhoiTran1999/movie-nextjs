@@ -1,6 +1,5 @@
 import TopPageMovie from "@/components/homePage/topPageMovie/TopPageMovie";
 import { CategoryType } from "@/types";
-import { unstable_noStore as noStore } from "next/cache";
 import CardSliderCinemaMovie from "@/components/homePage/cardSlider/cardSliderFeature/CardSliderCinemaMovie";
 import CardSliderNewMovie from "@/components/homePage/cardSlider/cardSliderFeature/CardSliderNewMovie";
 import CardSliderStandalone from "@/components/homePage/cardSlider/cardSliderFeature/CardSliderStandalone";
@@ -20,7 +19,6 @@ interface previewMovieProps {
 }
 
 export default async function Home() {
-  noStore();
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/Movies/Newest`, {
     next: { revalidate: 900 },
   });
@@ -30,7 +28,7 @@ export default async function Home() {
   return (
     <main>
       <TopPageMovie previewMovie={previewMovie} />
-      <div className="animate-opacityAnimated absolute top-[40%] h-fit w-full px-3 pb-5 sm:top-[63%] sm:px-12">
+      <div className="absolute top-[40%] h-fit w-full animate-opacityAnimated px-3 pb-5 sm:top-[63%] sm:px-12">
         <CardSliderNewMovie />
         <CardSliderTop10Data />
         <CardSliderUpcomingMovie />
