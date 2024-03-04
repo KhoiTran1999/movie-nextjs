@@ -101,7 +101,7 @@ const EpisodeModal = ({ movieId, totalSeasons, englishName }: movieProps) => {
             <Spin />
           </div>
         ) : (
-          <ul className="max-h-[70svh] overflow-y-auto px-3">
+          <ul className="animate-opacityAnimated max-h-[70svh] overflow-y-auto px-3">
             {season?.episodes.map((val: episodeProps, idx) => (
               <li
                 key={idx}
