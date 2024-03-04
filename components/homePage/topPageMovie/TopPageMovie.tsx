@@ -40,7 +40,7 @@ const TopPageMovie = async ({ previewMovie }: TopPageMovieProps) => {
     );
   }, []);
   return (
-    <div className="relative overflow-hidden text-white">
+    <div className="animate-opacityAnimated relative overflow-hidden text-white">
       <>
         <VideoPlayer previewMovie={previewMovie} />
         <div className="z-9 absolute top-1/2 z-0 mt-6 flex h-[100%] w-[100%] translate-y-[-50%] flex-col items-center justify-center px-12 text-[#D1D0CF] md:mt-0 md:items-start">

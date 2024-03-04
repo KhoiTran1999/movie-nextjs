@@ -51,7 +51,7 @@ const SearchMovie = () => {
   };
 
   return (
-    <div className="m-auto mt-20 w-full max-w-[1200px] ">
+    <div className="animate-opacityAnimated m-auto mt-20 w-full max-w-[1200px]">
       <div className="flex justify-center">
         <AutoComplete
           style={{ width: 200 }}

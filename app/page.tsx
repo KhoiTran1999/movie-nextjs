@@ -30,7 +30,7 @@ export default async function Home() {
   return (
     <main>
       <TopPageMovie previewMovie={previewMovie} />
-      <div className="absolute top-[40%] h-fit w-full px-3 pb-5 sm:top-[63%] sm:px-12">
+      <div className="animate-opacityAnimated absolute top-[40%] h-fit w-full px-3 pb-5 sm:top-[63%] sm:px-12">
         <CardSliderNewMovie />
         <CardSliderTop10Data />
         <CardSliderUpcomingMovie />

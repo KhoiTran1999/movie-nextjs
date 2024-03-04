@@ -86,7 +86,7 @@ const FeatureMovieList = (props: FeatureMovieList) => {
 
   return (
     <>
-      <div className="mt-14 px-4">
+      <div className="animate-opacityAnimated mt-14 px-4">
         <Tile title={current} />
 
         {recommendedMovie?.length ? (

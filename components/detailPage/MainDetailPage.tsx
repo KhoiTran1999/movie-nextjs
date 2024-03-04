@@ -129,7 +129,7 @@ export default function MainDetailPage(props: MainDetailPage) {
   };
 
   return (
-    <div>
+    <div className="animate-opacityAnimated">
       <div>
         <div className="absolute h-screen w-screen brightness-[0.3] ">
           <Image

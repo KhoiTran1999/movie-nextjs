@@ -41,7 +41,7 @@ const CardMovieTop10 = (props: movieProps) => {
   return (
     <Link
       href={`/detail/${slug}.html?id=${movieId}`}
-      className="group/card flex p-3"
+      className="group/card animate-opacityAnimated flex p-3"
     >
       <div className="mr-[-7px] w-[50%] sm:mr-[-10px]">
         <div className="relative aspect-[60/100] w-full">

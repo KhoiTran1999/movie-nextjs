@@ -37,7 +37,10 @@ const CardMovie = (props: movieProps) => {
   }, []);
 
   return (
-    <Link href={`/detail/${slug}.html?id=${movieId}`} className="group/card">
+    <Link
+      href={`/detail/${slug}.html?id=${movieId}`}
+      className="group/card animate-opacityAnimated"
+    >
       <div
         className={`relative m-3 flex cursor-pointer flex-col items-center justify-center overflow-hidden rounded-md`}
       >
