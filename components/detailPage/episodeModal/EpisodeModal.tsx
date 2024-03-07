@@ -1,14 +1,11 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { Select, Spin, Modal } from "antd";
 import { CaretRightFilled } from "@ant-design/icons";
 import { Rubik_Dirt } from "next/font/google";
 import { getSeasonListAction } from "@/components/actions";
-const WatchModal = dynamic(() => import("../watchModal/WatchModal"), {
-  ssr: false,
-});
+import WatchModal from "../watchModal/WatchModal";
 
 const rubik = Rubik_Dirt({
   subsets: ["latin"],
@@ -101,7 +98,7 @@ const EpisodeModal = ({ movieId, totalSeasons, englishName }: movieProps) => {
             <Spin />
           </div>
         ) : (
-          <ul className="animate-opacityAnimated max-h-[70svh] overflow-y-auto px-3">
+          <ul className="max-h-[70svh] animate-opacityAnimated overflow-y-auto px-3">
             {season?.episodes.map((val: episodeProps, idx) => (
               <li
                 key={idx}

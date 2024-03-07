@@ -1,18 +1,16 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { Rubik_Dirt } from "next/font/google";
 import { StarFilled, FireFilled, InfoCircleOutlined } from "@ant-design/icons";
 import { Tabs, Tooltip, Modal, message, List, Spin } from "antd";
 import { Actor } from "@/components/detailPage/actorList/Actor";
 import { useEffect, useState } from "react";
+import { Suspense } from "react";
 import EpisodeModal from "@/components/detailPage/episodeModal/EpisodeModal";
 import WatchModal from "@/components/detailPage/watchModal/WatchModal";
 import { useDispatch } from "react-redux";
 import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
-const ReactPlayer = dynamic(() => import("react-player/youtube"), {
-  ssr: false,
-});
+import ReactPlayer from "react-player/youtube";
 import { MovieDetailType, MovieType, SeasonMovieDetail } from "@/types";
 import CardMovie from "../homePage/cardSlider/CardMovie";
 import Image from "next/image";
@@ -384,16 +382,18 @@ export default function MainDetailPage(props: MainDetailPage) {
           destroyOnClose={!isTrailerModalOpen}
         >
           <div className="h-[30svh] sm:h-[70svh]">
-            <ReactPlayer
-              url={movieDetail.trailer}
-              playing
-              controls
-              loop
-              width={"100%"}
-              height={"100%"}
-              style={{ backgroundColor: "black" }}
-              id="iframeTrailerVideo"
-            />
+            <Suspense fallback={<p>Loading video...</p>}>
+              <ReactPlayer
+                url={movieDetail.trailer}
+                playing
+                controls
+                loop
+                width={"100%"}
+                height={"100%"}
+                style={{ backgroundColor: "black" }}
+                id="iframeTrailerVideo"
+              />
+            </Suspense>
           </div>
         </Modal>
       </div>

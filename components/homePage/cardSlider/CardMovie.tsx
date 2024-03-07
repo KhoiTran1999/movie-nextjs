@@ -38,7 +38,7 @@ const CardMovie = (props: movieProps) => {
 
   return (
     <Link
-      href={`/detail/${slug}.html?id=${movieId}`}
+      href={`/detail/${slug}.html/${movieId}`}
       className="group/card animate-opacityAnimated"
     >
       <div

@@ -6,7 +6,7 @@ export async function generateMetadata(
   props: any,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const movieId = props?.searchParams?.id ?? "";
+  const movieId = props.params.slug[1];
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/Movie/${movieId}`,
@@ -26,7 +26,7 @@ export async function generateMetadata(
 }
 
 export default async function Detail(props: any) {
-  const movieId = props?.searchParams?.id ?? "";
+  const movieId = props.params.slug[1];
 
   let movieDetail: MovieDetailType;
   try {

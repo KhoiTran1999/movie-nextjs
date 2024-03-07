@@ -1,11 +1,8 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-const ReactPlayer = dynamic(() => import("react-player/youtube"), {
-  ssr: false,
-});
+import { Suspense, useEffect, useState } from "react";
+import ReactPlayer from "react-player/youtube";
 
 interface previewMovieProps {
   description: string;
@@ -34,22 +31,24 @@ const VideoPlayer = ({ previewMovie }: VideoType) => {
     <div className="h-[50svh] sm:h-[70svh]">
       <div className="hidden lg:block">
         {screenWidth > 1024 && (
-          <ReactPlayer
-            url={previewMovie.trailer}
-            loop
-            muted
-            playing
-            width={"100svw"}
-            height={"80svh"}
-            style={{
-              backgroundSize: "contain",
-              backgroundPosition: "center center",
-              filter: "brightness(.7)",
-              scale: 1.45,
-              backgroundColor: "black",
-            }}
-            onReady={() => setIsVideoOk(true)}
-          />
+          <Suspense fallback={<p>Loading video...</p>}>
+            <ReactPlayer
+              url={previewMovie.trailer}
+              loop
+              muted
+              playing
+              width={"100svw"}
+              height={"80svh"}
+              style={{
+                backgroundSize: "contain",
+                backgroundPosition: "center center",
+                filter: "brightness(.7)",
+                scale: 1.45,
+                backgroundColor: "black",
+              }}
+              onReady={() => setIsVideoOk(true)}
+            />
+          </Suspense>
         )}
         {!isVideoOk && (
           <div className="absolute left-0 top-0 hidden h-[100svh] w-screen brightness-[0.5] sm:block">
