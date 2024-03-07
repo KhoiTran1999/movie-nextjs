@@ -15,7 +15,7 @@ export default function Page() {
           sizes="(min-width: 1024px) 100vw , (min-width: 625px) 30vw, 40vw"
         />
       </div>
-      <div className="relative flex h-screen w-screen flex-col items-center justify-center">
+      <div className="relative flex h-[100svh] w-[100svw] flex-col items-center justify-center">
         <SignIn />
         <p className="mt-3 break-words rounded-md bg-[#ffffffdc] p-2 text-sm font-extrabold text-[black]">
           You're gonna have a fantastic Watching Experience when Login with
