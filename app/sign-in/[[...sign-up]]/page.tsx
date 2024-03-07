@@ -4,7 +4,7 @@ import Image from "next/image";
 export default function Page() {
   return (
     <div className="relative">
-      <div className="absolute left-0 top-0 h-full w-full">
+      <div className="absolute left-0 top-0 h-full w-full brightness-[0.3]">
         <Image
           src={"/login-background.jpg"}
           alt="Thumbnail"
@@ -12,7 +12,7 @@ export default function Page() {
           priority
           className="rounded object-cover"
           quality={100}
-          sizes="(min-width: 1024px) 100vw , (min-width: 625px) 30vw, 40vw"
+          sizes="100vw"
         />
       </div>
       <div className="relative flex h-[100svh] w-[100svw] flex-col items-center justify-center">
