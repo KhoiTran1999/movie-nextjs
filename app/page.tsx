@@ -20,7 +20,7 @@ interface previewMovieProps {
 
 export default async function Home() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/Movies/Newest`, {
-    next: { revalidate: 900 },
+    next: { revalidate: 86400 },
   });
 
   const previewMovie: previewMovieProps = await res.json();

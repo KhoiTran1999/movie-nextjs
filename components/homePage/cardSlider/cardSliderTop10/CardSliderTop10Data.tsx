@@ -7,14 +7,14 @@ import { Top } from "@/public/top";
 const CardSliderTop10Data = async () => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/Analyst/GetViewerMovie`,
-    { next: { revalidate: 900 } },
+    { next: { revalidate: 259200 } },
   );
   let top10 = await res.json();
 
   if (top10.length < 3) {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/Movies?filterBy=feature&key=3&sortBy=produceddate&page=1&eachPage=10`,
-      { next: { revalidate: 900 } },
+      { next: { revalidate: 259200 } },
     );
     top10 = await res.json();
   }

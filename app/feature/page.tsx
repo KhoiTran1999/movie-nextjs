@@ -13,7 +13,7 @@ export default async function Feature(props: any) {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/Movies?sortBy=produceddate&page=1&eachPage=10`,
         {
-          next: { revalidate: 900 },
+          next: { revalidate: 259200 },
         },
       );
 
@@ -28,7 +28,7 @@ export default async function Feature(props: any) {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/Movies?status=Upcoming&sortBy=produceddate&page=1&eachPage=10`,
         {
-          next: { revalidate: 900 },
+          next: { revalidate: 259200 },
         },
       );
 
@@ -43,7 +43,7 @@ export default async function Feature(props: any) {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/Movies?filterBy=feature&key=${featureId}&status=All&sortBy=produceddate&page=1&eachPage=10`,
         {
-          next: { revalidate: 900 },
+          next: { revalidate: 259200 },
         },
       );
 

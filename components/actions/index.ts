@@ -38,7 +38,7 @@ export const getSeasonListAction = async (
     if (isRevalidate) {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/Seasons?movieId=${movieId}${seasonNumber ? `&seasonNumber=${seasonNumber}` : ""}`,
-        { next: { revalidate: 900 } },
+        { next: { revalidate: 259200 } },
       );
       return await res.json();
     }
@@ -66,7 +66,7 @@ export const getRecommendedMovieListAction = async (movieId: string) => {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/Movies?filterBy=recommend&key=${movieId}&page=1&eachPage=10`,
       {
-        next: { revalidate: 900 },
+        next: { revalidate: 259200 },
       },
     );
     const data = await res.json();
@@ -82,7 +82,7 @@ export const getLoadMoreNewMovieListAction = async (next: number) => {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/Movies?sortBy=produceddate&page=${next}&eachPage=10`,
       {
-        next: { revalidate: 900 },
+        next: { revalidate: 259200 },
       },
     );
     const data = await res.json();
@@ -101,7 +101,7 @@ export const getLoadMoreFeatureMovieListAction = async (
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/Movies?filterBy=feature&key=${featureId}&status=All&sortBy=produceddate&page=${next}&eachPage=10`,
       {
-        next: { revalidate: 900 },
+        next: { revalidate: 259200 },
       },
     );
     const data = await res.json();
@@ -117,7 +117,7 @@ export const getSearchMovieListAction = async (text: string, next?: number) => {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}Movies?key=${encodeURIComponent(text)}&page=${next ? next : 1}&eachPage=10`,
       {
-        next: { revalidate: 900 },
+        next: { revalidate: 259200 },
       },
     );
 

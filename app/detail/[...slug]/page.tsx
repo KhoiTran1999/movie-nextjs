@@ -33,7 +33,7 @@ export default async function Detail(props: any) {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/Movie/${movieId}`,
       {
-        next: { revalidate: 900 },
+        next: { revalidate: 259200 },
       },
     );
     movieDetail = await res.json();
@@ -47,7 +47,7 @@ export default async function Detail(props: any) {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/Movies?filterBy=recommend&key=${movieDetail.movieId}&page=1&eachPage=10`,
       {
-        next: { revalidate: 900 },
+        next: { revalidate: 259200 },
       },
     );
     initialRecommendedMovie = await res.json();

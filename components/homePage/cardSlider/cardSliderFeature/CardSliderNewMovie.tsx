@@ -7,7 +7,7 @@ import { Stars } from "@/public/stars";
 const CardSliderNewMovie = async () => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/Movies?sortBy=produceddate&page=1&eachPage=10`,
-    { next: { revalidate: 900 } },
+    { next: { revalidate: 259200 } },
   );
   const newMovieList = await res.json();
 
