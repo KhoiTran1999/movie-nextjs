@@ -18,6 +18,7 @@ interface FeatureMovieList {
   initialRecommendedMovie: MovieType[];
   totalItems: number;
   current: string;
+  featureId: string;
 }
 
 interface TileType {
@@ -31,15 +32,11 @@ export const Tile = ({ title }: TileType) => (
 );
 
 const FeatureMovieList = (props: FeatureMovieList) => {
-  const { initialRecommendedMovie, totalItems, current } = props;
-
-  const searchParams = useSearchParams();
+  const { initialRecommendedMovie, totalItems, current, featureId } = props;
 
   const dispatch = useDispatch();
 
   const isLoadingFeature = useSelector(isLoadingFeatureSelector);
-
-  const featureId = searchParams.get("featureId");
 
   const [ref, inView] = useInView();
 
@@ -86,7 +83,7 @@ const FeatureMovieList = (props: FeatureMovieList) => {
 
   return (
     <>
-      <div className="animate-opacityAnimated mt-14 px-4">
+      <div className="mt-14 animate-opacityAnimated px-4">
         <Tile title={current} />
 
         {recommendedMovie?.length ? (

@@ -1,5 +1,4 @@
 import FeatureMovieList from "@/components/featurePage/FeatureMovieList";
-import { SuspenseComp } from "@/components/wrapper/SuspenseComp";
 import { MovieType } from "@/types";
 
 export default async function Feature(props: any) {
@@ -58,13 +57,12 @@ export default async function Feature(props: any) {
 
   return (
     <div>
-      <SuspenseComp>
-        <FeatureMovieList
-          initialRecommendedMovie={movieList}
-          totalItems={totalItems}
-          current={current}
-        />
-      </SuspenseComp>
+      <FeatureMovieList
+        initialRecommendedMovie={movieList}
+        totalItems={totalItems}
+        current={current}
+        featureId={featureId}
+      />
     </div>
   );
 }
