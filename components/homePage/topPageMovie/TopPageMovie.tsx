@@ -84,7 +84,7 @@ const TopPageMovie = async ({ previewMovie }: TopPageMovieProps) => {
               )}
             </ul>
             <div className="order-4 mt-0 flex md:order-5 md:mt-4">
-              <Link href={`/detail/${slug}.html?id=${previewMovie?.movieId}`}>
+              <Link href={`/detail/${slug}.html/${previewMovie?.movieId}`}>
                 <button className="rounded-md bg-[#b2afaf94] px-3 py-2 text-xs text-white transition-colors hover:bg-[#adaaaa64] md:w-32 md:text-base">
                   <InfoCircleOutlined className="mr-3" />
                   Details
