@@ -3,6 +3,7 @@ import { Nunito } from "next/font/google";
 import "./globals.css";
 import StyledComponentsRegistry from "@/lib/antd.registry";
 import GlobalWrapper from "@/components/wrapper/GlobalWrapper";
+import { ClerkProvider } from "@clerk/nextjs";
 
 const nunito = Nunito({ subsets: ["latin"] });
 
@@ -17,12 +18,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="select-none">
-      <body className={nunito.className}>
-        <StyledComponentsRegistry>
-          <GlobalWrapper>{children}</GlobalWrapper>
-        </StyledComponentsRegistry>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en" className="select-none">
+        <body className={nunito.className}>
+          <StyledComponentsRegistry>
+            <GlobalWrapper>{children}</GlobalWrapper>
+          </StyledComponentsRegistry>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

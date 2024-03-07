@@ -316,4 +316,5 @@
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #1d1d1d;
+  color: #ffffffab;
 }
