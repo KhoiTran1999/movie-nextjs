@@ -33,7 +33,7 @@ const User = () => {
 
   useEffect(() => {
     const isNew = localStorage.getItem("visit") == null;
-    if (isNew && isSignedIn) {
+    if (isNew) {
       localStorage.setItem("visit", "TRUE");
       setOpen(true);
       //It's a new user
@@ -46,10 +46,12 @@ const User = () => {
   return (
     <div className="ml-5">
       {isLoaded && isSignedIn ? (
-        <UserButton afterSignOutUrl="/" />
+        <div ref={loginRef}>
+          <UserButton afterSignOutUrl="/" />
+        </div>
       ) : (
         <>
-          {!pathname.includes("sign-in") && (
+          {!pathname.includes("sign-in") && isLoaded && (
             <Button
               ref={loginRef}
               href={process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL}
