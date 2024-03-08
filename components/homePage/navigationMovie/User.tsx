@@ -33,12 +33,13 @@ const User = () => {
 
   useEffect(() => {
     const isNew = localStorage.getItem("visit") == null;
-    if (isNew) {
+    if (isNew && isSignedIn) {
       localStorage.setItem("visit", "TRUE");
       setOpen(true);
       //It's a new user
     } else {
       //It's not a new user
+      localStorage.setItem("visit", "TRUE");
     }
   }, []);
 
