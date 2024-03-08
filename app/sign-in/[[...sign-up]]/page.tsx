@@ -17,9 +17,8 @@ export default function Page() {
       </div>
       <div className="relative flex h-[100svh] w-[100svw] flex-col items-center justify-center">
         <SignIn />
-        <p className="mt-3 break-words rounded-md bg-[#ffffffdc] p-2 text-sm font-extrabold text-[black]">
-          You're gonna have a fantastic Watching Experience when Login with
-          Microsoft account
+        <p className="mt-3 animate-pulse break-words rounded-md bg-[#ffffffdc] p-2 text-sm font-bold tracking-wide text-[red]">
+          Login with Microsoft Account to have a better watching experience
         </p>
       </div>
     </div>
