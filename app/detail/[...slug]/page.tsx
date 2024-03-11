@@ -1,6 +1,8 @@
 import MainDetailPage from "@/components/detailPage/MainDetailPage";
+import CardMovie from "@/components/homePage/cardSlider/CardMovieServer";
 import { MovieDetailType, MovieType } from "@/types";
 import type { Metadata, ResolvingMetadata } from "next";
+import Image from "next/image";
 
 export async function generateMetadata(
   props: any,
@@ -57,9 +59,42 @@ export default async function Detail(props: any) {
   }
 
   return (
-    <MainDetailPage
-      movieDetail={movieDetail}
-      initialRecommendedMovie={initialRecommendedMovie}
-    />
+    <div>
+      <div className="absolute h-screen w-screen brightness-[0.3] ">
+        <Image
+          src={`${movieDetail.thumbnail}`}
+          alt="Thumbnail"
+          fill
+          priority
+          className="rounded object-cover"
+          quality={100}
+          sizes="(min-width: 1024px) 100vw , (min-width: 625px) 30vw, 40vw"
+        />
+        <div className="absolute bottom-0 h-10 w-full bg-gradient-to-b from-transparent to-black"></div>
+      </div>
+      <div className="backdrop-blur-sm">
+        <MainDetailPage
+          movieDetail={movieDetail}
+          initialRecommendedMovie={initialRecommendedMovie}
+        />
+        <div className="m-auto mt-8 w-full max-w-[1200px]">
+          <div className="grid grid-cols-3 gap-2 md:grid-cols-4 lg:grid-cols-5">
+            {initialRecommendedMovie.map((val: MovieType, idx: number) => (
+              <div key={idx}>
+                <CardMovie
+                  englishName={val.englishName}
+                  vietnamName={val.vietnamName}
+                  movieId={val.movieId}
+                  thumbnail={val.thumbnail}
+                  time={val.time}
+                  totalEpisodes={val.totalEpisodes}
+                  totalSeasons={val.totalSeasons}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
