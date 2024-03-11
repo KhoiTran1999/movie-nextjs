@@ -82,7 +82,7 @@ const SearchMovie = (props: SearchMovieType) => {
                   />
                 </div>
               ))}
-            </div>{" "}
+            </div>
             <div className="mr-5 flex items-center justify-end">
               <Button
                 disabled={page === 1}

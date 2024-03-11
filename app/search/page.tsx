@@ -1,3 +1,5 @@
+"use server";
+
 import NavigationMovie from "@/components/homePage/navigationMovie/NavigationMovie";
 import SearchMovie from "@/components/searchPage/SearchMovie";
 import { MovieType } from "@/types";
@@ -7,7 +9,7 @@ const Search = async (props: any) => {
   const page = props?.searchParams?.page || 1;
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}Movies?key=${encodeURIComponent(text)}&page=${page}&eachPage=10`,
+    `${process.env.NEXT_PUBLIC_API_URL}Movies?key=${text}&page=${page}&eachPage=10`,
     {
       next: { revalidate: 86400 },
     },
