@@ -27,6 +27,7 @@ const GlobalWrapper = ({ children }: { children: React.ReactNode }) => {
           },
           Button: {
             colorBgContainer: "transparent",
+            colorTextDisabled: "#555",
           },
           Input: {
             colorBgContainer: "transparent",

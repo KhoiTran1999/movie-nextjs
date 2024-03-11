@@ -1,15 +1,16 @@
-"use client";
+"use server";
 
 import { MovieType } from "@/types";
-import { List, Result } from "antd";
+import { Button, Result } from "antd";
+import { RightOutlined, LeftOutlined } from "@ant-design/icons";
 import CardMovie from "../homePage/cardSlider/CardMovieClient";
-import { useRouter } from "next/navigation";
 
 interface FeatureMovieList {
   initialRecommendedMovie: MovieType[];
   totalItems: number;
   current: string;
   featureId: string;
+  page: number;
 }
 
 interface TileType {
@@ -23,8 +24,8 @@ export const Tile = ({ title }: TileType) => (
 );
 
 const FeatureMovieList = async (props: FeatureMovieList) => {
-  const { initialRecommendedMovie, totalItems, current, featureId } = props;
-  const router = useRouter();
+  const { initialRecommendedMovie, totalItems, current, featureId, page } =
+    props;
 
   return (
     <>
@@ -32,27 +33,9 @@ const FeatureMovieList = async (props: FeatureMovieList) => {
         <Tile title={current} />
         {initialRecommendedMovie?.length ? (
           <div className="mt-[20px]">
-            <List
-              dataSource={initialRecommendedMovie}
-              grid={{
-                xs: 3,
-                sm: 3,
-                md: 4,
-                lg: 5,
-                xl: 6,
-                xxl: 8,
-                gutter: 12,
-              }}
-              pagination={{
-                total: totalItems,
-                onChange(page, pageSize) {
-                  router.push(
-                    `/feature?current=${current}&page=${page}&featureId=${featureId}`,
-                  );
-                },
-              }}
-              renderItem={(val: MovieType, idx: number) => (
-                <div>
+            <div className="grid grid-cols-3 gap-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8">
+              {initialRecommendedMovie.map((val: MovieType, idx: number) => (
+                <div key={idx}>
                   <CardMovie
                     englishName={val.englishName}
                     vietnamName={val.vietnamName}
@@ -63,8 +46,31 @@ const FeatureMovieList = async (props: FeatureMovieList) => {
                     totalSeasons={val.totalSeasons}
                   />
                 </div>
-              )}
-            />
+              ))}
+            </div>
+            <div className="mr-5 flex items-center justify-end">
+              <Button
+                disabled={page === 1}
+                href={`/feature?current=${current}&featureId=${featureId}&page=${page - 1}`}
+                type="text"
+              >
+                <div>
+                  <LeftOutlined />
+                </div>
+              </Button>
+              <span className="mx-5">
+                {page} / {totalItems}
+              </span>
+              <Button
+                disabled={page === totalItems}
+                href={`/feature?current=${current}&featureId=${featureId}&page=${page + 1}`}
+                type="text"
+              >
+                <div>
+                  <RightOutlined />
+                </div>
+              </Button>
+            </div>
           </div>
         ) : (
           <div className="flex h-full w-full items-center justify-center">

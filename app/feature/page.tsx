@@ -4,7 +4,7 @@ import { MovieType } from "@/types";
 export default async function Feature(props: any) {
   const featureId = props?.searchParams?.featureId;
   const current = props?.searchParams?.current;
-  const page = props?.searchParams?.page || "1";
+  const page = props?.searchParams?.page || 1;
 
   let movieList: MovieType[];
   let totalItems: number = 0;
@@ -18,7 +18,7 @@ export default async function Feature(props: any) {
         },
       );
 
-      totalItems = Number(res.headers.get("x-total-element"));
+      totalItems = Number(res.headers.get("x-total-page"));
       movieList = await res.json();
     } catch (error) {
       console.log(error);
@@ -33,7 +33,7 @@ export default async function Feature(props: any) {
         },
       );
 
-      totalItems = Number(res.headers.get("x-total-element"));
+      totalItems = Number(res.headers.get("x-total-page"));
       movieList = await res.json();
     } catch (error) {
       console.log(error);
@@ -48,7 +48,7 @@ export default async function Feature(props: any) {
         },
       );
 
-      totalItems = Number(res.headers.get("x-total-element"));
+      totalItems = Number(res.headers.get("x-total-page"));
       movieList = await res.json();
     } catch (error) {
       console.log(error);
@@ -63,6 +63,7 @@ export default async function Feature(props: any) {
         totalItems={totalItems}
         current={current}
         featureId={featureId}
+        page={Number(page)}
       />
     </div>
   );
