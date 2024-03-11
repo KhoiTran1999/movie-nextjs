@@ -14,23 +14,23 @@ export const homeItems: homeItemProps[] = [
     code: "Home",
   },
   {
-    href: "/feature?current=NewMovie",
+    href: "/feature?current=NewMovie&page=1",
     name: "New Movie",
     code: "NewMovie",
   },
   {
-    href: "/feature?current=CinemaFilm&featureId=1",
+    href: "/feature?current=CinemaFilm&featureId=1&page=1",
     name: "Cinema Film",
     code: "CinemaFilm",
   },
 
   {
-    href: "/feature?current=StandaloneFilm&featureId=2",
+    href: "/feature?current=StandaloneFilm&featureId=2&page=1",
     name: "Standalone Film",
     code: "StandaloneFilm",
   },
   {
-    href: "/feature?current=TVSeries&featureId=3",
+    href: "/feature?current=TVSeries&featureId=3&page=1",
     name: "TV Series",
     code: "TVSeries",
   },

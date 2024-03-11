@@ -4,7 +4,7 @@ import { MovieType } from "@/types";
 import { AutoComplete, List } from "antd";
 import debounce from "lodash.debounce";
 import { useEffect, useState } from "react";
-import CardMovie from "../homePage/cardSlider/CardMovie";
+import CardMovie from "../homePage/cardSlider/CardMovieServer";
 import { useInView } from "react-intersection-observer";
 import Image from "next/image";
 import { getSearchMovieListAction } from "../actions";
@@ -51,7 +51,7 @@ const SearchMovie = () => {
   };
 
   return (
-    <div className="animate-opacityAnimated m-auto mt-20 w-full max-w-[1200px]">
+    <div className="m-auto mt-20 w-full max-w-[1200px] animate-opacityAnimated">
       <div className="flex justify-center">
         <AutoComplete
           style={{ width: 200 }}

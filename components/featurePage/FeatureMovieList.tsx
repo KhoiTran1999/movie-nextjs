@@ -1,18 +1,9 @@
 "use client";
 
 import { MovieType } from "@/types";
-import { List, Result, Spin } from "antd";
-import CardMovie from "../homePage/cardSlider/CardMovie";
-import { useEffect, useState } from "react";
-import { useInView } from "react-intersection-observer";
-import { useSearchParams } from "next/navigation";
-import { useDispatch, useSelector } from "react-redux";
-import { setIsLoadingFeature } from "@/utils/redux/slices/toggle/IsLoadingFeatureSlice ";
-import { isLoadingFeatureSelector } from "@/utils/redux/selector";
-import {
-  getLoadMoreFeatureMovieListAction,
-  getLoadMoreNewMovieListAction,
-} from "../actions";
+import { List, Result } from "antd";
+import CardMovie from "../homePage/cardSlider/CardMovieClient";
+import { useRouter } from "next/navigation";
 
 interface FeatureMovieList {
   initialRecommendedMovie: MovieType[];
@@ -31,65 +22,18 @@ export const Tile = ({ title }: TileType) => (
   </h1>
 );
 
-const FeatureMovieList = (props: FeatureMovieList) => {
+const FeatureMovieList = async (props: FeatureMovieList) => {
   const { initialRecommendedMovie, totalItems, current, featureId } = props;
-
-  const dispatch = useDispatch();
-
-  const isLoadingFeature = useSelector(isLoadingFeatureSelector);
-
-  const [ref, inView] = useInView();
-
-  const [pageNumber, setPageNumber] = useState<number>(1);
-  const [isOutOfRange, setIsOutOfRange] = useState<boolean>(false);
-  const [recommendedMovie, setRecommendedMovie] = useState<MovieType[]>(
-    initialRecommendedMovie,
-  );
-
-  useEffect(() => {
-    setRecommendedMovie(initialRecommendedMovie);
-    setPageNumber(1);
-    setIsOutOfRange(false);
-    dispatch(setIsLoadingFeature(false));
-  }, [initialRecommendedMovie]);
-
-  useEffect(() => {
-    if (inView) {
-      loadMoreMovies();
-    }
-  }, [inView]);
-
-  const loadMoreMovies = async () => {
-    const next = pageNumber + 1;
-    let data: MovieType[] = [];
-    if (featureId) {
-      data = await getLoadMoreFeatureMovieListAction(featureId, next);
-    } else {
-      data = await getLoadMoreNewMovieListAction(next);
-    }
-
-    if (data.length) {
-      setPageNumber(next);
-      setIsOutOfRange(false);
-      return setRecommendedMovie((prev: MovieType[] | undefined) => [
-        ...(prev?.length ? prev : []),
-        ...data,
-      ]);
-    } else {
-      setIsOutOfRange(true);
-      setPageNumber(1);
-    }
-  };
+  const router = useRouter();
 
   return (
     <>
-      <div className="mt-14 animate-opacityAnimated px-4">
+      <div className="mb-5 mt-14 animate-opacityAnimated px-4">
         <Tile title={current} />
-
-        {recommendedMovie?.length ? (
+        {initialRecommendedMovie?.length ? (
           <div className="mt-[20px]">
             <List
-              dataSource={recommendedMovie}
+              dataSource={initialRecommendedMovie}
               grid={{
                 xs: 3,
                 sm: 3,
@@ -98,6 +42,14 @@ const FeatureMovieList = (props: FeatureMovieList) => {
                 xl: 6,
                 xxl: 8,
                 gutter: 12,
+              }}
+              pagination={{
+                total: totalItems,
+                onChange(page, pageSize) {
+                  router.push(
+                    `/feature?current=${current}&page=${page}&featureId=${featureId}`,
+                  );
+                },
               }}
               renderItem={(val: MovieType, idx: number) => (
                 <div>
@@ -123,21 +75,7 @@ const FeatureMovieList = (props: FeatureMovieList) => {
             />
           </div>
         )}
-        {totalItems > recommendedMovie.length &&
-        totalItems > initialRecommendedMovie.length &&
-        !isOutOfRange ? (
-          <div className="mt-6 flex justify-center py-3">
-            <div ref={ref}>
-              <Spin spinning={true} size="large" />
-            </div>
-          </div>
-        ) : (
-          <></>
-        )}
       </div>
-      {isLoadingFeature && (
-        <Spin spinning={isLoadingFeature} size="large" fullscreen />
-      )}
     </>
   );
 };

@@ -12,7 +12,7 @@ import { useDispatch } from "react-redux";
 import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
 import ReactPlayer from "react-player/youtube";
 import { MovieDetailType, MovieType, SeasonMovieDetail } from "@/types";
-import CardMovie from "../homePage/cardSlider/CardMovie";
+import CardMovie from "../homePage/cardSlider/CardMovieClient";
 import Image from "next/image";
 import { Typography } from "antd";
 import { Play } from "@/public/play";

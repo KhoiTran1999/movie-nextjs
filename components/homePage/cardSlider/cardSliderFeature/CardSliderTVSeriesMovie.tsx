@@ -13,7 +13,7 @@ const CardSliderTVSeriesMovie = async () => {
 
   return (
     <CardSlider
-      href="/feature?current=TVSeries&featureId=3"
+      href="/feature?current=TVSeries&featureId=3&page=1"
       title="TV Series Movies"
       movieList={TVSeriesMovieList}
       icon={<Tv width={24} height={24} className="mr-2" />}

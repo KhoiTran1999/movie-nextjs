@@ -13,7 +13,7 @@ const CardSliderStandalone = async () => {
 
   return (
     <CardSlider
-      href="/feature?current=StandaloneFilm&featureId=2"
+      href="/feature?current=StandaloneFilm&featureId=2&page=1"
       title="Standalone Movies"
       movieList={standaloneMovieList}
       icon={<Movie width={24} height={24} className="mr-2" fill="red" />}

@@ -1,6 +1,6 @@
 "use server";
 
-import CardMovie from "./CardMovie";
+import CardMovie from "./CardMovieServer";
 import Link from "next/link";
 import {
   Carousel,

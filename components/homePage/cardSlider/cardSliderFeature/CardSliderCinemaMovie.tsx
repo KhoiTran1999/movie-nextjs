@@ -13,7 +13,7 @@ const CardSliderCinemaMovie = async () => {
 
   return (
     <CardSlider
-      href="/feature?current=CinemaFilm&featureId=1"
+      href="/feature?current=CinemaFilm&featureId=1&page=1"
       title="Cinema Movies"
       movieList={cinemaMovieList}
       icon={<Popcorn width={24} height={24} className="mr-2" />}

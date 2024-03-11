@@ -4,6 +4,7 @@ import { MovieType } from "@/types";
 export default async function Feature(props: any) {
   const featureId = props?.searchParams?.featureId;
   const current = props?.searchParams?.current;
+  const page = props?.searchParams?.page || "1";
 
   let movieList: MovieType[];
   let totalItems: number = 0;
@@ -11,7 +12,7 @@ export default async function Feature(props: any) {
   if (current === "NewMovie") {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/Movies?sortBy=produceddate&page=1&eachPage=10`,
+        `${process.env.NEXT_PUBLIC_API_URL}/Movies?sortBy=produceddate&page=${page}&eachPage=10`,
         {
           next: { revalidate: 259200 },
         },
@@ -26,7 +27,7 @@ export default async function Feature(props: any) {
   } else if (current === "Upcoming") {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/Movies?status=Upcoming&sortBy=produceddate&page=1&eachPage=10`,
+        `${process.env.NEXT_PUBLIC_API_URL}/Movies?status=Upcoming&sortBy=produceddate&page=${page}&eachPage=10`,
         {
           next: { revalidate: 259200 },
         },
@@ -41,7 +42,7 @@ export default async function Feature(props: any) {
   } else {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/Movies?filterBy=feature&key=${featureId}&status=All&sortBy=produceddate&page=1&eachPage=10`,
+        `${process.env.NEXT_PUBLIC_API_URL}/Movies?filterBy=feature&key=${featureId}&status=All&sortBy=produceddate&page=${page}&eachPage=10`,
         {
           next: { revalidate: 259200 },
         },
