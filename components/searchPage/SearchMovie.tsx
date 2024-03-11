@@ -4,7 +4,7 @@ import { MovieType } from "@/types";
 import { AutoComplete, List } from "antd";
 import debounce from "lodash.debounce";
 import { useEffect, useState } from "react";
-import CardMovie from "../homePage/cardSlider/CardMovieServer";
+import CardMovie from "../homePage/cardSlider/CardMovieClient";
 import { useInView } from "react-intersection-observer";
 import Image from "next/image";
 import { getSearchMovieListAction } from "../actions";
