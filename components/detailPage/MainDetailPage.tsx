@@ -9,6 +9,7 @@ import { Heart } from "@/public/heart";
 import { PLayModal } from "./PlayModal";
 import { TrailerModal } from "./TrailerModal";
 import { CopyUrl } from "./CopyUrl";
+import { More } from "./More";
 
 const rubik = Rubik_Dirt({
   subsets: ["latin"],
@@ -100,7 +101,7 @@ export default async function MainDetailPage(props: MainDetailPage) {
                 {
                   key: "Description",
                   label: "Description",
-                  children: movieDetail.description,
+                  children: <More movieDetail={movieDetail} />,
                 },
                 {
                   key: "Actors",
