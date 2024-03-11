@@ -1,6 +1,5 @@
-"use client";
+"use server";
 
-import React, { useEffect, useRef, useState } from "react";
 import CardMovie from "./CardMovie";
 import Link from "next/link";
 import {
@@ -31,23 +30,14 @@ type movieProps = {
   dateCreated: string;
 };
 
-const CardSlider = ({ title, movieList, href, icon }: cardSliderProps) => {
-  const [isHover, setIsHover] = useState<boolean>(false);
-  const [screenWidth, setScreenWidth] = useState<number>(0);
-
-  useEffect(() => {
-    setScreenWidth(screen.width);
-  }, []);
-
-  const handleOnMouseEnter = () => {
-    setIsHover(true);
-  };
-  const onMouseLeave = () => {
-    setIsHover(false);
-  };
-
+const CardSlider = async ({
+  title,
+  movieList,
+  href,
+  icon,
+}: cardSliderProps) => {
   return (
-    <div className="mb-3">
+    <div className="group mb-3">
       <>
         <Link href={href}>
           <div>
@@ -68,11 +58,7 @@ const CardSlider = ({ title, movieList, href, icon }: cardSliderProps) => {
           </div>
         </Link>
 
-        <div
-          className="mx-[-12px] sm:mx-[-48px]"
-          onMouseEnter={handleOnMouseEnter}
-          onMouseLeave={onMouseLeave}
-        >
+        <div className="mx-[-12px] sm:mx-[-48px]">
           <Carousel
             opts={{
               align: "start",
@@ -101,12 +87,8 @@ const CardSlider = ({ title, movieList, href, icon }: cardSliderProps) => {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            {isHover && screenWidth >= 1024 && (
-              <>
-                <CarouselPrevious />
-                <CarouselNext />
-              </>
-            )}
+            <CarouselPrevious className="hidden group-hover:lg:flex" />
+            <CarouselNext className="hidden group-hover:lg:flex" />
           </Carousel>
         </div>
       </>

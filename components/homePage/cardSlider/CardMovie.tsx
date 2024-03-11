@@ -1,8 +1,7 @@
-"use client";
+"use server";
 
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo } from "react";
 import slugify from "slugify";
 
 type movieProps = {
@@ -17,7 +16,7 @@ type movieProps = {
   dateCreated?: string;
 };
 
-const CardMovie = (props: movieProps) => {
+const CardMovie = async (props: movieProps) => {
   const {
     movieId,
     time,
@@ -28,17 +27,13 @@ const CardMovie = (props: movieProps) => {
     totalEpisodes,
   } = props;
 
-  const slug = useMemo(() => {
-    return slugify(`${englishName}-${vietnamName}`, {
-      lower: true,
-      locale: "vi",
-      strict: true,
-    });
-  }, []);
-
   return (
     <Link
-      href={`/detail/${slug}.html/${movieId}`}
+      href={`/detail/${slugify(`${englishName}-${vietnamName}`, {
+        lower: true,
+        locale: "vi",
+        strict: true,
+      })}.html/${movieId}`}
       className="group/card animate-opacityAnimated"
     >
       <div
