@@ -86,7 +86,7 @@ export default async function MainDetailPage(props: MainDetailPage) {
                   fill
                   priority
                   className="rounded object-cover"
-                  quality={100}
+                  quality={50}
                   sizes="(min-width: 1024px) 100vw , (min-width: 625px) 30vw, 40vw"
                 />
               </div>

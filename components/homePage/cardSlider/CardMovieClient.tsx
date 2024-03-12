@@ -46,7 +46,7 @@ const CardMovie = (props: movieProps) => {
             fill
             priority
             className="rounded object-cover"
-            quality={80}
+            quality={70}
             sizes="(min-width: 1024px) 100vw, (min-width: 625px) 30vw, 40vw"
           />
         </div>

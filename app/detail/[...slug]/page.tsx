@@ -67,7 +67,7 @@ export default async function Detail(props: any) {
           fill
           priority
           className="rounded object-cover"
-          quality={100}
+          quality={50}
           sizes="(min-width: 1024px) 100vw , (min-width: 625px) 30vw, 40vw"
         />
         <div className="absolute bottom-0 h-10 w-full bg-gradient-to-b from-transparent to-black"></div>

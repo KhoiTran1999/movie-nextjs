@@ -67,7 +67,7 @@ const CardMovieTop10 = (props: movieProps) => {
             fill
             loading="lazy"
             className="rounded object-cover"
-            quality={100}
+            quality={30}
             sizes="(min-width: 1024px) 100vw, (min-width: 625px) 30vw, 40vw"
           />
         </div>
