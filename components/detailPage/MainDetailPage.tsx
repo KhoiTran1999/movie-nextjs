@@ -2,7 +2,7 @@ import { Rubik_Dirt } from "next/font/google";
 import { StarFilled, FireFilled } from "@ant-design/icons";
 import { Tabs, Tooltip } from "antd";
 import { Actor } from "@/components/detailPage/actorList/Actor";
-import { MovieDetailType, MovieType } from "@/types";
+import { MovieDetailType } from "@/types";
 import Image from "next/image";
 import { Plus } from "@/public/plus";
 import { Heart } from "@/public/heart";
@@ -19,11 +19,10 @@ const rubik = Rubik_Dirt({
 
 interface MainDetailPage {
   movieDetail: MovieDetailType;
-  initialRecommendedMovie: MovieType[];
 }
 
 export default async function MainDetailPage(props: MainDetailPage) {
-  const { movieDetail, initialRecommendedMovie } = props;
+  const { movieDetail } = props;
 
   return (
     <div className="animate-opacityAnimated">

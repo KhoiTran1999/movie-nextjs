@@ -73,10 +73,7 @@ export default async function Detail(props: any) {
         <div className="absolute bottom-0 h-10 w-full bg-gradient-to-b from-transparent to-black"></div>
       </div>
       <div className="backdrop-blur-sm">
-        <MainDetailPage
-          movieDetail={movieDetail}
-          initialRecommendedMovie={initialRecommendedMovie}
-        />
+        <MainDetailPage movieDetail={movieDetail} />
         <div className="m-auto mt-8 w-full max-w-[1200px]">
           <div className="grid grid-cols-3 gap-2 md:grid-cols-4 lg:grid-cols-5">
             {initialRecommendedMovie.map((val: MovieType, idx: number) => (
