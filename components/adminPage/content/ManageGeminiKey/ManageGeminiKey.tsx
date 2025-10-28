@@ -42,7 +42,7 @@ const ManageGeminiKey = (props: IProps) => {
     try {
       setDeleteLoadingState(true);
       await Axios.delete("DeleteGeminiKey", { params: { key: value } });
-      message.success("Movie deleted successfully!");
+      message.success("GeminiKey deleted successfully!");
       await revalidatePathAction("admin/manageGeminiKey");
       setDeleteLoadingState(false);
     } catch (error) {
