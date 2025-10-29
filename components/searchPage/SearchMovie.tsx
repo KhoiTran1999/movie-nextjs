@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { MovieType } from "@/types";
-import { AutoComplete, Button } from "antd";
-import debounce from "lodash.debounce";
-import { useState } from "react";
-import CardMovie from "../homePage/cardSlider/CardMovieClient";
-import Image from "next/image";
-import { RightOutlined, LeftOutlined } from "@ant-design/icons";
-import { useRouter } from "next/navigation";
+import { MovieType } from '@/types';
+import { AutoComplete, Button } from 'antd';
+import debounce from 'lodash.debounce';
+import { useState } from 'react';
+import CardMovie from '../homePage/cardSlider/CardMovieClient';
+import Image from 'next/image';
+import { RightOutlined, LeftOutlined } from '@ant-design/icons';
+import { useRouter } from 'next/navigation';
 
 interface SearchMovieType {
   movieSearch: MovieType[];
@@ -21,7 +21,7 @@ const SearchMovie = (props: SearchMovieType) => {
 
   const router = useRouter();
 
-  const [valueSearch, setValueSearch] = useState<string>(text || "");
+  const [valueSearch, setValueSearch] = useState<string>(text || '');
 
   const handleSearch = async (text: string) => {
     setValueSearch(text);
@@ -45,7 +45,7 @@ const SearchMovie = (props: SearchMovieType) => {
             <div className="relative aspect-[5/3] w-[400px]">
               {valueSearch ? (
                 <Image
-                  src={"/EmptyMovie.png"}
+                  src={'/EmptyMovie.png'}
                   alt="EmptyMovie"
                   fill
                   priority
@@ -55,7 +55,7 @@ const SearchMovie = (props: SearchMovieType) => {
                 />
               ) : (
                 <Image
-                  src={"/SearchMovie.png"}
+                  src={'/SearchMovie.png'}
                   alt="SearchMovie"
                   fill
                   priority

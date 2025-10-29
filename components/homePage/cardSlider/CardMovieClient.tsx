@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import Link from "next/link";
-import slugify from "slugify";
+import Image from 'next/image';
+import Link from 'next/link';
+import slugify from 'slugify';
 
 type movieProps = {
   movieId: string;
@@ -17,21 +17,13 @@ type movieProps = {
 };
 
 const CardMovie = (props: movieProps) => {
-  const {
-    movieId,
-    time,
-    vietnamName,
-    englishName,
-    thumbnail,
-    totalSeasons,
-    totalEpisodes,
-  } = props;
+  const { movieId, time, vietnamName, englishName, thumbnail, totalSeasons, totalEpisodes } = props;
 
   return (
     <Link
       href={`/detail/${slugify(`${englishName}-${vietnamName}`, {
         lower: true,
-        locale: "vi",
+        locale: 'vi',
         strict: true,
       })}.html/${movieId}`}
       className="group/card animate-opacityAnimated"

@@ -1,17 +1,10 @@
-import { Button, Card, Form, Input, message } from "antd";
-import { useEffect, useState } from "react";
-import {
-  PlusOutlined,
-  MinusCircleOutlined,
-  CloseOutlined,
-} from "@ant-design/icons";
-import { useSelector } from "react-redux";
-import {
-  isCancelButtonModalSelector,
-  movieIdSelector,
-} from "@/utils/redux/selector";
-import Axios from "@/utils/axios";
-import { revalidatePathAction } from "@/components/actions";
+import { Button, Card, Form, Input, message } from 'antd';
+import { useEffect, useState } from 'react';
+import { PlusOutlined, MinusCircleOutlined, CloseOutlined } from '@ant-design/icons';
+import { useSelector } from 'react-redux';
+import { isCancelButtonModalSelector, movieIdSelector } from '@/utils/redux/selector';
+import Axios from '@/utils/axios';
+import { revalidatePathAction } from '@/components/actions';
 
 interface VideoFormType {
   setCurrent: Function;
@@ -19,11 +12,7 @@ interface VideoFormType {
   isLoadingNextButton: boolean;
 }
 
-const VideoForm = ({
-  setCurrent,
-  setIsLoadingNextButton,
-  isLoadingNextButton,
-}: VideoFormType) => {
+const VideoForm = ({ setCurrent, setIsLoadingNextButton, isLoadingNextButton }: VideoFormType) => {
   const [form] = Form.useForm();
 
   const isCancelButtonModal = useSelector(isCancelButtonModalSelector);
@@ -51,18 +40,18 @@ const VideoForm = ({
       const fetchApi = async () => {
         for (const season of values.seasonList) {
           try {
-            const seasonId = await Axios.post("Seasons", {
+            const seasonId = await Axios.post('Seasons', {
               movieId,
               name: season.name,
             });
 
-            await Axios.post("episode", season.episode, {
+            await Axios.post('episode', season.episode, {
               params: { seasonId: seasonId.data },
             });
-            await revalidatePathAction("admin/manageMovies");
+            await revalidatePathAction('admin/manageMovies');
           } catch (error) {
             console.log(error);
-            message.error("Create videoForm Error!");
+            message.error('Create videoForm Error!');
             setIsLoadingNextButton(false);
             return;
           }
@@ -78,26 +67,24 @@ const VideoForm = ({
   };
 
   return (
-    <div style={{ width: "100%" }}>
+    <div style={{ width: '100%' }}>
       {contextHolder}
       <Form
         form={form}
         layout="horizontal"
-        style={{ width: "100%" }}
+        style={{ width: '100%' }}
         id="createMovie"
         onFinish={handleOnFinish}
       >
         <Form.List name="seasonList">
           {(fields, { add, remove }) => (
-            <div
-              style={{ display: "flex", rowGap: 16, flexDirection: "column" }}
-            >
+            <div style={{ display: 'flex', rowGap: 16, flexDirection: 'column' }}>
               {fields.map((field) => (
                 <Card
                   size="small"
                   title={`season ${field.name + 1}`}
                   key={field.key}
-                  style={{ backgroundColor: "transparent" }}
+                  style={{ backgroundColor: 'transparent' }}
                   extra={
                     <CloseOutlined
                       onClick={() => {
@@ -107,8 +94,8 @@ const VideoForm = ({
                   }
                 >
                   <Form.Item
-                    label={"Name"}
-                    name={[field.name, "name"]}
+                    label={'Name'}
+                    name={[field.name, 'name']}
                     rules={[{ required: true }]}
                   >
                     <Input
@@ -117,7 +104,7 @@ const VideoForm = ({
                     />
                   </Form.Item>
                   <Form.Item>
-                    <Form.List name={[field.name, "episode"]}>
+                    <Form.List name={[field.name, 'episode']}>
                       {(subFields, subOpt, { errors }) => (
                         <>
                           {subFields.map((subField, index) => (
@@ -128,13 +115,12 @@ const VideoForm = ({
                             >
                               <div className="flex items-center">
                                 <Form.Item
-                                  name={[subField.name, "video"]}
+                                  name={[subField.name, 'video']}
                                   rules={[
                                     {
                                       required: true,
                                       whitespace: true,
-                                      message:
-                                        "Please input ID Video or delete this field.",
+                                      message: 'Please input ID Video or delete this field.',
                                     },
                                   ]}
                                   noStyle
@@ -143,17 +129,16 @@ const VideoForm = ({
                                     className="bg-transparent placeholder:text-[#5d5d5d]"
                                     placeholder="1MEcf3..."
                                     disabled={isLoadingNextButton}
-                                    style={{ marginRight: "20px", flex: 2 }}
+                                    style={{ marginRight: '20px', flex: 2 }}
                                   />
                                 </Form.Item>
                                 <Form.Item
-                                  name={[subField.name, "name"]}
+                                  name={[subField.name, 'name']}
                                   rules={[
                                     {
                                       required: true,
                                       whitespace: true,
-                                      message:
-                                        "Please input name or delete this field.",
+                                      message: 'Please input name or delete this field.',
                                     },
                                   ]}
                                   noStyle

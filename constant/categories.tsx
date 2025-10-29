@@ -4,20 +4,20 @@ interface categoryType {
 }
 
 export const categoryItems: categoryType[] = [
-  { name: "Action", color: "#800000" },
-  { name: "Adventure", color: "#9A6324" },
-  { name: "Anime", color: "#808000" },
-  { name: "Comedy", color: "#469990" },
-  { name: "Drama", color: "#000075" },
-  { name: "Fantasy", color: "#aaffc3" },
-  { name: "Musical", color: "#e6194B" },
-  { name: "Mystery", color: "#f58231" },
-  { name: "Romance", color: "#ffe119" },
-  { name: "Thriller", color: "#3cb44b" },
-  { name: "Historical", color: "#800000" },
-  { name: "War", color: "#42d4f4" },
-  { name: "Violence", color: "#4363d8" },
-  { name: "Nudity", color: "#911eb4" },
-  { name: "Science", color: "#f032e6" },
-  { name: "Horror", color: "#ffd8b1" },
+  { name: 'Action', color: '#D32F2F' }, // Đỏ đậm
+  { name: 'Adventure', color: '#6A1B9A' }, // Tím đậm
+  { name: 'Anime', color: '#283593' }, // Xanh lam đậm
+  { name: 'Comedy', color: '#00897B' }, // Xanh ngọc đậm
+  { name: 'Drama', color: '#303F9F' }, // Indigo
+  { name: 'Fantasy', color: '#512DA8' }, // Tím huyền ảo
+  { name: 'Musical', color: '#C2185B' }, // Hồng mâm xôi
+  { name: 'Mystery', color: '#455A64' }, // Xám than
+  { name: 'Romance', color: '#AD1457' }, // Hồng đậm
+  { name: 'Thriller', color: '#388E3C' }, // Xanh lá đậm
+  { name: 'Historical', color: '#5D4037' }, // Nâu đất
+  { name: 'War', color: '#37474F' }, // Xám đậm
+  { name: 'Violence', color: '#7B1FA2' }, // Tím đậm
+  { name: 'Nudity', color: '#8E24AA' }, // Tím hoa cà
+  { name: 'Science', color: '#1976D2' }, // Xanh cobalt
+  { name: 'Horror', color: '#212121' }, // Đen khói
 ];

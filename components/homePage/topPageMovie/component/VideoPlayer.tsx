@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { Suspense, useEffect, useState } from "react";
-import ReactPlayer from "react-player/youtube";
+import Image from 'next/image';
+import { Suspense, useEffect, useState } from 'react';
+import ReactPlayer from 'react-player/youtube';
 
 interface previewMovieProps {
   description: string;
@@ -37,14 +37,14 @@ const VideoPlayer = ({ previewMovie }: VideoType) => {
               loop
               muted
               playing
-              width={"100svw"}
-              height={"80svh"}
+              width={'100svw'}
+              height={'80svh'}
               style={{
-                backgroundSize: "contain",
-                backgroundPosition: "center center",
-                filter: "brightness(.7)",
+                backgroundSize: 'contain',
+                backgroundPosition: 'center center',
+                filter: 'brightness(.7)',
                 scale: 1.45,
-                backgroundColor: "black",
+                backgroundColor: 'black',
               }}
               onReady={() => setIsVideoOk(true)}
             />

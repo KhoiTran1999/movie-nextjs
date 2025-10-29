@@ -1,9 +1,10 @@
-"use client";
+'use client';
 
-import { Button, Table, Popconfirm, message, Modal, Form, Input } from "antd";
-import { useState } from "react";
-import { revalidatePathAction } from "@/components/actions";
-import Axios from "@/utils/axios";
+import { Button, Table, Popconfirm, message, Modal, Form, Input } from 'antd';
+import { useState } from 'react';
+import { revalidatePathAction } from '@/components/actions';
+import Axios from '@/utils/axios';
+import { Trash } from '@/public/trash';
 
 interface IProps {
   geminiKeyList: [];
@@ -41,29 +42,29 @@ const ManageGeminiKey = (props: IProps) => {
   const handleDelete = async (value: any) => {
     try {
       setDeleteLoadingState(true);
-      await Axios.delete("DeleteGeminiKey", { params: { key: value } });
-      message.success("GeminiKey deleted successfully!");
-      await revalidatePathAction("admin/manageGeminiKey");
+      await Axios.delete('DeleteGeminiKey', { params: { key: value } });
+      message.success('GeminiKey deleted successfully!');
+      await revalidatePathAction('admin/manageGeminiKey');
       setDeleteLoadingState(false);
     } catch (error) {
       console.log(error);
       setDeleteLoadingState(false);
-      message.error("Failed to delete movie!");
+      message.error('Failed to delete movie!');
     }
   };
 
   const handleOnFinish = async (values: ValueFormType) => {
     try {
       setIsLoading(true);
-      await Axios.post("AddGeminiKey", values.apiKey);
-      message.success("Add Gemini Key successfully!");
-      await revalidatePathAction("admin/manageGeminiKey");
+      await Axios.post('AddGeminiKey', values.apiKey);
+      message.success('Add Gemini Key successfully!');
+      await revalidatePathAction('admin/manageGeminiKey');
       setIsModalOpen(false);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
-      message.error("Add Gemini Key Failed!");
-      form.getFieldError("apiKey");
+      message.error('Add Gemini Key Failed!');
+      form.getFieldError('apiKey');
       setIsLoading(false);
     }
   };
@@ -84,10 +85,7 @@ const ManageGeminiKey = (props: IProps) => {
           <span className="absolute inset-0 rounded-2xl border-2 border-white"></span>
         </button>
       </div>
-      <Table
-        dataSource={geminiKeyList}
-        pagination={{ pageSize: 6, total: geminiKeyList.length }}
-      >
+      <Table dataSource={geminiKeyList} pagination={{ pageSize: 6, total: geminiKeyList.length }}>
         <Column
           title="Api Key"
           dataIndex="apiKey"
@@ -98,11 +96,7 @@ const ManageGeminiKey = (props: IProps) => {
             </p>
           )}
         />
-        <Column
-          title="Date Created"
-          dataIndex="dateCreated"
-          key="dateCreated"
-        />
+        <Column title="Date Created" dataIndex="dateCreated" key="dateCreated" />
         <Column
           title="Delete"
           dataIndex="apiKey"
@@ -115,7 +109,7 @@ const ManageGeminiKey = (props: IProps) => {
                 onConfirm={() => handleDelete(val)}
               >
                 <Button type="text" disabled={deleteLoadingState}>
-                  <i className="fa-solid fa-trash text-[22px]"></i>
+                  <Trash width={20} height={20} fill="#D1D0CF" />
                 </Button>
               </Popconfirm>
             </div>
@@ -123,7 +117,7 @@ const ManageGeminiKey = (props: IProps) => {
         />
       </Table>
       <Modal
-        title={"Create Api Key"}
+        title={'Create Api Key'}
         open={isModalOpen}
         centered
         closeIcon={false}
@@ -150,7 +144,7 @@ const ManageGeminiKey = (props: IProps) => {
             rules={[
               {
                 required: true,
-                message: "This field is required.",
+                message: 'This field is required.',
               },
             ]}
           >

@@ -1,22 +1,12 @@
-import { Button, Card, Form, Input, message } from "antd";
-import { useEffect, useState } from "react";
-import {
-  PlusOutlined,
-  MinusCircleOutlined,
-  CloseOutlined,
-} from "@ant-design/icons";
-import { useSelector } from "react-redux";
-import {
-  isCancelButtonModalSelector,
-  movieIdSelector,
-} from "@/utils/redux/selector";
-import Axios from "@/utils/axios";
-import { EpisodeType, SeasonType } from "@/types";
-import { deepEqual } from "assert";
-import {
-  getSeasonListAction,
-  revalidatePathAction,
-} from "@/components/actions";
+import { Button, Card, Form, Input, message } from 'antd';
+import { useEffect, useState } from 'react';
+import { PlusOutlined, MinusCircleOutlined, CloseOutlined } from '@ant-design/icons';
+import { useSelector } from 'react-redux';
+import { isCancelButtonModalSelector, movieIdSelector } from '@/utils/redux/selector';
+import Axios from '@/utils/axios';
+import { EpisodeType, SeasonType } from '@/types';
+import { deepEqual } from 'assert';
+import { getSeasonListAction, revalidatePathAction } from '@/components/actions';
 
 interface VideoFormType {
   setCurrent: Function;
@@ -34,11 +24,7 @@ interface EpisodeFilterdType {
   video: string;
 }
 
-const VideoForm = ({
-  setCurrent,
-  setIsLoadingNextButton,
-  isLoadingNextButton,
-}: VideoFormType) => {
+const VideoForm = ({ setCurrent, setIsLoadingNextButton, isLoadingNextButton }: VideoFormType) => {
   const [form] = Form.useForm();
 
   const isCancelButtonModal = useSelector(isCancelButtonModalSelector);
@@ -69,7 +55,7 @@ const VideoForm = ({
         return { name: season.name, episode: filterdEpisodes };
       });
 
-      form.setFieldValue("seasonList", filterdSeasonList);
+      form.setFieldValue('seasonList', filterdSeasonList);
       setOldSeasonList(filterdSeasonList);
 
       setIsLoadingNextButton(false);
@@ -89,7 +75,7 @@ const VideoForm = ({
     }
     try {
       //Compare Old values and New value
-      deepEqual(oldSeasonList, values.seasonList, "not same");
+      deepEqual(oldSeasonList, values.seasonList, 'not same');
       form.resetFields();
       setCurrent((prev: number) => prev + 1);
     } catch (error) {
@@ -100,14 +86,11 @@ const VideoForm = ({
           for (const [idx, season] of values.seasonList.entries()) {
             try {
               //Compare Old and New Season
-              deepEqual(season, oldSeasonList[idx], "Season not same");
+              deepEqual(season, oldSeasonList[idx], 'Season not same');
             } catch (error) {
               // Update Season
               try {
-                await Axios.put(
-                  `Seasons/${fetchedSeason[idx].seasonId}`,
-                  season.name,
-                );
+                await Axios.put(`Seasons/${fetchedSeason[idx].seasonId}`, season.name);
               } catch (error) {
                 setIsLoadingNextButton(false);
                 console.log(error);
@@ -121,7 +104,7 @@ const VideoForm = ({
                     name: episode.name,
                     video: episode.video,
                   };
-                },
+                }
               );
               const oldEpisodeList = oldSeasonList[idx].episode.map(
                 (episode: EpisodeFilterdType, index: number) => {
@@ -130,23 +113,18 @@ const VideoForm = ({
                     name: episode.name,
                     video: episode.video,
                   };
-                },
+                }
               );
 
               //Update Episode: 3 situations
               if (season.episode.length === oldSeasonList[idx].episode.length) {
                 try {
-                  await Axios.put(
-                    `episode/${fetchedSeason[idx].seasonId}`,
-                    newEpisodeList,
-                  );
+                  await Axios.put(`episode/${fetchedSeason[idx].seasonId}`, newEpisodeList);
                 } catch (error) {
                   console.log(error);
                   setIsLoadingNextButton(false);
                 }
-              } else if (
-                season.episode.length > oldSeasonList[idx].episode.length
-              ) {
+              } else if (season.episode.length > oldSeasonList[idx].episode.length) {
                 //New Episode List > Old Episode List
 
                 //Update first apart of New Episode which equal the length of Old Episode List
@@ -154,16 +132,12 @@ const VideoForm = ({
                 if (newEpisodeList.length >= 2) {
                   apartOfNewEpisodeList = newEpisodeList.slice(
                     0,
-                    oldSeasonList[idx].episode.length,
+                    oldSeasonList[idx].episode.length
                   );
-                } else
-                  throw Error("New Episode list must have at least 2 episodes");
+                } else throw Error('New Episode list must have at least 2 episodes');
 
                 try {
-                  await Axios.put(
-                    `episode/${fetchedSeason[idx].seasonId}`,
-                    apartOfNewEpisodeList,
-                  );
+                  await Axios.put(`episode/${fetchedSeason[idx].seasonId}`, apartOfNewEpisodeList);
                 } catch (error) {
                   setIsLoadingNextButton(false);
                   console.log(error);
@@ -187,34 +161,21 @@ const VideoForm = ({
                 }
               } else {
                 //New Episode List < Old Episode List
-                console.log(
-                  "season.episode.length < oldSeasonList[idx].episode.length",
-                );
+                console.log('season.episode.length < oldSeasonList[idx].episode.length');
 
                 //Update New Episode
                 try {
-                  await Axios.put(
-                    `episode/${fetchedSeason[idx].seasonId}`,
-                    newEpisodeList,
-                  );
+                  await Axios.put(`episode/${fetchedSeason[idx].seasonId}`, newEpisodeList);
                 } catch (error) {
                   setIsLoadingNextButton(false);
                   console.log(error);
                 }
 
                 //Delete a rest of Old Episode
-                const theRestOfOldEpisodeList = oldEpisodeList.slice(
-                  season.episode.length,
-                );
-                console.log(
-                  "theRestOfOldEpisodeList: ",
-                  theRestOfOldEpisodeList,
-                );
+                const theRestOfOldEpisodeList = oldEpisodeList.slice(season.episode.length);
+                console.log('theRestOfOldEpisodeList: ', theRestOfOldEpisodeList);
 
-                for (const [
-                  idx,
-                  episode,
-                ] of theRestOfOldEpisodeList.entries()) {
+                for (const [idx, episode] of theRestOfOldEpisodeList.entries()) {
                   try {
                     await Axios.delete(`episode/${episode.episodeId}`);
                   } catch (error) {
@@ -225,7 +186,7 @@ const VideoForm = ({
               }
             }
           }
-          await revalidatePathAction("admin/manageMovies");
+          await revalidatePathAction('admin/manageMovies');
           setCurrent((prev: number) => prev + 1);
           setIsLoadingNextButton(false);
         };
@@ -235,17 +196,14 @@ const VideoForm = ({
           for (const [idx, season] of values.seasonList.entries()) {
             try {
               //Compare Old and New Season
-              deepEqual(season, oldSeasonList[idx], "Season not same");
+              deepEqual(season, oldSeasonList[idx], 'Season not same');
             } catch (error) {
               if (idx === oldSeasonList.length) {
                 break;
               }
               // Update Season
               try {
-                await Axios.put(
-                  `Seasons/${fetchedSeason[idx].seasonId}`,
-                  season.name,
-                );
+                await Axios.put(`Seasons/${fetchedSeason[idx].seasonId}`, season.name);
               } catch (error) {
                 setIsLoadingNextButton(false);
                 console.log(error);
@@ -260,7 +218,7 @@ const VideoForm = ({
                   name: episode.name,
                   video: episode.video,
                 };
-              },
+              }
             );
             const oldEpisodeList = oldSeasonList[idx].episode.map(
               (episode: EpisodeFilterdType, index: number) => {
@@ -269,40 +227,28 @@ const VideoForm = ({
                   name: episode.name,
                   video: episode.video,
                 };
-              },
+              }
             );
 
             //Update Episode: 3 situations
             if (season.episode.length === oldSeasonList[idx].episode.length) {
               try {
-                await Axios.put(
-                  `episode/${fetchedSeason[idx].seasonId}`,
-                  newEpisodeList,
-                );
+                await Axios.put(`episode/${fetchedSeason[idx].seasonId}`, newEpisodeList);
               } catch (error) {
                 console.log(error);
                 setIsLoadingNextButton(false);
               }
-            } else if (
-              season.episode.length > oldSeasonList[idx].episode.length
-            ) {
+            } else if (season.episode.length > oldSeasonList[idx].episode.length) {
               //New Episode List > Old Episode List
 
               //Update first apart of New Episode which equal the length of Old Episode List
               let apartOfNewEpisodeList;
               if (newEpisodeList.length >= 2) {
-                apartOfNewEpisodeList = newEpisodeList.slice(
-                  0,
-                  oldSeasonList[idx].episode.length,
-                );
-              } else
-                throw Error("New Episode list must have at least 2 episodes");
+                apartOfNewEpisodeList = newEpisodeList.slice(0, oldSeasonList[idx].episode.length);
+              } else throw Error('New Episode list must have at least 2 episodes');
 
               try {
-                await Axios.put(
-                  `episode/${fetchedSeason[idx].seasonId}`,
-                  apartOfNewEpisodeList,
-                );
+                await Axios.put(`episode/${fetchedSeason[idx].seasonId}`, apartOfNewEpisodeList);
               } catch (error) {
                 setIsLoadingNextButton(false);
                 console.log(error);
@@ -327,19 +273,14 @@ const VideoForm = ({
             } else {
               //Update New Episode
               try {
-                await Axios.put(
-                  `episode/${fetchedSeason[idx].seasonId}`,
-                  newEpisodeList,
-                );
+                await Axios.put(`episode/${fetchedSeason[idx].seasonId}`, newEpisodeList);
               } catch (error) {
                 setIsLoadingNextButton(false);
                 console.log(error);
               }
 
               //Delete a rest of Old Episode
-              const theRestOfOldEpisodeList = oldEpisodeList.slice(
-                season.episode.length,
-              );
+              const theRestOfOldEpisodeList = oldEpisodeList.slice(season.episode.length);
 
               for (const [idx, episode] of theRestOfOldEpisodeList.entries()) {
                 try {
@@ -353,17 +294,15 @@ const VideoForm = ({
           }
 
           //Add the rest of New Season
-          const theRestOfNewSeason = values.seasonList.slice(
-            oldSeasonList.length,
-          );
+          const theRestOfNewSeason = values.seasonList.slice(oldSeasonList.length);
           for (const season of theRestOfNewSeason) {
             try {
-              const seasonId = await Axios.post("Seasons", {
+              const seasonId = await Axios.post('Seasons', {
                 movieId,
                 name: season.name,
               });
 
-              await Axios.post("episode", season.episode, {
+              await Axios.post('episode', season.episode, {
                 params: { seasonId: seasonId.data },
               });
             } catch (error) {
@@ -373,7 +312,7 @@ const VideoForm = ({
             }
           }
 
-          await revalidatePathAction("admin/manageMovies");
+          await revalidatePathAction('admin/manageMovies');
           setCurrent((prev: number) => prev + 1);
           setIsLoadingNextButton(false);
         };
@@ -385,14 +324,11 @@ const VideoForm = ({
           for (const [idx, season] of values.seasonList.entries()) {
             try {
               //Compare Old and New Season
-              deepEqual(season, oldSeasonList[idx], "Season not same");
+              deepEqual(season, oldSeasonList[idx], 'Season not same');
             } catch (error) {
               // Update Season
               try {
-                await Axios.put(
-                  `Seasons/${fetchedSeason[idx].seasonId}`,
-                  season.name,
-                );
+                await Axios.put(`Seasons/${fetchedSeason[idx].seasonId}`, season.name);
               } catch (error) {
                 setIsLoadingNextButton(false);
                 console.log(error);
@@ -406,7 +342,7 @@ const VideoForm = ({
                     name: episode.name,
                     video: episode.video,
                   };
-                },
+                }
               );
               const oldEpisodeList = oldSeasonList[idx].episode.map(
                 (episode: EpisodeFilterdType, index: number) => {
@@ -415,23 +351,18 @@ const VideoForm = ({
                     name: episode.name,
                     video: episode.video,
                   };
-                },
+                }
               );
 
               //Update Episode: 3 situations
               if (season.episode.length === oldSeasonList[idx].episode.length) {
                 try {
-                  await Axios.put(
-                    `episode/${fetchedSeason[idx].seasonId}`,
-                    newEpisodeList,
-                  );
+                  await Axios.put(`episode/${fetchedSeason[idx].seasonId}`, newEpisodeList);
                 } catch (error) {
                   console.log(error);
                   setIsLoadingNextButton(false);
                 }
-              } else if (
-                season.episode.length > oldSeasonList[idx].episode.length
-              ) {
+              } else if (season.episode.length > oldSeasonList[idx].episode.length) {
                 //New Episode List > Old Episode List
 
                 //Update first apart of New Episode which equal the length of Old Episode List
@@ -439,16 +370,12 @@ const VideoForm = ({
                 if (newEpisodeList.length >= 2) {
                   apartOfNewEpisodeList = newEpisodeList.slice(
                     0,
-                    oldSeasonList[idx].episode.length,
+                    oldSeasonList[idx].episode.length
                   );
-                } else
-                  throw Error("New Episode list must have at least 2 episodes");
+                } else throw Error('New Episode list must have at least 2 episodes');
 
                 try {
-                  await Axios.put(
-                    `episode/${fetchedSeason[idx].seasonId}`,
-                    apartOfNewEpisodeList,
-                  );
+                  await Axios.put(`episode/${fetchedSeason[idx].seasonId}`, apartOfNewEpisodeList);
                 } catch (error) {
                   setIsLoadingNextButton(false);
                   console.log(error);
@@ -472,34 +399,21 @@ const VideoForm = ({
                 }
               } else {
                 //New Episode List < Old Episode List
-                console.log(
-                  "season.episode.length < oldSeasonList[idx].episode.length",
-                );
+                console.log('season.episode.length < oldSeasonList[idx].episode.length');
 
                 //Update New Episode
                 try {
-                  await Axios.put(
-                    `episode/${fetchedSeason[idx].seasonId}`,
-                    newEpisodeList,
-                  );
+                  await Axios.put(`episode/${fetchedSeason[idx].seasonId}`, newEpisodeList);
                 } catch (error) {
                   setIsLoadingNextButton(false);
                   console.log(error);
                 }
 
                 //Delete a rest of Old Episode
-                const theRestOfOldEpisodeList = oldEpisodeList.slice(
-                  season.episode.length,
-                );
-                console.log(
-                  "theRestOfOldEpisodeList: ",
-                  theRestOfOldEpisodeList,
-                );
+                const theRestOfOldEpisodeList = oldEpisodeList.slice(season.episode.length);
+                console.log('theRestOfOldEpisodeList: ', theRestOfOldEpisodeList);
 
-                for (const [
-                  idx,
-                  episode,
-                ] of theRestOfOldEpisodeList.entries()) {
+                for (const [idx, episode] of theRestOfOldEpisodeList.entries()) {
                   try {
                     await Axios.delete(`episode/${episode.episodeId}`);
                   } catch (error) {
@@ -512,9 +426,7 @@ const VideoForm = ({
           }
 
           //Delete the rest of Old Season
-          const theRestOfOldSeason = fetchedSeason.slice(
-            values.seasonList.length,
-          );
+          const theRestOfOldSeason = fetchedSeason.slice(values.seasonList.length);
           for (const season of theRestOfOldSeason) {
             try {
               await Axios.delete(`Seasons/${season.seasonId}`);
@@ -524,7 +436,7 @@ const VideoForm = ({
             }
           }
 
-          await revalidatePathAction("admin/manageMovies");
+          await revalidatePathAction('admin/manageMovies');
           setCurrent((prev: number) => prev + 1);
           setIsLoadingNextButton(false);
         };
@@ -534,26 +446,24 @@ const VideoForm = ({
   };
 
   return (
-    <div style={{ width: "100%" }}>
+    <div style={{ width: '100%' }}>
       {contextHolder}
       <Form
         form={form}
         layout="horizontal"
-        style={{ width: "100%" }}
+        style={{ width: '100%' }}
         id="updateMovie"
         onFinish={handleOnFinish}
       >
         <Form.List name="seasonList">
           {(fields, { add, remove }) => (
-            <div
-              style={{ display: "flex", rowGap: 16, flexDirection: "column" }}
-            >
+            <div style={{ display: 'flex', rowGap: 16, flexDirection: 'column' }}>
               {fields.map((field) => (
                 <Card
                   size="small"
                   title={`season ${field.name + 1}`}
                   key={field.key}
-                  style={{ backgroundColor: "transparent" }}
+                  style={{ backgroundColor: 'transparent' }}
                   extra={
                     <CloseOutlined
                       onClick={() => {
@@ -563,8 +473,8 @@ const VideoForm = ({
                   }
                 >
                   <Form.Item
-                    label={"Name"}
-                    name={[field.name, "name"]}
+                    label={'Name'}
+                    name={[field.name, 'name']}
                     rules={[{ required: true }]}
                   >
                     <Input
@@ -574,7 +484,7 @@ const VideoForm = ({
                     />
                   </Form.Item>
                   <Form.Item>
-                    <Form.List name={[field.name, "episode"]}>
+                    <Form.List name={[field.name, 'episode']}>
                       {(subFields, subOpt, { errors }) => (
                         <>
                           {subFields.map((subField, index) => (
@@ -585,13 +495,12 @@ const VideoForm = ({
                             >
                               <div className="flex items-center">
                                 <Form.Item
-                                  name={[subField.name, "video"]}
+                                  name={[subField.name, 'video']}
                                   rules={[
                                     {
                                       required: true,
                                       whitespace: true,
-                                      message:
-                                        "Please input ID Video or delete this field.",
+                                      message: 'Please input ID Video or delete this field.',
                                     },
                                   ]}
                                   noStyle
@@ -600,17 +509,16 @@ const VideoForm = ({
                                     className="bg-transparent placeholder:text-[#5d5d5d]"
                                     placeholder="1MEcf3..."
                                     disabled={isLoadingNextButton}
-                                    style={{ marginRight: "20px", flex: 2 }}
+                                    style={{ marginRight: '20px', flex: 2 }}
                                   />
                                 </Form.Item>
                                 <Form.Item
-                                  name={[subField.name, "name"]}
+                                  name={[subField.name, 'name']}
                                   rules={[
                                     {
                                       required: true,
                                       whitespace: true,
-                                      message:
-                                        "Please input name or delete this field.",
+                                      message: 'Please input name or delete this field.',
                                     },
                                   ]}
                                   noStyle
@@ -655,12 +563,7 @@ const VideoForm = ({
                   </Form.Item>
                 </Card>
               ))}
-              <Button
-                disabled={isLoadingNextButton}
-                type="dashed"
-                onClick={() => add()}
-                block
-              >
+              <Button disabled={isLoadingNextButton} type="dashed" onClick={() => add()} block>
                 + Add Season
               </Button>
             </div>

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { MovieDetailType } from "@/types";
-import { Typography } from "antd";
+import { MovieDetailType } from '@/types';
+import { Typography } from 'antd';
 const { Paragraph } = Typography;
 
 interface More {
@@ -15,7 +15,7 @@ export const More = (props: More) => {
       ellipsis={{
         rows: 3,
         expandable: true,
-        symbol: "more",
+        symbol: 'more',
       }}
     >
       {movieDetail.description}

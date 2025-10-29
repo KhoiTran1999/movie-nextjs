@@ -1,5 +1,5 @@
-import FeatureMovieList from "@/components/featurePage/FeatureMovieList";
-import { MovieType } from "@/types";
+import FeatureMovieList from '@/components/featurePage/FeatureMovieList';
+import { MovieType } from '@/types';
 
 export default async function Feature(props: any) {
   const featureId = props?.searchParams?.featureId;
@@ -9,35 +9,35 @@ export default async function Feature(props: any) {
   let movieList: MovieType[];
   let totalItems: number = 0;
 
-  if (current === "NewMovie") {
+  if (current === 'NewMovie') {
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/Movies?sortBy=produceddate&page=${page}&eachPage=10`,
         {
           next: { revalidate: 259200 },
-        },
+        }
       );
 
-      totalItems = Number(res.headers.get("x-total-page"));
+      totalItems = Number(res.headers.get('x-total-page'));
       movieList = await res.json();
     } catch (error) {
       console.log(error);
-      throw new Error("Failed to fetch New Movie List!");
+      throw new Error('Failed to fetch New Movie List!');
     }
-  } else if (current === "Upcoming") {
+  } else if (current === 'Upcoming') {
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/Movies?status=Upcoming&sortBy=produceddate&page=${page}&eachPage=10`,
         {
           next: { revalidate: 259200 },
-        },
+        }
       );
 
-      totalItems = Number(res.headers.get("x-total-page"));
+      totalItems = Number(res.headers.get('x-total-page'));
       movieList = await res.json();
     } catch (error) {
       console.log(error);
-      throw new Error("Failed to fetch New Movie List!");
+      throw new Error('Failed to fetch New Movie List!');
     }
   } else {
     try {
@@ -45,14 +45,14 @@ export default async function Feature(props: any) {
         `${process.env.NEXT_PUBLIC_API_URL}/Movies?filterBy=feature&key=${featureId}&status=All&sortBy=produceddate&page=${page}&eachPage=10`,
         {
           next: { revalidate: 259200 },
-        },
+        }
       );
 
-      totalItems = Number(res.headers.get("x-total-page"));
+      totalItems = Number(res.headers.get('x-total-page'));
       movieList = await res.json();
     } catch (error) {
       console.log(error);
-      throw new Error("Failed to fetch Feature Movie List!");
+      throw new Error('Failed to fetch Feature Movie List!');
     }
   }
 

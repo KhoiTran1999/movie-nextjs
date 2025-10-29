@@ -1,11 +1,11 @@
-import TopPageMovie from "@/components/homePage/topPageMovie/TopPageMovie";
-import { CategoryType } from "@/types";
-import CardSliderCinemaMovie from "@/components/homePage/cardSlider/cardSliderFeature/CardSliderCinemaMovie";
-import CardSliderNewMovie from "@/components/homePage/cardSlider/cardSliderFeature/CardSliderNewMovie";
-import CardSliderStandalone from "@/components/homePage/cardSlider/cardSliderFeature/CardSliderStandalone";
-import CardSliderTVSeriesMovie from "@/components/homePage/cardSlider/cardSliderFeature/CardSliderTVSeriesMovie";
-import CardSliderUpcomingMovie from "@/components/homePage/cardSlider/cardSliderFeature/CardSliderUpcomingMovie";
-import CardSliderTop10Data from "@/components/homePage/cardSlider/cardSliderTop10/CardSliderTop10Data";
+import TopPageMovie from '@/components/homePage/topPageMovie/TopPageMovie';
+import { CategoryType } from '@/types';
+import CardSliderCinemaMovie from '@/components/homePage/cardSlider/cardSliderFeature/CardSliderCinemaMovie';
+import CardSliderNewMovie from '@/components/homePage/cardSlider/cardSliderFeature/CardSliderNewMovie';
+import CardSliderStandalone from '@/components/homePage/cardSlider/cardSliderFeature/CardSliderStandalone';
+import CardSliderTVSeriesMovie from '@/components/homePage/cardSlider/cardSliderFeature/CardSliderTVSeriesMovie';
+import CardSliderUpcomingMovie from '@/components/homePage/cardSlider/cardSliderFeature/CardSliderUpcomingMovie';
+import CardSliderTop10Data from '@/components/homePage/cardSlider/cardSliderTop10/CardSliderTop10Data';
 
 interface previewMovieProps {
   description: string;

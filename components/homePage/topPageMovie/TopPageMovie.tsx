@@ -1,16 +1,16 @@
-import { Rubik_Dirt } from "next/font/google";
-import Link from "next/link";
-import VideoPlayer from "./component/VideoPlayer";
-import { InfoCircleOutlined } from "@ant-design/icons";
-import { CategoryType } from "@/types";
-import { useMemo } from "react";
-import slugify from "slugify";
-import { Dot } from "@/public/dot";
+import { Rubik_Dirt } from 'next/font/google';
+import Link from 'next/link';
+import VideoPlayer from './component/VideoPlayer';
+import { InfoCircleOutlined } from '@ant-design/icons';
+import { CategoryType } from '@/types';
+import { useMemo } from 'react';
+import slugify from 'slugify';
+import { Dot } from '@/public/dot';
 
 const rubik = Rubik_Dirt({
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal"],
+  subsets: ['latin'],
+  weight: ['400'],
+  style: ['normal'],
 });
 
 interface previewMovieProps {
@@ -30,14 +30,11 @@ interface TopPageMovieProps {
 
 const TopPageMovie = async ({ previewMovie }: TopPageMovieProps) => {
   const slug = useMemo(() => {
-    return slugify(
-      `${previewMovie?.englishName}-${previewMovie?.vietnamName}`,
-      {
-        lower: true,
-        locale: "vi",
-        strict: true,
-      },
-    );
+    return slugify(`${previewMovie?.englishName}-${previewMovie?.vietnamName}`, {
+      lower: true,
+      locale: 'vi',
+      strict: true,
+    });
   }, []);
   return (
     <div className="relative animate-opacityAnimated overflow-hidden text-white">
@@ -62,10 +59,7 @@ const TopPageMovie = async ({ previewMovie }: TopPageMovieProps) => {
                 (val: { categoryId: number; name: string }, idx: number) => {
                   if (idx + 1 < previewMovie?.categories.length) {
                     return (
-                      <li
-                        className="mr-2 flex items-center"
-                        key={val.categoryId}
-                      >
+                      <li className="mr-2 flex items-center" key={val.categoryId}>
                         <span className="mr-2 cursor-pointer text-[12px] hover:text-[#E50914] sm:text-sm">
                           {val.name}
                         </span>
@@ -80,7 +74,7 @@ const TopPageMovie = async ({ previewMovie }: TopPageMovieProps) => {
                       </span>
                     </li>
                   );
-                },
+                }
               )}
             </ul>
             <div className="order-4 mt-0 flex md:order-5 md:mt-4">

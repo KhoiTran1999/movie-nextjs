@@ -1,13 +1,13 @@
-"use server";
+'use server';
 
-import CardSlider from "../CardSlider";
+import CardSlider from '../CardSlider';
 
-import { Tv } from "@/public/tv";
+import { Tv } from '@/public/tv';
 
 const CardSliderTVSeriesMovie = async () => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/Movies?filterBy=feature&key=3&sortBy=produceddate&page=1&eachPage=10`,
-    { next: { revalidate: 259200 } },
+    { next: { revalidate: 259200 } }
   );
   const TVSeriesMovieList = await res.json();
 

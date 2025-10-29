@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { Select, Spin, Modal } from "antd";
-import { CaretRightFilled } from "@ant-design/icons";
-import { Rubik_Dirt } from "next/font/google";
-import { getSeasonListAction } from "@/components/actions";
-import WatchModal from "../watchModal/WatchModal";
+import { useEffect, useState } from 'react';
+import { Select, Spin, Modal } from 'antd';
+import { CaretRightFilled } from '@ant-design/icons';
+import { Rubik_Dirt } from 'next/font/google';
+import { getSeasonListAction } from '@/components/actions';
+import WatchModal from '../watchModal/WatchModal';
 
 const rubik = Rubik_Dirt({
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal"],
+  subsets: ['latin'],
+  weight: ['400'],
+  style: ['normal'],
 });
 
 type movieProps = {
@@ -50,8 +50,8 @@ const EpisodeModal = ({ movieId, totalSeasons, englishName }: movieProps) => {
   const [watchMovie, setWatchMovie] = useState<watchMovieType>({
     episodeNumber: 1,
     seasonNumber: 1,
-    name: "",
-    video: "",
+    name: '',
+    video: '',
   });
 
   useEffect(() => {
@@ -65,11 +65,7 @@ const EpisodeModal = ({ movieId, totalSeasons, englishName }: movieProps) => {
     fetchAPI();
   }, [seasonNumber]);
 
-  const hanldeClickEpisode = (
-    episodeNumber: number,
-    name: string,
-    video: string,
-  ) => {
+  const hanldeClickEpisode = (episodeNumber: number, name: string, video: string) => {
     setIsWatchModalOpen(true);
     setWatchMovie({ episodeNumber, seasonNumber, name, video });
   };
@@ -83,11 +79,7 @@ const EpisodeModal = ({ movieId, totalSeasons, englishName }: movieProps) => {
       <div className=" flex items-center justify-between">
         <h3 className="text-2xl">Episode</h3>
         {totalSeasons > 1 ? (
-          <Select
-            defaultValue={1}
-            onChange={(val: number) => setSeasonNumber(val)}
-            size="large"
-          />
+          <Select defaultValue={1} onChange={(val: number) => setSeasonNumber(val)} size="large" />
         ) : (
           <h3 className="text-2xl">{totalSeasons > 1 && season?.name}</h3>
         )}
@@ -102,32 +94,26 @@ const EpisodeModal = ({ movieId, totalSeasons, englishName }: movieProps) => {
             {season?.episodes.map((val: episodeProps, idx) => (
               <li
                 key={idx}
-                onClick={() =>
-                  hanldeClickEpisode(val.episodeNumber, val.name, val.video)
-                }
+                onClick={() => hanldeClickEpisode(val.episodeNumber, val.name, val.video)}
                 className="group relative mb-4 flex cursor-pointer items-center justify-between rounded-md bg-[#605f5f96] px-5 py-2 transition-all hover:scale-105"
               >
-                <span className={`${rubik.className} text-4xl font-bold`}>
-                  {val.episodeNumber}
-                </span>
-                <span className="mx-4 max-w-[320px] text-xl font-semibold">
-                  {val.name}
-                </span>
+                <span className={`${rubik.className} text-4xl font-bold`}>{val.episodeNumber}</span>
+                <span className="mx-4 max-w-[320px] text-xl font-semibold">{val.name}</span>
                 <CaretRightFilled className="translate-x-[-100px] text-2xl opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100" />
               </li>
             ))}
             <Modal
               open={isWatchModalOpen}
               centered
-              width={"70svw"}
+              width={'70svw'}
               onCancel={handleCancelWatch}
               footer={null}
-              styles={{ body: { paddingTop: "20px", paddingBottom: "10px" } }}
+              styles={{ body: { paddingTop: '20px', paddingBottom: '10px' } }}
               destroyOnClose={!isWatchModalOpen}
               title={`${
                 !watchMovie.name
-                  ? englishName + " - Episode " + watchMovie.episodeNumber
-                  : watchMovie.name + " - Episode " + watchMovie.episodeNumber
+                  ? englishName + ' - Episode ' + watchMovie.episodeNumber
+                  : watchMovie.name + ' - Episode ' + watchMovie.episodeNumber
               } - Season ${seasonNumber}`}
             >
               <WatchModal

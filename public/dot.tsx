@@ -13,10 +13,7 @@ export const Dot = (props: any) => {
     >
       <defs>
         <clipPath id="6a5541b212">
-          <path
-            d="M 0 0 L 747.75 0 L 747.75 747.75 L 0 747.75 Z M 0 0 "
-            clipRule="nonzero"
-          />
+          <path d="M 0 0 L 747.75 0 L 747.75 747.75 L 0 747.75 Z M 0 0 " clipRule="nonzero" />
         </clipPath>
       </defs>
       <g clipPath="url(#6a5541b212)">

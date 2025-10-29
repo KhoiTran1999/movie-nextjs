@@ -1,13 +1,13 @@
-import { Form, Input, Button, Modal, Popconfirm, Tooltip, Steps } from "antd";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import InformationForm from "./Form/formCreateMovie/InformationForm";
-import VideoForm from "./Form/formCreateMovie/videoForm";
-import { isLoadingAIButtonSelector } from "@/utils/redux/selector";
-import { setIsCancelButtonModal } from "@/utils/redux/slices/toggle/IsCancelButtonModalSlice";
-import ActorForm from "./Form/formCreateMovie/actorForm";
-import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
-import { InfoCircleOutlined } from "@ant-design/icons";
+import { Form, Input, Button, Modal, Popconfirm, Tooltip, Steps } from 'antd';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import InformationForm from './Form/formCreateMovie/InformationForm';
+import VideoForm from './Form/formCreateMovie/videoForm';
+import { isLoadingAIButtonSelector } from '@/utils/redux/selector';
+import { setIsCancelButtonModal } from '@/utils/redux/slices/toggle/IsCancelButtonModalSlice';
+import ActorForm from './Form/formCreateMovie/actorForm';
+import { setMovieId } from '@/utils/redux/slices/data/movieIdSlice';
+import { InfoCircleOutlined } from '@ant-design/icons';
 
 interface CreateMovieModalType {
   isModalOpen: boolean;
@@ -15,39 +15,26 @@ interface CreateMovieModalType {
   handleCancel: Function;
 }
 
-const CreateMovieModal = ({
-  isModalOpen,
-  handleOk,
-  handleCancel,
-}: CreateMovieModalType) => {
+const CreateMovieModal = ({ isModalOpen, handleOk, handleCancel }: CreateMovieModalType) => {
   const dispath = useDispatch();
 
   const [current, setCurrent] = useState<number>(0);
   const [clickAIButton, setClickAIButton] = useState<number>(0);
-  const [isLoadingNextButton, setIsLoadingNextButton] =
-    useState<boolean>(false);
+  const [isLoadingNextButton, setIsLoadingNextButton] = useState<boolean>(false);
   const isLoadingAIButton = useSelector(isLoadingAIButtonSelector);
 
   return (
     <Modal
-      width={current >= 2 ? "800px" : "530px"}
+      width={current >= 2 ? '800px' : '530px'}
       title={
-        <Steps current={current} key={"step"}>
+        <Steps current={current} key={'step'}>
+          <Steps.Step key={'Information'} title="Information" icon={<InfoCircleOutlined />} />
           <Steps.Step
-            key={"Information"}
-            title="Information"
-            icon={<InfoCircleOutlined />}
-          />
-          <Steps.Step
-            key={"Video"}
+            key={'Video'}
             title="Video"
             icon={<i className="fa-light fa-clapperboard-play"></i>}
           />
-          <Steps.Step
-            key={"Actor"}
-            title="Actor"
-            icon={<i className="fa-light fa-user"></i>}
-          />
+          <Steps.Step key={'Actor'} title="Actor" icon={<i className="fa-light fa-user"></i>} />
         </Steps>
       }
       open={isModalOpen}
@@ -59,7 +46,7 @@ const CreateMovieModal = ({
         <>
           {current === 0 && (
             <Tooltip
-              key={"AICreateMovie"}
+              key={'AICreateMovie'}
               title={
                 <p>
                   AI will help you to create a movie.
@@ -82,7 +69,7 @@ const CreateMovieModal = ({
           )}
         </>,
         <Popconfirm
-          key={"Cancel"}
+          key={'Cancel'}
           title="Cancel create movie"
           description="Are you sure to cancel this movie? All this data will be lost"
           onConfirm={() => {
@@ -90,14 +77,10 @@ const CreateMovieModal = ({
             dispath(setIsCancelButtonModal());
             setCurrent(0);
             setClickAIButton(0);
-            dispath(setMovieId(""));
+            dispath(setMovieId(''));
           }}
         >
-          <Button
-            disabled={isLoadingAIButton || isLoadingNextButton}
-            key="back"
-            type="text"
-          >
+          <Button disabled={isLoadingAIButton || isLoadingNextButton} key="back" type="text">
             Cancel
           </Button>
         </Popconfirm>,

@@ -13,10 +13,7 @@ export const Key = (props: any) => {
     >
       <defs>
         <clipPath id="2404a09254">
-          <path
-            d="M 4 9 L 747 9 L 747 707 L 4 707 Z M 4 9 "
-            clipRule="nonzero"
-          />
+          <path d="M 4 9 L 747 9 L 747 707 L 4 707 Z M 4 9 " clipRule="nonzero" />
         </clipPath>
         <clipPath id="ec0cdaeeeb">
           <path

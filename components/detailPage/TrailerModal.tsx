@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { MovieDetailType } from "@/types";
-import { InfoCircleOutlined } from "@ant-design/icons";
-import { Modal } from "antd";
-import { Suspense, useState } from "react";
-import ReactPlayer from "react-player/youtube";
+import { MovieDetailType } from '@/types';
+import { InfoCircleOutlined } from '@ant-design/icons';
+import { Modal } from 'antd';
+import { Suspense, useState } from 'react';
+import ReactPlayer from 'react-player/youtube';
 
 interface TrailerModalPage {
   movieDetail: MovieDetailType;
@@ -31,13 +31,13 @@ export const TrailerModal = (props: TrailerModalPage) => {
       >
         <InfoCircleOutlined />
         <span className="ml-3">Trailer</span>
-      </button>{" "}
+      </button>{' '}
       <Modal
         open={isTrailerModalOpen}
         centered
-        width={"70svw"}
+        width={'70svw'}
         footer={null}
-        styles={{ body: { paddingTop: "20px", paddingBottom: "10px" } }}
+        styles={{ body: { paddingTop: '20px', paddingBottom: '10px' } }}
         onCancel={handleCancelTrailer}
         destroyOnClose={!isTrailerModalOpen}
       >
@@ -48,9 +48,9 @@ export const TrailerModal = (props: TrailerModalPage) => {
               playing
               controls
               loop
-              width={"100%"}
-              height={"100%"}
-              style={{ backgroundColor: "black" }}
+              width={'100%'}
+              height={'100%'}
+              style={{ backgroundColor: 'black' }}
               id="iframeTrailerVideo"
             />
           </Suspense>

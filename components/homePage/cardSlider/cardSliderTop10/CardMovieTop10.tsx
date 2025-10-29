@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import Link from "next/link";
-import { useMemo } from "react";
-import slugify from "slugify";
+import Image from 'next/image';
+import Link from 'next/link';
+import { useMemo } from 'react';
+import slugify from 'slugify';
 
 type movieProps = {
   movieId: string;
@@ -19,21 +19,13 @@ type movieProps = {
 };
 
 const CardMovieTop10 = (props: movieProps) => {
-  const {
-    movieId,
-    time,
-    vietnamName,
-    englishName,
-    thumbnail,
-    totalSeasons,
-    totalEpisodes,
-    idx,
-  } = props;
+  const { movieId, time, vietnamName, englishName, thumbnail, totalSeasons, totalEpisodes, idx } =
+    props;
 
   const slug = useMemo(() => {
     return slugify(`${englishName}-${vietnamName}`, {
       lower: true,
-      locale: "vi",
+      locale: 'vi',
       strict: true,
     });
   }, []);
@@ -57,9 +49,7 @@ const CardMovieTop10 = (props: movieProps) => {
         </div>
       </div>
 
-      <div
-        className={`relative w-[50%] cursor-pointer overflow-hidden rounded-md`}
-      >
+      <div className={`relative w-[50%] cursor-pointer overflow-hidden rounded-md`}>
         <div className="relative aspect-[60/100] w-full">
           <Image
             src={thumbnail}

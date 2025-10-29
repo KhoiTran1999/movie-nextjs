@@ -1,7 +1,7 @@
-"use client"; // Error components must be Client Components
+'use client'; // Error components must be Client Components
 
-import { useEffect } from "react";
-import { Button, Result } from "antd";
+import { useEffect } from 'react';
+import { Button, Result } from 'antd';
 
 export default function Error({
   error,
@@ -16,13 +16,11 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="w-[100svw] h-[100svh] flex justify-center items-center">
+    <div className="flex h-[100svh] w-[100svw] items-center justify-center">
       <Result
         status="500"
         title="500"
-        subTitle={
-          <span className="text-white">Sorry, something went wrong.</span>
-        }
+        subTitle={<span className="text-white">Sorry, something went wrong.</span>}
         extra={
           <Button onClick={() => reset()} type="primary">
             Reload page

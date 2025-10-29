@@ -1,6 +1,6 @@
-import ManageMovies from "@/components/adminPage/content/ManageMovies/ManageMovies";
-import { CategoryType, MovieAntdTableType, MovieType } from "@/types";
-import { revalidatePath } from "next/cache";
+import ManageMovies from '@/components/adminPage/content/ManageMovies/ManageMovies';
+import { CategoryType, MovieAntdTableType, MovieType } from '@/types';
+import { revalidatePath } from 'next/cache';
 
 export default async function page(props: any) {
   const LIMIT = 5;
@@ -9,8 +9,7 @@ export default async function page(props: any) {
   const filterData = (arr: MovieType[]): MovieAntdTableType[] => {
     const filteredData = arr.map((val: MovieType) => {
       const feature = val.feature?.name;
-      const categories =
-        val.categories?.map((cat: CategoryType) => cat.name) ?? [];
+      const categories = val.categories?.map((cat: CategoryType) => cat.name) ?? [];
       const newObj = {
         movieId: val.movieId,
         thumbnail: val.thumbnail,
@@ -28,15 +27,15 @@ export default async function page(props: any) {
     return filteredData;
   };
 
-  revalidatePath("admin/manageMovies");
+  revalidatePath('admin/manageMovies');
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/Movies?sortBy=createddate&page=${page}&eachPage=${LIMIT}&status=All`,
-    { cache: "no-store" },
+    { cache: 'no-store' }
   );
 
   const data = await res.json();
 
-  const totalItems = Number(res.headers.get("x-total-element"));
+  const totalItems = Number(res.headers.get('x-total-element'));
 
   return (
     <ManageMovies

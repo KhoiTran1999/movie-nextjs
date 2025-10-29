@@ -1,13 +1,13 @@
-"use server";
+'use server';
 
-import CardSlider from "../CardSlider";
+import CardSlider from '../CardSlider';
 
-import { Movie } from "@/public/movie";
+import { Movie } from '@/public/movie';
 
 const CardSliderStandalone = async () => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/Movies?filterBy=feature&key=2&sortBy=produceddate&page=1&eachPage=10`,
-    { next: { revalidate: 259200 } },
+    { next: { revalidate: 259200 } }
   );
   const standaloneMovieList = await res.json();
 

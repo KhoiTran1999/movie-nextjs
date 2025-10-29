@@ -1,24 +1,24 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import NavigationFeature from "./NavigationFeature";
-import User from "./User";
-import { SuspenseComp } from "@/components/wrapper/SuspenseComp";
-import { usePathname } from "next/navigation";
-import { Logo } from "@/public/logo";
-import { Search } from "@/public/search";
+import Link from 'next/link';
+import NavigationFeature from './NavigationFeature';
+import User from './User';
+import { SuspenseComp } from '@/components/wrapper/SuspenseComp';
+import { usePathname } from 'next/navigation';
+import { Logo } from '@/public/logo';
+import { Search } from '@/public/search';
 
 const NavigationMovie = () => {
   const pathname = usePathname();
 
   return (
     <>
-      {!pathname.includes("admin") && (
+      {!pathname.includes('admin') && (
         <div
           className={`${
             true
-              ? "bg-gradient-to-b from-black to-transparent backdrop-blur-none"
-              : "bg-black/20 backdrop-blur-lg"
+              ? 'bg-gradient-to-b from-black to-transparent backdrop-blur-none'
+              : 'bg-black/20 backdrop-blur-lg'
           } fixed left-0 top-0 z-[100] w-full px-4 pt-1 transition-all lg:px-12`}
         >
           <div className="m-auto flex w-full max-w-[1200px] items-center justify-between ">
@@ -31,7 +31,7 @@ const NavigationMovie = () => {
               </SuspenseComp>
             </div>
             <div className="flex items-center justify-end pr-5">
-              <Link href={"/search"} aria-label="Search Page">
+              <Link href={'/search'} aria-label="Search Page">
                 <Search />
               </Link>
               <User />

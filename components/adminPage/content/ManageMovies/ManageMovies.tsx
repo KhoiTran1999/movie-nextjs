@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import { Button, Table, Tag, Popconfirm, message, Tooltip } from "antd";
-import { useEffect, useState } from "react";
+import { Button, Table, Tag, Popconfirm, message, Tooltip } from 'antd';
+import { useEffect, useState } from 'react';
 
-import { categoryItems } from "@/constant/categories";
-import CreateMovieModal from "./CreateMovieModal";
-import { useDispatch } from "react-redux";
-import UpdateMovieModal from "./UpdateMovieModal";
-import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { MovieAntdTableType } from "@/types";
-import { deleteMovieAction, revalidatePathAction } from "@/components/actions";
-import Image from "next/image";
-import { PenSquare } from "@/public/penSquare";
-import { Trash } from "@/public/trash";
+import { categoryItems } from '@/constant/categories';
+import CreateMovieModal from './CreateMovieModal';
+import { useDispatch } from 'react-redux';
+import UpdateMovieModal from './UpdateMovieModal';
+import { setMovieId } from '@/utils/redux/slices/data/movieIdSlice';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { MovieAntdTableType } from '@/types';
+import { deleteMovieAction, revalidatePathAction } from '@/components/actions';
+import Image from 'next/image';
+import { PenSquare } from '@/public/penSquare';
+import { Trash } from '@/public/trash';
 
 interface IProps {
   movieList: MovieAntdTableType[] | [];
@@ -73,15 +73,10 @@ const ManageMovies = (props: IProps) => {
     setIsUpdateModalOpen(true);
   };
 
-  const handleTableChange = (
-    pagination: any,
-    filter: any,
-    sorter: any,
-    extra: any,
-  ) => {
+  const handleTableChange = (pagination: any, filter: any, sorter: any, extra: any) => {
     if (pagination && pagination.current) {
-      const params = new URLSearchParams(searchParams);
-      params.set("page", pagination.current);
+      const params = new URLSearchParams(searchParams.toString());
+      params.set('page', pagination.current);
       replace(`${pathname}?${params.toString()}`);
       setIsFetching(true);
     }
@@ -90,10 +85,10 @@ const ManageMovies = (props: IProps) => {
   const handleDelete = async (value: any) => {
     setDeleteLoadingState(true);
     const res = await deleteMovieAction(value);
-    await revalidatePathAction("admin/manageMovies");
+    await revalidatePathAction('admin/manageMovies');
     setDeleteLoadingState(false);
-    if (res) return message.success("Movie deleted successfully!");
-    message.error("Failed to delete movie!");
+    if (res) return message.success('Movie deleted successfully!');
+    message.error('Failed to delete movie!');
   };
 
   return (
@@ -152,16 +147,14 @@ const ManageMovies = (props: IProps) => {
           dataIndex="time"
           key="time"
           render={(time, _, idx) => (
-            <span key={idx}>{time ? `${time} minutes` : "no duration"}</span>
+            <span key={idx}>{time ? `${time} minutes` : 'no duration'}</span>
           )}
         />
         <Column
           title="Mark"
           dataIndex="mark"
           key="mark"
-          render={(mark, _, idx) => (
-            <span key={idx}>{mark ? `${mark}/10` : "unrated"}</span>
-          )}
+          render={(mark, _, idx) => <span key={idx}>{mark ? `${mark}/10` : 'unrated'}</span>}
         />
         <Column title="Status" dataIndex="status" key="status" />
         <Column title="Feature" dataIndex="feature" key="feature" />
@@ -172,7 +165,7 @@ const ManageMovies = (props: IProps) => {
           render={(tags: string[], _, idx) => (
             <div key={idx}>
               {tags.map((tag, idx) => {
-                let color = "blue";
+                let color = 'blue';
                 categoryItems.some((val) => {
                   if (tag === val.name) {
                     color = val.color;
@@ -181,7 +174,7 @@ const ManageMovies = (props: IProps) => {
                   return false;
                 });
                 return (
-                  <Tag style={{ marginTop: "5px" }} color={color} key={idx}>
+                  <Tag style={{ marginTop: '5px' }} color={color} key={idx}>
                     {tag}
                   </Tag>
                 );
@@ -224,11 +217,7 @@ const ManageMovies = (props: IProps) => {
         handleOkUpdateModal={handleOkUpdateModal}
         handleCancelUpdateModal={handleCancelUpdateModal}
       />
-      <CreateMovieModal
-        isModalOpen={isModalOpen}
-        handleOk={handleOk}
-        handleCancel={handleCancel}
-      />
+      <CreateMovieModal isModalOpen={isModalOpen} handleOk={handleOk} handleCancel={handleCancel} />
     </div>
   );
 };

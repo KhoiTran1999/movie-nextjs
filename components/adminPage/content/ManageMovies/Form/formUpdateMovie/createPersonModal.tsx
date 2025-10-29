@@ -1,20 +1,10 @@
-import {
-  Button,
-  DatePicker,
-  Form,
-  Input,
-  Modal,
-  Popconfirm,
-  Select,
-  Upload,
-  message,
-} from "antd";
-import type { RcFile } from "antd/es/upload/interface";
-import { PlusOutlined } from "@ant-design/icons";
-import { useEffect, useState } from "react";
-import moment from "moment";
-import { useDispatch } from "react-redux";
-import { setPersonList } from "@/utils/redux/slices/data/personListSlice";
+import { Button, DatePicker, Form, Input, Modal, Popconfirm, Select, Upload, message } from 'antd';
+import type { RcFile } from 'antd/es/upload/interface';
+import { PlusOutlined } from '@ant-design/icons';
+import { useEffect, useState } from 'react';
+import moment from 'moment';
+import { useDispatch } from 'react-redux';
+import { setPersonList } from '@/utils/redux/slices/data/personListSlice';
 
 interface CreatePersonModalType {
   isOpenCreatePersonModal: boolean;
@@ -45,16 +35,13 @@ const CreatePersonModal = ({
 
   const [loadingThumnail, setLoadingThumnail] = useState(false);
   const [imageUrl, setImageUrl] = useState<any>();
-  const [isLoadingCreateButton, setIsLoadingCreateButton] =
-    useState<boolean>(false);
+  const [isLoadingCreateButton, setIsLoadingCreateButton] = useState<boolean>(false);
   const [nationOption, setNationOption] = useState<[]>([]);
 
   //Call Api Feature, Category-----------------------
   useEffect(() => {
     const fetchApi = async () => {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}nations?page=0`,
-      );
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}nations?page=0`);
       const data = await res.json();
       const newNationOption = data.map((val: NationType) => ({
         value: val.nationId,
@@ -68,14 +55,14 @@ const CreatePersonModal = ({
   //Message when created movie
   const success = (text: any) => {
     messageApi.open({
-      type: "success",
+      type: 'success',
       content: text,
     });
   };
 
   const errorRes = (error: any) => {
     messageApi.open({
-      type: "error",
+      type: 'error',
       content: error,
     });
   };
@@ -83,14 +70,14 @@ const CreatePersonModal = ({
   //Upload Thumbnail----------------------
 
   const beforeUpload = (file: RcFile) => {
-    const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
     if (!isJpgOrPng) {
-      message.error("You can only upload JPG/PNG file!");
+      message.error('You can only upload JPG/PNG file!');
       setLoadingThumnail(true);
     }
     const isLt2M = file.size / 1024 / 1024 < 2;
     if (!isLt2M) {
-      message.error("Image must smaller than 2MB!");
+      message.error('Image must smaller than 2MB!');
       setLoadingThumnail(true);
     }
 
@@ -106,7 +93,7 @@ const CreatePersonModal = ({
   };
 
   const uploadButton = (
-    <button style={{ border: 0, background: "none" }} type="button">
+    <button style={{ border: 0, background: 'none' }} type="button">
       <PlusOutlined />
       <div style={{ marginTop: 8 }}>Upload</div>
     </button>
@@ -116,7 +103,7 @@ const CreatePersonModal = ({
   //Turn of the day of the future when choose Produced Date
   const disabledDate = (current: any) => {
     // Disable dates before today
-    return current && current > moment().endOf("day");
+    return current && current > moment().endOf('day');
   };
 
   const onFinish = async (values: FieldType) => {
@@ -132,15 +119,15 @@ const CreatePersonModal = ({
       setIsLoadingCreateButton(true);
 
       await fetch(`${process.env.NEXT_PUBLIC_API_URL}/Person`, {
-        method: "POST",
-        headers: { "Content-Type": "multipart/form-data" },
+        method: 'POST',
+        headers: { 'Content-Type': 'multipart/form-data' },
         body: JSON.stringify(data),
       });
 
       try {
         //update personList
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/Persons?sortBy=CreatedDate&page=0`,
+          `${process.env.NEXT_PUBLIC_API_URL}/Persons?sortBy=CreatedDate&page=0`
         );
         const data = await res.json();
         dispatch(
@@ -148,15 +135,15 @@ const CreatePersonModal = ({
             data.map((val: any, idx: number) => ({
               ...val,
               key: idx,
-            })),
-          ),
+            }))
+          )
         );
       } catch (error) {
         console.log(error);
-        errorRes("Failed to get personList!");
+        errorRes('Failed to get personList!');
       }
 
-      success("Create Person successfully!");
+      success('Create Person successfully!');
       setTimeout(() => {
         setIsLoadingCreateButton(false);
         setIsOpenCreatePersonModal(false);
@@ -166,7 +153,7 @@ const CreatePersonModal = ({
     } catch (error) {
       setIsLoadingCreateButton(false);
       console.log(error);
-      errorRes("Failed to create person!");
+      errorRes('Failed to create person!');
     }
   };
 
@@ -184,7 +171,7 @@ const CreatePersonModal = ({
         open={isOpenCreatePersonModal}
         footer={[
           <Popconfirm
-            key={"Cancel"}
+            key={'Cancel'}
             title="Cancel create movie"
             description="Are you sure to cancel Add Person? All this data will be lost"
             onConfirm={() => {
@@ -209,16 +196,16 @@ const CreatePersonModal = ({
       >
         <Form
           form={form}
-          labelCol={{ span: 8, flex: "110px" }}
+          labelCol={{ span: 8, flex: '110px' }}
           labelAlign="right"
           labelWrap
           // wrapperCol={{ span: 14 }}
           layout="horizontal"
-          style={{ marginTop: "20px" }}
+          style={{ marginTop: '20px' }}
           onFinish={onFinish}
           onFinishFailed={(e) =>
             form.scrollToField(e.errorFields[0].name, {
-              behavior: "smooth",
+              behavior: 'smooth',
             })
           }
           id="createPerson"
@@ -230,15 +217,15 @@ const CreatePersonModal = ({
             rules={[
               {
                 required: true,
-                message: "This field is required.",
+                message: 'This field is required.',
               },
               {
                 min: 2,
-                message: "At least 2 letters",
+                message: 'At least 2 letters',
               },
               {
                 max: 99,
-                message: "Maximum 100 letters",
+                message: 'Maximum 100 letters',
               },
             ]}
           >
@@ -269,18 +256,18 @@ const CreatePersonModal = ({
             validateDebounce={1000}
             label="Role"
             name="Role"
-            rules={[{ required: true, message: "Please enter Role" }]}
-            initialValue={"ACTOR"}
+            rules={[{ required: true, message: 'Please enter Role' }]}
+            initialValue={'ACTOR'}
           >
             <Select
               options={[
                 {
-                  value: "ACTOR",
-                  label: "Actor",
+                  value: 'ACTOR',
+                  label: 'Actor',
                 },
                 {
-                  value: "PRODUCER",
-                  label: "Producer",
+                  value: 'PRODUCER',
+                  label: 'Producer',
                 },
               ]}
               className="inputCustom"
@@ -289,11 +276,7 @@ const CreatePersonModal = ({
             />
           </Form.Item>
 
-          <Form.Item<FieldType>
-            validateDebounce={1000}
-            label="Thumbnail"
-            name="Thumbnail"
-          >
+          <Form.Item<FieldType> validateDebounce={1000} label="Thumbnail" name="Thumbnail">
             <Upload
               name="upload"
               listType="picture-card"
@@ -304,20 +287,16 @@ const CreatePersonModal = ({
               disabled={isLoadingCreateButton}
             >
               {imageUrl ? (
-                <img src={imageUrl} alt="avatar" style={{ width: "100%" }} />
+                <img src={imageUrl} alt="avatar" style={{ width: '100%' }} />
               ) : (
                 uploadButton
               )}
             </Upload>
           </Form.Item>
 
-          <Form.Item<FieldType>
-            validateDebounce={1000}
-            label="Birthday"
-            name="DoB"
-          >
+          <Form.Item<FieldType> validateDebounce={1000} label="Birthday" name="DoB">
             <DatePicker
-              format={"YYYY/MM/DD"}
+              format={'YYYY/MM/DD'}
               placeholder="Pick a date"
               disabledDate={disabledDate}
               className="inputCustom"

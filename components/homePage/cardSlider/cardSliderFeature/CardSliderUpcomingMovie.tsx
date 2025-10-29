@@ -1,13 +1,13 @@
-"use server";
+'use server';
 
-import CardSlider from "../CardSlider";
+import CardSlider from '../CardSlider';
 
-import { Upcoming } from "@/public/upcoming";
+import { Upcoming } from '@/public/upcoming';
 
 const CardSliderUpcomingMovie = async () => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/Movies?status=Upcoming&sortBy=produceddate&page=1&eachPage=10`,
-    { next: { revalidate: 259200 } },
+    { next: { revalidate: 259200 } }
   );
   const UpcomingMovieList = await res.json();
 

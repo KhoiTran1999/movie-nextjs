@@ -13,10 +13,7 @@ export const Play = (props: any) => {
     >
       <defs>
         <clipPath id="707cc4053c">
-          <path
-            d="M 93.75 0 L 656.25 0 L 656.25 750 L 93.75 750 Z M 93.75 0 "
-            clipRule="nonzero"
-          />
+          <path d="M 93.75 0 L 656.25 0 L 656.25 750 L 93.75 750 Z M 93.75 0 " clipRule="nonzero" />
         </clipPath>
       </defs>
       <g clipPath="url(#707cc4053c)">

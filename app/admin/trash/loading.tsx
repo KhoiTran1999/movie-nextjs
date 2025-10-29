@@ -1,5 +1,5 @@
-import { Table } from "antd";
-import Column from "antd/es/table/Column";
+import { Table } from 'antd';
+import Column from 'antd/es/table/Column';
 
 export default function Loading() {
   return (

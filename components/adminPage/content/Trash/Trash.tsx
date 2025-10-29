@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { Button, Table, Tag, Popconfirm, message, Tooltip } from "antd";
-import { useEffect, useState } from "react";
+import { Button, Table, Tag, Popconfirm, message, Tooltip } from 'antd';
+import { useEffect, useState } from 'react';
 
-import { categoryItems } from "@/constant/categories";
-import { useDispatch } from "react-redux";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { MovieAntdTableType } from "@/types";
-import { restoreMovieAction, revalidatePathAction } from "@/components/actions";
-import Axios from "@/utils/axios";
-import Image from "next/image";
+import { categoryItems } from '@/constant/categories';
+import { useDispatch } from 'react-redux';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { MovieAntdTableType } from '@/types';
+import { restoreMovieAction, revalidatePathAction } from '@/components/actions';
+import Axios from '@/utils/axios';
+import Image from 'next/image';
 
 interface IProps {
   movieList: MovieAntdTableType[] | [];
@@ -42,15 +42,10 @@ const Trash = (props: IProps) => {
     }
   }, [movieList]);
 
-  const handleTableChange = (
-    pagination: any,
-    filter: any,
-    sorter: any,
-    extra: any,
-  ) => {
+  const handleTableChange = (pagination: any, filter: any, sorter: any, extra: any) => {
     if (pagination && pagination.current) {
       const params = new URLSearchParams(searchParams);
-      params.set("page", pagination.current);
+      params.set('page', pagination.current);
       replace(`${pathname}?${params.toString()}`);
       setIsFetching(true);
     }
@@ -61,24 +56,24 @@ const Trash = (props: IProps) => {
     const res = await restoreMovieAction(value);
     setisLoading(false);
     if (res) {
-      await revalidatePathAction("admin/manageMovies");
-      return message.success("Movie restored successfully!");
+      await revalidatePathAction('admin/manageMovies');
+      return message.success('Movie restored successfully!');
     }
-    message.error("Failed to restored movie!");
+    message.error('Failed to restored movie!');
   };
 
   const handleClearAll = async () => {
     try {
       setisLoading(true);
       const res = await Axios.delete(`Movies`, {
-        params: { status: "Deleted" },
+        params: { status: 'Deleted' },
       });
-      await revalidatePathAction("admin/trash");
-      message.success("All Movies are deleted successfully!");
+      await revalidatePathAction('admin/trash');
+      message.success('All Movies are deleted successfully!');
       setisLoading(false);
     } catch (error) {
       setisLoading(false);
-      message.error("Failed to clear all movie!");
+      message.error('Failed to clear all movie!');
     }
   };
 
@@ -89,7 +84,7 @@ const Trash = (props: IProps) => {
         <button
           onClick={handleClearAll}
           disabled={isLoading}
-          className={`${isLoading && "cursor-not-allowed text-gray-600"} group relative inline-flex items-center justify-start overflow-hidden rounded-2xl px-5 py-3 font-bold transition-all active:scale-95`}
+          className={`${isLoading && 'cursor-not-allowed text-gray-600'} group relative inline-flex items-center justify-start overflow-hidden rounded-2xl px-5 py-3 font-bold transition-all active:scale-95`}
         >
           <span className="absolute left-0 top-0 h-32 w-32 -translate-y-2 translate-x-12 rotate-45 bg-white opacity-[3%]"></span>
           <span className="absolute left-0 top-0 -mt-1 h-48 w-48 -translate-x-56 -translate-y-24 rotate-45 bg-white opacity-100 transition-all duration-500 ease-in-out group-hover:-translate-x-8"></span>
@@ -142,16 +137,14 @@ const Trash = (props: IProps) => {
           dataIndex="time"
           key="time"
           render={(time, _, idx) => (
-            <span key={idx}>{time ? `${time} minutes` : "no duration"}</span>
+            <span key={idx}>{time ? `${time} minutes` : 'no duration'}</span>
           )}
         />
         <Column
           title="Mark"
           dataIndex="mark"
           key="mark"
-          render={(mark, _, idx) => (
-            <span key={idx}>{mark ? `${mark}/10` : "unrated"}</span>
-          )}
+          render={(mark, _, idx) => <span key={idx}>{mark ? `${mark}/10` : 'unrated'}</span>}
         />
         <Column title="Status" dataIndex="status" key="status" />
         <Column title="Feature" dataIndex="feature" key="feature" />
@@ -162,7 +155,7 @@ const Trash = (props: IProps) => {
           render={(tags: string[], _, idx) => (
             <div key={idx}>
               {tags.map((tag, idx) => {
-                let color = "blue";
+                let color = 'blue';
                 categoryItems.some((val) => {
                   if (tag === val.name) {
                     color = val.color;
@@ -171,7 +164,7 @@ const Trash = (props: IProps) => {
                   return false;
                 });
                 return (
-                  <Tag style={{ marginTop: "5px" }} color={color} key={idx}>
+                  <Tag style={{ marginTop: '5px' }} color={color} key={idx}>
                     {tag}
                   </Tag>
                 );

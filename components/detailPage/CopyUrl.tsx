@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { Copy } from "@/public/copy";
-import { Tooltip, message } from "antd";
+import { Copy } from '@/public/copy';
+import { Tooltip, message } from 'antd';
 
 export const CopyUrl = () => {
   const handleCopyUrl = async () => {
@@ -9,10 +9,10 @@ export const CopyUrl = () => {
 
     try {
       await navigator.clipboard.writeText(url);
-      message.success("Copied");
+      message.success('Copied');
     } catch (error) {
       console.log(error);
-      message.error("Can not copy Link to clipboard!");
+      message.error('Can not copy Link to clipboard!');
     }
   };
 

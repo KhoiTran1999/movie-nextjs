@@ -1,12 +1,12 @@
-import { SignIn } from "@clerk/nextjs";
-import Image from "next/image";
+import { SignIn } from '@clerk/nextjs';
+import Image from 'next/image';
 
 export default function Page() {
   return (
     <div className="relative">
       <div className="absolute left-0 top-0 h-full w-full brightness-[0.3]">
         <Image
-          src={"/login-background.jpg"}
+          src={'/login-background.jpg'}
           alt="Thumbnail"
           fill
           priority

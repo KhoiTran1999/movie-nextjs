@@ -1,8 +1,8 @@
-"use client"; // Error components must be Client Components
+'use client'; // Error components must be Client Components
 
-import { useEffect } from "react";
-import { Button, Result } from "antd";
-import Link from "next/link";
+import { useEffect } from 'react';
+import { Button, Result } from 'antd';
+import Link from 'next/link';
 
 export default function Error({
   error,
@@ -21,11 +21,9 @@ export default function Error({
       <Result
         status="500"
         title="500"
-        subTitle={
-          <span className="text-white">Sorry, something went wrong.</span>
-        }
+        subTitle={<span className="text-white">Sorry, something went wrong.</span>}
         extra={
-          <Link href={"/"}>
+          <Link href={'/'}>
             <Button type="primary">Back home</Button>
           </Link>
         }

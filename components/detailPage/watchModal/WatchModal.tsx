@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { addViewerMovieAction } from "@/components/actions";
-import { useEffect } from "react";
+import { addViewerMovieAction } from '@/components/actions';
+import { useEffect } from 'react';
 
 type movieProps = {
   seasonNumber: number;
@@ -11,13 +11,7 @@ type movieProps = {
   movieId: string;
 };
 
-const WatchModal = ({
-  seasonNumber,
-  episodeNumber,
-  name,
-  video,
-  movieId,
-}: movieProps) => {
+const WatchModal = ({ seasonNumber, episodeNumber, name, video, movieId }: movieProps) => {
   useEffect(() => {
     const fetchApi = async () => {
       try {
@@ -37,7 +31,7 @@ const WatchModal = ({
         frameBorder="100"
         allowFullScreen
         title={`${name} - Episode ${episodeNumber} - Season ${seasonNumber}`}
-        style={{ borderRadius: "10px" }}
+        style={{ borderRadius: '10px' }}
         id="iframeVideo"
       ></iframe>
     </div>

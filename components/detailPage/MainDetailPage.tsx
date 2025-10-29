@@ -1,20 +1,20 @@
-import { Rubik_Dirt } from "next/font/google";
-import { StarFilled, FireFilled } from "@ant-design/icons";
-import { Tabs, Tooltip } from "antd";
-import { Actor } from "@/components/detailPage/actorList/Actor";
-import { MovieDetailType } from "@/types";
-import Image from "next/image";
-import { Plus } from "@/public/plus";
-import { Heart } from "@/public/heart";
-import { PLayModal } from "./PlayModal";
-import { TrailerModal } from "./TrailerModal";
-import { CopyUrl } from "./CopyUrl";
-import { More } from "./More";
+import { Rubik_Dirt } from 'next/font/google';
+import { StarFilled, FireFilled } from '@ant-design/icons';
+import { Tabs, Tooltip } from 'antd';
+import { Actor } from '@/components/detailPage/actorList/Actor';
+import { MovieDetailType } from '@/types';
+import Image from 'next/image';
+import { Plus } from '@/public/plus';
+import { Heart } from '@/public/heart';
+import { PLayModal } from './PlayModal';
+import { TrailerModal } from './TrailerModal';
+import { CopyUrl } from './CopyUrl';
+import { More } from './More';
 
 const rubik = Rubik_Dirt({
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal"],
+  subsets: ['latin'],
+  weight: ['400'],
+  style: ['normal'],
 });
 
 interface MainDetailPage {
@@ -47,15 +47,11 @@ export default async function MainDetailPage(props: MainDetailPage) {
                         : `${movieDetail.time} minutes`}
                   </span>
                   <span>
-                    {movieDetail.mark}/10{" "}
-                    <StarFilled className="text-yellow-400" />
+                    {movieDetail.mark}/10 <StarFilled className="text-yellow-400" />
                   </span>
                   <ul className="mt-2 flex flex-wrap items-center">
                     {movieDetail.categories.map(
-                      (
-                        val: { categoryId: number; name: string },
-                        idx: number,
-                      ) => {
+                      (val: { categoryId: number; name: string }, idx: number) => {
                         if (idx + 1 < movieDetail.categories.length) {
                           return (
                             <li className="mr-2" key={val.categoryId}>
@@ -68,12 +64,10 @@ export default async function MainDetailPage(props: MainDetailPage) {
                         }
                         return (
                           <li className="mr-2" key={val.categoryId}>
-                            <span className=" cursor-pointer hover:text-[#E50914]">
-                              {val.name}
-                            </span>
+                            <span className=" cursor-pointer hover:text-[#E50914]">{val.name}</span>
                           </li>
                         );
-                      },
+                      }
                     )}
                   </ul>
                 </div>
@@ -95,19 +89,17 @@ export default async function MainDetailPage(props: MainDetailPage) {
               type="card"
               defaultActiveKey="Description"
               animated
-              style={{ height: "fit-content" }}
+              style={{ height: 'fit-content' }}
               items={[
                 {
-                  key: "Description",
-                  label: "Description",
+                  key: 'Description',
+                  label: 'Description',
                   children: <More movieDetail={movieDetail} />,
                 },
                 {
-                  key: "Actors",
-                  label: "Actors",
-                  children: (
-                    <Actor castCharacteries={movieDetail.castCharacteries} />
-                  ),
+                  key: 'Actors',
+                  label: 'Actors',
+                  children: <Actor castCharacteries={movieDetail.castCharacteries} />,
                 },
               ]}
             />

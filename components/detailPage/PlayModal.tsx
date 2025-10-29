@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { MovieDetailType, MovieType, SeasonMovieDetail } from "@/types";
-import { Modal, message } from "antd";
-import { useState } from "react";
-import { getSeasonListAction } from "../actions";
-import { LoadingIcon } from "@/public/loading";
-import { Play } from "@/public/play";
-import { useDispatch } from "react-redux";
-import { setMovieId } from "@/utils/redux/slices/data/movieIdSlice";
-import WatchModal from "./watchModal/WatchModal";
-import EpisodeModal from "./episodeModal/EpisodeModal";
+import { MovieDetailType, MovieType, SeasonMovieDetail } from '@/types';
+import { Modal, message } from 'antd';
+import { useState } from 'react';
+import { getSeasonListAction } from '../actions';
+import { LoadingIcon } from '@/public/loading';
+import { Play } from '@/public/play';
+import { useDispatch } from 'react-redux';
+import { setMovieId } from '@/utils/redux/slices/data/movieIdSlice';
+import WatchModal from './watchModal/WatchModal';
+import EpisodeModal from './episodeModal/EpisodeModal';
 
 interface PLayModalPage {
   movieDetail: MovieDetailType;
@@ -24,17 +24,17 @@ export const PLayModal = (props: PLayModalPage) => {
   const [isEpisodeModalOpen, setIsEpisodeModalOpen] = useState<boolean>(false);
   const [isWatchModalOpen, setIsWatchModalOpen] = useState<boolean>(false);
   const [watchMovie, setWatchMovie] = useState<SeasonMovieDetail>({
-    seasonId: "",
+    seasonId: '',
     seasonNumber: 1,
-    name: "",
+    name: '',
     episodes: [
       {
-        episodeId: "",
+        episodeId: '',
         episodeNumber: 1,
-        name: "",
-        video: "",
-        dateCreated: "",
-        dateUpdated: "",
+        name: '',
+        video: '',
+        dateCreated: '',
+        dateUpdated: '',
       },
     ],
   });
@@ -50,7 +50,7 @@ export const PLayModal = (props: PLayModalPage) => {
       const data = await getSeasonListAction(movieDetail.movieId, 1, true);
       if (!data || data.length === 0) {
         setLoadingMovie(false);
-        message.error("Movie is not ready!");
+        message.error('Movie is not ready!');
         return;
       }
       setWatchMovie({ ...data[0] });
@@ -65,12 +65,12 @@ export const PLayModal = (props: PLayModalPage) => {
 
   const handleCancelWatch = () => {
     setIsWatchModalOpen(false);
-    dispatch(setMovieId(""));
+    dispatch(setMovieId(''));
   };
 
   const handleCancel = () => {
     setIsEpisodeModalOpen(false);
-    dispatch(setMovieId(""));
+    dispatch(setMovieId(''));
   };
 
   return (
@@ -84,12 +84,7 @@ export const PLayModal = (props: PLayModalPage) => {
           <>
             {loadingMovie ? (
               <div className="flex items-center justify-center">
-                <LoadingIcon
-                  width={20}
-                  height={20}
-                  fill="white"
-                  className="mr-2 animate-spin"
-                />
+                <LoadingIcon width={20} height={20} fill="white" className="mr-2 animate-spin" />
               </div>
             ) : (
               <div className="flex items-center justify-center">
@@ -107,7 +102,7 @@ export const PLayModal = (props: PLayModalPage) => {
         open={isEpisodeModalOpen}
         onCancel={handleCancel}
         footer={null}
-        styles={{ body: { paddingTop: "20px", paddingBottom: "10px" } }}
+        styles={{ body: { paddingTop: '20px', paddingBottom: '10px' } }}
       >
         <EpisodeModal
           movieId={movieDetail.movieId}
@@ -118,10 +113,10 @@ export const PLayModal = (props: PLayModalPage) => {
       <Modal
         open={isWatchModalOpen}
         centered
-        width={"70svw"}
+        width={'70svw'}
         onCancel={handleCancelWatch}
         footer={null}
-        styles={{ body: { paddingTop: "20px", paddingBottom: "10px" } }}
+        styles={{ body: { paddingTop: '20px', paddingBottom: '10px' } }}
         title={movieDetail.englishName}
         destroyOnClose={!isWatchModalOpen}
       >

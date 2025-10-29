@@ -1,21 +1,21 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Button, Form, Input, Space, Table, Tooltip, message } from "antd";
-import type { InputRef } from "antd";
-import Column from "antd/es/table/Column";
-import { FilterDropdownProps } from "antd/es/table/interface";
-import { SearchOutlined } from "@ant-design/icons";
-import Highlighter from "react-highlight-words";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useRef, useState } from 'react';
+import { Button, Form, Input, Space, Table, Tooltip, message } from 'antd';
+import type { InputRef } from 'antd';
+import Column from 'antd/es/table/Column';
+import { FilterDropdownProps } from 'antd/es/table/interface';
+import { SearchOutlined } from '@ant-design/icons';
+import Highlighter from 'react-highlight-words';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   isCancelButtonModalSelector,
   movieIdSelector,
   personListSelector,
-} from "@/utils/redux/selector";
-import CreatePersonModal from "./createPersonModal";
-import { setPersonList } from "@/utils/redux/slices/data/personListSlice";
-import Axios from "@/utils/axios";
-import { revalidatePathAction } from "@/components/actions";
-import Image from "next/image";
+} from '@/utils/redux/selector';
+import CreatePersonModal from './createPersonModal';
+import { setPersonList } from '@/utils/redux/slices/data/personListSlice';
+import Axios from '@/utils/axios';
+import { revalidatePathAction } from '@/components/actions';
+import Image from 'next/image';
 
 interface DataType {
   key: React.Key;
@@ -53,14 +53,13 @@ const ActorForm = ({
 }: VideoFormType) => {
   const dispatch = useDispatch();
 
-  const [searchText, setSearchText] = useState<string>("");
-  const [searchedColumn, setSearchedColumn] = useState<string>("");
+  const [searchText, setSearchText] = useState<string>('');
+  const [searchedColumn, setSearchedColumn] = useState<string>('');
   const searchInput = useRef<InputRef>(null);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [reloading, setReloading] = useState<boolean>(false);
-  const [isOpenCreatePersonModal, setIsOpenCreatePersonModal] =
-    useState<boolean>(false);
+  const [isOpenCreatePersonModal, setIsOpenCreatePersonModal] = useState<boolean>(false);
 
   const movieId = useSelector(movieIdSelector);
   const personList = useSelector(personListSelector);
@@ -75,7 +74,7 @@ const ActorForm = ({
       try {
         setLoading(true);
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/Persons?sortBy=CreatedDate&page=0`,
+          `${process.env.NEXT_PUBLIC_API_URL}/Persons?sortBy=CreatedDate&page=0`
         );
         const data = await res.json();
         dispatch(
@@ -83,8 +82,8 @@ const ActorForm = ({
             data.map((val: PersonType, idx: number) => ({
               ...val,
               key: idx,
-            })),
-          ),
+            }))
+          )
         );
         setLoading(false);
       } catch (error) {
@@ -119,8 +118,8 @@ const ActorForm = ({
 
   const handleSearch = (
     selectedKeys: string[],
-    confirm: FilterDropdownProps["confirm"],
-    dataIndex: DataIndex,
+    confirm: FilterDropdownProps['confirm'],
+    dataIndex: DataIndex
   ) => {
     confirm();
     setSearchText(selectedKeys[0]);
@@ -129,53 +128,50 @@ const ActorForm = ({
 
   const handleReset = (clearFilters: () => void) => {
     clearFilters();
-    setSearchText("");
+    setSearchText('');
   };
 
   //-----------------------------------------
 
   const handleOnFinish = async (values: any) => {
     if (selectedRowKeys.length === 0) {
-      message.success("Finish!");
+      message.success('Finish!');
       return;
     }
 
-    const selectedPersons = personList.reduce(
-      (acc: any, val: PersonType, idx: number) => {
-        if (!selectedRowKeys.includes(idx)) return acc;
+    const selectedPersons = personList.reduce((acc: any, val: PersonType, idx: number) => {
+      if (!selectedRowKeys.includes(idx)) return acc;
 
-        const person = {
-          personId: val.personId,
-          characterName: val.namePerson,
-        };
-        return [...acc, person];
-      },
-      [],
-    );
+      const person = {
+        personId: val.personId,
+        characterName: val.namePerson,
+      };
+      return [...acc, person];
+    }, []);
 
     try {
       setIsLoadingNextButton(true);
       await Axios.post(`Cast/${movieId}`, selectedPersons);
-      await revalidatePathAction("admin/manageMovies");
-      message.success("Add actors successfully!");
+      await revalidatePathAction('admin/manageMovies');
+      message.success('Add actors successfully!');
       setTimeout(() => {
         setIsLoadingNextButton(false);
         form.resetFields();
-        setSearchText("");
-        setSearchedColumn("");
+        setSearchText('');
+        setSearchedColumn('');
         setSelectedRowKeys([]);
       }, 2000);
     } catch (error) {
       console.log(error);
-      message.error("Failed to add actors!");
+      message.error('Failed to add actors!');
       setIsLoadingNextButton(false);
     }
   };
 
   useEffect(() => {
     form.resetFields();
-    setSearchText("");
-    setSearchedColumn("");
+    setSearchText('');
+    setSearchedColumn('');
     setSelectedRowKeys([]);
   }, [isCancelButtonModal]);
 
@@ -188,10 +184,7 @@ const ActorForm = ({
       ) : (
         <div>
           {contextHolder}
-          <div
-            className="flex items-center justify-between"
-            style={{ marginBottom: 16 }}
-          >
+          <div className="flex items-center justify-between" style={{ marginBottom: 16 }}>
             <div>
               <Button
                 onClick={start}
@@ -201,12 +194,10 @@ const ActorForm = ({
                 Reset
               </Button>
               <span style={{ marginLeft: 8 }}>
-                {hasSelected
-                  ? `Selected ${selectedRowKeys.length} persons`
-                  : ""}
+                {hasSelected ? `Selected ${selectedRowKeys.length} persons` : ''}
               </span>
             </div>
-            {searchedColumn !== "" ? (
+            {searchedColumn !== '' ? (
               <Button
                 disabled={isLoadingNextButton}
                 onClick={() => setIsOpenCreatePersonModal(true)}
@@ -222,12 +213,8 @@ const ActorForm = ({
             )}
           </div>
           <Form id="createMovie" onFinish={handleOnFinish}>
-            <Form.Item name={""}>
-              <Table
-                className="w-[642px]"
-                rowSelection={rowSelection}
-                dataSource={personList}
-              >
+            <Form.Item name={''}>
+              <Table className="w-[642px]" rowSelection={rowSelection} dataSource={personList}>
                 <Column
                   title="Image"
                   dataIndex="thumbnail"
@@ -251,9 +238,7 @@ const ActorForm = ({
                   title="Name"
                   dataIndex="namePerson"
                   key="namePerson"
-                  filterIcon={
-                    <i className="fa-regular fa-magnifying-glass text-gray-400"></i>
-                  }
+                  filterIcon={<i className="fa-regular fa-magnifying-glass text-gray-400"></i>}
                   filterDropdown={({
                     setSelectedKeys,
                     selectedKeys,
@@ -262,7 +247,7 @@ const ActorForm = ({
                     close,
                   }) => (
                     <div
-                      style={{ padding: 8, backgroundColor: "#2d2c2d" }}
+                      style={{ padding: 8, backgroundColor: '#2d2c2d' }}
                       onKeyDown={(e) => e.stopPropagation()}
                     >
                       <Input
@@ -270,24 +255,16 @@ const ActorForm = ({
                         ref={searchInput}
                         placeholder={`Search name`}
                         value={selectedKeys[0]}
-                        onChange={(e) =>
-                          setSelectedKeys(
-                            e.target.value ? [e.target.value] : [],
-                          )
-                        }
+                        onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
                         style={{
                           marginBottom: 8,
-                          display: "block",
+                          display: 'block',
                         }}
                       />
                       <Space>
                         <Button
                           onClick={() =>
-                            handleSearch(
-                              selectedKeys as string[],
-                              confirm,
-                              "namePerson",
-                            )
+                            handleSearch(selectedKeys as string[], confirm, 'namePerson')
                           }
                           icon={<SearchOutlined />}
                           size="small"
@@ -296,9 +273,7 @@ const ActorForm = ({
                           Search
                         </Button>
                         <Button
-                          onClick={() =>
-                            clearFilters && handleReset(clearFilters)
-                          }
+                          onClick={() => clearFilters && handleReset(clearFilters)}
                           size="small"
                           type="dashed"
                           style={{ width: 90 }}
@@ -318,7 +293,7 @@ const ActorForm = ({
                     </div>
                   )}
                   onFilter={(value, record: any) =>
-                    record["namePerson"]
+                    record['namePerson']
                       .toString()
                       .toLowerCase()
                       .includes((value as string).toLowerCase())
@@ -329,15 +304,15 @@ const ActorForm = ({
                     }
                   }}
                   render={(text) =>
-                    searchedColumn === "namePerson" ? (
+                    searchedColumn === 'namePerson' ? (
                       <Highlighter
                         highlightStyle={{
-                          backgroundColor: "#ffc069",
+                          backgroundColor: '#ffc069',
                           padding: 0,
                         }}
                         searchWords={[searchText]}
                         autoEscape
-                        textToHighlight={text ? text.toString() : ""}
+                        textToHighlight={text ? text.toString() : ''}
                       />
                     ) : (
                       text
@@ -349,17 +324,15 @@ const ActorForm = ({
                   dataIndex="nationName"
                   key="nationName"
                   filters={[
-                    { text: "China", value: "China" },
-                    { text: "Japan", value: "Japan" },
-                    { text: "Korea", value: "Korea" },
-                    { text: "America", value: "America" },
-                    { text: "VietNam", value: "VietNam" },
+                    { text: 'China', value: 'China' },
+                    { text: 'Japan', value: 'Japan' },
+                    { text: 'Korea', value: 'Korea' },
+                    { text: 'America', value: 'America' },
+                    { text: 'VietNam', value: 'VietNam' },
                   ]}
-                  filterIcon={
-                    <i className="fa-sharp fa-solid fa-filter-list text-gray-400 "></i>
-                  }
+                  filterIcon={<i className="fa-sharp fa-solid fa-filter-list text-gray-400 "></i>}
                   onFilter={(value: any, record: DataType) => {
-                    setSearchedColumn("nationName");
+                    setSearchedColumn('nationName');
                     return record.nationName.includes(value);
                   }}
                 />
@@ -368,14 +341,12 @@ const ActorForm = ({
                   dataIndex="role"
                   key="role"
                   filters={[
-                    { text: "Actor", value: "Actor" },
-                    { text: "Producer", value: "Producer" },
+                    { text: 'Actor', value: 'Actor' },
+                    { text: 'Producer', value: 'Producer' },
                   ]}
-                  filterIcon={
-                    <i className="fa-sharp fa-solid fa-filter-list text-gray-400 "></i>
-                  }
+                  filterIcon={<i className="fa-sharp fa-solid fa-filter-list text-gray-400 "></i>}
                   onFilter={(value: any, record: DataType) => {
-                    setSearchedColumn("role");
+                    setSearchedColumn('role');
                     return record.role.includes(value);
                   }}
                 />

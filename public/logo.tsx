@@ -5,7 +5,7 @@ export const Logo = () => {
       xmlns="http://www.w3.org/2000/svg"
       width="100px"
       height="50px"
-      style={{ color: "red" }}
+      style={{ color: 'red' }}
       viewBox="0 0 1000.000000 500.000000"
       preserveAspectRatio="xMidYMid meet"
     >

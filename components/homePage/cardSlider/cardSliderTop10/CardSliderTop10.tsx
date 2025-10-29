@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import React, { useEffect, useRef, useState } from "react";
-import CardMovieTop10 from "./CardMovieTop10";
+import React, { useEffect, useRef, useState } from 'react';
+import CardMovieTop10 from './CardMovieTop10';
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
+} from '@/components/ui/carousel';
 
 type cardSliderProps = {
   title: string;
@@ -50,9 +50,7 @@ const CardSliderTop10 = ({ title, movieList, icon }: cardSliderProps) => {
           <div className="group flex items-center justify-between md:justify-start">
             <div className="flex items-center">
               {icon}
-              <h2 className="text-2xl font-bold max-[528px]:text-lg">
-                {title}
-              </h2>
+              <h2 className="text-2xl font-bold max-[528px]:text-lg">{title}</h2>
             </div>
           </div>
         </div>
@@ -64,8 +62,8 @@ const CardSliderTop10 = ({ title, movieList, icon }: cardSliderProps) => {
         >
           <Carousel
             opts={{
-              align: "start",
-              loop: true,
+              align: 'start',
+              loop: false,
               dragFree: true,
               slidesToScroll: 2,
             }}

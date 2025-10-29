@@ -1,9 +1,9 @@
-"use server";
+'use server';
 
-import { MovieType } from "@/types";
-import { Button, Result } from "antd";
-import { RightOutlined, LeftOutlined } from "@ant-design/icons";
-import CardMovie from "../homePage/cardSlider/CardMovieClient";
+import { MovieType } from '@/types';
+import { Button, Result } from 'antd';
+import { RightOutlined, LeftOutlined } from '@ant-design/icons';
+import CardMovie from '../homePage/cardSlider/CardMovieClient';
 
 interface FeatureMovieList {
   initialRecommendedMovie: MovieType[];
@@ -24,8 +24,7 @@ export const Tile = ({ title }: TileType) => (
 );
 
 const FeatureMovieList = async (props: FeatureMovieList) => {
-  const { initialRecommendedMovie, totalItems, current, featureId, page } =
-    props;
+  const { initialRecommendedMovie, totalItems, current, featureId, page } = props;
 
   return (
     <>

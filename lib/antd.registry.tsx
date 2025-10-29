@@ -1,12 +1,10 @@
-"use client";
+'use client';
 
-import { useRef, useState } from "react";
-import { useServerInsertedHTML } from "next/navigation";
-import { createCache, extractStyle, StyleProvider } from "@ant-design/cssinjs";
+import { useRef, useState } from 'react';
+import { useServerInsertedHTML } from 'next/navigation';
+import { createCache, extractStyle, StyleProvider } from '@ant-design/cssinjs';
 
-export default function StyledComponentsRegistry({
-  children,
-}: React.PropsWithChildren) {
+export default function StyledComponentsRegistry({ children }: React.PropsWithChildren) {
   const [cache] = useState(() => createCache());
 
   const isServerInserted = useRef(false);
@@ -35,7 +33,7 @@ function htmlToAttributes(html: string) {
   const rootTagContentMatch = startTagRegex.exec(html);
 
   if (!rootTagContentMatch) {
-    throw new Error("htmlEjectAttributes: invalid html");
+    throw new Error('htmlEjectAttributes: invalid html');
   }
   const [fullMatch, content] = rootTagContentMatch;
   const htmlAttrsRegex = /\s(\w+)="(.+?)"/g;
@@ -45,12 +43,9 @@ function htmlToAttributes(html: string) {
   while ((match = htmlAttrsRegex.exec(content))) {
     argPairs.push([match[1], match[2]]);
   }
-  const [rootTag] = content.split(" ");
+  const [rootTag] = content.split(' ');
 
-  const __html = html.slice(
-    fullMatch.length,
-    html.lastIndexOf(`</${rootTag}>`)
-  );
+  const __html = html.slice(fullMatch.length, html.lastIndexOf(`</${rootTag}>`));
   return argPairs.reduce((acc, [name, value]) => ({ ...acc, [name]: value }), {
     dangerouslySetInnerHTML: { __html },
   });

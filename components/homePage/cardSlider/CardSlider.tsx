@@ -1,15 +1,15 @@
-"use server";
+'use server';
 
-import CardMovie from "./CardMovieServer";
-import Link from "next/link";
+import CardMovie from './CardMovieServer';
+import Link from 'next/link';
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
-import { RightOutlined } from "@ant-design/icons";
+} from '@/components/ui/carousel';
+import { RightOutlined } from '@ant-design/icons';
 
 type cardSliderProps = {
   title: string;
@@ -30,12 +30,7 @@ type movieProps = {
   dateCreated: string;
 };
 
-const CardSlider = async ({
-  title,
-  movieList,
-  href,
-  icon,
-}: cardSliderProps) => {
+const CardSlider = async ({ title, movieList, href, icon }: cardSliderProps) => {
   return (
     <div className="group mb-3">
       <>
@@ -61,8 +56,8 @@ const CardSlider = async ({
         <div className="mx-[-12px] sm:mx-[-48px]">
           <Carousel
             opts={{
-              align: "start",
-              loop: true,
+              align: 'start',
+              loop: false,
               slidesToScroll: 3,
               dragFree: true,
             }}
@@ -87,8 +82,8 @@ const CardSlider = async ({
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious className="hidden group-hover:lg:flex" />
-            <CarouselNext className="hidden group-hover:lg:flex" />
+            <CarouselPrevious className="hidden transition-transform duration-300 hover:scale-125 group-hover:lg:flex" />
+            <CarouselNext className="hidden transition-transform duration-300 hover:scale-125 group-hover:lg:flex" />
           </Carousel>
         </div>
       </>

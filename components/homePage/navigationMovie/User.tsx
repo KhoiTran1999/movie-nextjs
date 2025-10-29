@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import React, { useEffect, useRef, useState } from "react";
-import { UserButton, useUser } from "@clerk/nextjs";
-import { Button, Tour } from "antd";
-import type { TourProps } from "antd";
-import { CloseOutlined } from "@ant-design/icons";
-import { usePathname } from "next/navigation";
+import React, { useEffect, useRef, useState } from 'react';
+import { UserButton, useUser } from '@clerk/nextjs';
+import { Button, Tour } from 'antd';
+import type { TourProps } from 'antd';
+import { CloseOutlined } from '@ant-design/icons';
+import { usePathname } from 'next/navigation';
 
 const User = () => {
   const pathname = usePathname();
@@ -16,30 +16,26 @@ const User = () => {
 
   const [open, setOpen] = useState<boolean>(false);
 
-  const steps: TourProps["steps"] = [
+  const steps: TourProps['steps'] = [
     {
-      title: "Login with Microsoft Account",
+      title: 'Login with Microsoft Account',
       description: "You're gonna have a better movie watching experience",
       cover: (
-        <img
-          className="rounded-md"
-          alt="Login with Microsoft"
-          src="/loginWithMicrosoft.jpg"
-        />
+        <img className="rounded-md" alt="Login with Microsoft" src="/loginWithMicrosoft.jpg" />
       ),
       target: () => loginRef.current,
     },
   ];
 
   useEffect(() => {
-    const isNew = localStorage.getItem("visit") == null;
+    const isNew = localStorage.getItem('visit') == null;
     if (isNew) {
-      localStorage.setItem("visit", "TRUE");
+      localStorage.setItem('visit', 'TRUE');
       setOpen(true);
       //It's a new user
     } else {
       //It's not a new user
-      localStorage.setItem("visit", "TRUE");
+      localStorage.setItem('visit', 'TRUE');
     }
   }, []);
 
@@ -51,11 +47,8 @@ const User = () => {
         </div>
       ) : (
         <>
-          {!pathname.includes("sign-in") && isLoaded && (
-            <Button
-              ref={loginRef}
-              href={process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL}
-            >
+          {!pathname.includes('sign-in') && isLoaded && (
+            <Button ref={loginRef} href={process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL}>
               Login
             </Button>
           )}
@@ -71,10 +64,8 @@ const User = () => {
           </span>
         )}
         animated={true}
-        mask={{ color: "#ffffff3e" }}
-        closeIcon={
-          <CloseOutlined className="rounded-full bg-[#ffffff3e] p-1" />
-        }
+        mask={{ color: '#ffffff3e' }}
+        closeIcon={<CloseOutlined className="rounded-full bg-[#ffffff3e] p-1" />}
       />
     </div>
   );

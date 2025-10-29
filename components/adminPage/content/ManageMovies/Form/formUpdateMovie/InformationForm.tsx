@@ -1,29 +1,20 @@
-import {
-  Form,
-  Input,
-  InputNumber,
-  DatePicker,
-  message,
-  Upload,
-  Select,
-  InputRef,
-} from "antd";
-import type { RcFile } from "antd/es/upload/interface";
-import { PlusOutlined } from "@ant-design/icons";
-import moment from "moment";
-import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import dayjs from "dayjs";
-import { setIsLoadingAIButton } from "@/utils/redux/slices/toggle/IsLoadingAIButtonSlice";
+import { Form, Input, InputNumber, DatePicker, message, Upload, Select, InputRef } from 'antd';
+import type { RcFile } from 'antd/es/upload/interface';
+import { PlusOutlined } from '@ant-design/icons';
+import moment from 'moment';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import dayjs from 'dayjs';
+import { setIsLoadingAIButton } from '@/utils/redux/slices/toggle/IsLoadingAIButtonSlice';
 import {
   isCancelButtonModalSelector,
   isLoadingAIButtonSelector,
   movieIdSelector,
-} from "@/utils/redux/selector";
-import { revalidatePathAction } from "@/components/actions";
-import { deepEqual } from "assert";
-import Axios from "@/utils/axios";
-import { setmovieDetail } from "@/utils/redux/slices/data/movieDetailSlice";
+} from '@/utils/redux/selector';
+import { revalidatePathAction } from '@/components/actions';
+import { deepEqual } from 'assert';
+import Axios from '@/utils/axios';
+import { setmovieDetail } from '@/utils/redux/slices/data/movieDetailSlice';
 
 const { TextArea } = Input;
 
@@ -186,16 +177,12 @@ const InformationForm = ({
       try {
         setIsLoadingNextButton(true);
 
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/Movie/${movieId}`,
-        );
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/Movie/${movieId}`);
         const movie = await res.json();
 
         dispatch(setmovieDetail(movie));
         //Add value into form
-        const filterCategories = movie.categories.map(
-          (val: any) => val.categoryId,
-        );
+        const filterCategories = movie.categories.map((val: any) => val.categoryId);
 
         const filterdData = {
           Mark: movie.mark,
@@ -205,7 +192,7 @@ const InformationForm = ({
           EnglishName: movie.englishName,
           VietnamName: movie.vietnamName,
           Trailer: movie.trailer,
-          ProducedDate: dayjs(movie.producedDate, "YYYY/MM/DD"),
+          ProducedDate: dayjs(movie.producedDate, 'YYYY/MM/DD'),
           Nation: movie.nation.nationId,
           Feature: movie.feature.featureId,
           Category: filterCategories,
@@ -252,7 +239,7 @@ const InformationForm = ({
 
     try {
       //Compare Old values and New value
-      deepEqual({ ...values, MovieId: movieId }, oldMovie, "not same");
+      deepEqual({ ...values, MovieId: movieId }, oldMovie, 'not same');
 
       form.resetFields();
       setImageUrl(null);
@@ -260,14 +247,14 @@ const InformationForm = ({
     } catch (error) {
       try {
         setIsLoadingNextButton(true);
-        await Axios.put("Movie", data, {
+        await Axios.put('Movie', data, {
           headers: {
-            "Content-Type": "multipart/form-data",
+            'Content-Type': 'multipart/form-data',
           },
         });
 
-        await revalidatePathAction("admin/manageMovies");
-        message.success("Movie have been updated successfully!");
+        await revalidatePathAction('admin/manageMovies');
+        message.success('Movie have been updated successfully!');
 
         setTimeout(() => {
           form.resetFields();
@@ -277,7 +264,7 @@ const InformationForm = ({
         }, 2000);
       } catch (error) {
         console.log(error);
-        message.error("Something went wrong!");
+        message.error('Something went wrong!');
         movieNameRef.current?.focus();
         setIsLoadingNextButton(false);
       }
@@ -289,28 +276,28 @@ const InformationForm = ({
     if (clickAIButton > 0) {
       //AI create Movie ----------------------------
       const handleAICreateMovie = async () => {
-        const englishName = form.getFieldValue("EnglishName");
+        const englishName = form.getFieldValue('EnglishName');
         if (!englishName) {
           movieNameRef.current?.focus();
-          return message.error("Required input English Name");
+          return message.error('Required input English Name');
         }
 
         if (englishName.length < 2) {
           return movieNameRef.current?.focus();
         }
 
-        const nation = form.getFieldValue("Nation");
+        const nation = form.getFieldValue('Nation');
 
         try {
           dispatch(setIsLoadingAIButton(true));
           const res = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/Chat?content=${englishName}&nation=${nation}`,
+            `${process.env.NEXT_PUBLIC_API_URL}/Chat?content=${englishName}&nation=${nation}`
           );
           const movie = await res.json();
 
           form.setFieldsValue({
             Category: movie.Categories,
-            ProducedDate: dayjs(movie.ProducedDate, "YYYY/MM/DD"),
+            ProducedDate: dayjs(movie.ProducedDate, 'YYYY/MM/DD'),
             Description: movie.Description,
             Feature: movie.FeatureId > 4 ? null : movie.FeatureId,
             Mark: movie.Mark,
@@ -320,7 +307,7 @@ const InformationForm = ({
           });
           dispatch(setIsLoadingAIButton(false));
           message.success(
-            `AI have created the movie information, Click button "AI Create" again if you have unexpected result`,
+            `AI have created the movie information, Click button "AI Create" again if you have unexpected result`
           );
         } catch (error) {
           console.log(error);
@@ -344,7 +331,7 @@ const InformationForm = ({
       {contextHolder}
       <Form
         form={form}
-        labelCol={{ span: 8, flex: "110px" }}
+        labelCol={{ span: 8, flex: '110px' }}
         labelAlign="right"
         labelWrap
         // wrapperCol={{ span: 14 }}
@@ -353,7 +340,7 @@ const InformationForm = ({
         onFinish={onFinish}
         onFinishFailed={(e) =>
           form.scrollToField(e.errorFields[0].name, {
-            behavior: "smooth",
+            behavior: 'smooth',
           })
         }
         id="updateMovie"
@@ -365,15 +352,15 @@ const InformationForm = ({
           rules={[
             {
               required: true,
-              message: "This field is required.",
+              message: 'This field is required.',
             },
             {
               min: 2,
-              message: "At least 2 letters",
+              message: 'At least 2 letters',
             },
             {
               max: 99,
-              message: "Maximum 100 letters",
+              message: 'Maximum 100 letters',
             },
           ]}
         >
@@ -394,15 +381,15 @@ const InformationForm = ({
           rules={[
             {
               required: true,
-              message: "This field is required.",
+              message: 'This field is required.',
             },
             {
               min: 2,
-              message: "At least 2 letters",
+              message: 'At least 2 letters',
             },
             {
               max: 99,
-              message: "Maximum 100 letters",
+              message: 'Maximum 100 letters',
             },
           ]}
         >
@@ -455,11 +442,7 @@ const InformationForm = ({
           />
         </Form.Item>
 
-        <Form.Item<FieldType>
-          validateDebounce={1000}
-          label="Duration"
-          name="Duration"
-        >
+        <Form.Item<FieldType> validateDebounce={1000} label="Duration" name="Duration">
           <InputNumber
             placeholder="Duration"
             addonAfter="Minutes"
@@ -475,18 +458,14 @@ const InformationForm = ({
           rules={[{ required: true }]}
         >
           <DatePicker
-            format={"YYYY/MM/DD"}
+            format={'YYYY/MM/DD'}
             placeholder="Pick a date"
             className="inputCustom"
             disabled={isLoadingNextButton || isLoadingAIButton}
           />
         </Form.Item>
 
-        <Form.Item<FieldType>
-          validateDebounce={1000}
-          label="Viewer"
-          name="Viewer"
-        >
+        <Form.Item<FieldType> validateDebounce={1000} label="Viewer" name="Viewer">
           <InputNumber
             placeholder="Viewer"
             min={0}
@@ -502,10 +481,10 @@ const InformationForm = ({
           rules={[
             {
               required: true,
-              message: "This field is required.",
+              message: 'This field is required.',
             },
             {
-              type: "url",
+              type: 'url',
               warningOnly: true,
             },
           ]}
@@ -524,10 +503,10 @@ const InformationForm = ({
           rules={[
             {
               required: true,
-              message: "This field is required.",
+              message: 'This field is required.',
             },
             {
-              type: "url",
+              type: 'url',
               warningOnly: true,
             },
           ]}
@@ -548,7 +527,7 @@ const InformationForm = ({
                 alt="Thumnail"
                 className="h-full w-full object-cover"
                 onError={(e) => {
-                  setImageUrl("/errorThumbnail.jpg");
+                  setImageUrl('/errorThumbnail.jpg');
                 }}
               />
             </div>
@@ -568,15 +547,15 @@ const InformationForm = ({
           rules={[
             {
               required: true,
-              message: "This field is required.",
+              message: 'This field is required.',
             },
             {
               min: 20,
-              message: "At least 20 letters",
+              message: 'At least 20 letters',
             },
             {
               max: 10000,
-              message: "Maximum 10000 letters",
+              message: 'Maximum 10000 letters',
             },
           ]}
         >
@@ -586,7 +565,7 @@ const InformationForm = ({
             maxLength={9999}
             placeholder="Descript the movie"
             className="inputCustom"
-            style={{ resize: "none" }}
+            style={{ resize: 'none' }}
             disabled={isLoadingNextButton || isLoadingAIButton}
           />
         </Form.Item>
@@ -598,7 +577,7 @@ const InformationForm = ({
           rules={[
             {
               required: true,
-              message: "This field is required.",
+              message: 'This field is required.',
             },
           ]}
         >

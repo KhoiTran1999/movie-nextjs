@@ -28,12 +28,12 @@
 
 :root .slick-next {
   &::before {
-    content: "";
+    content: '';
   }
 }
 :root .slick-prev {
   &::before {
-    content: "";
+    content: '';
   }
 }
 
@@ -175,11 +175,7 @@
   top: 2px;
 }
 
-:root
-  .ant-steps
-  .ant-steps-item-wait.ant-steps-item-custom
-  .ant-steps-item-icon
-  > .ant-steps-icon {
+:root .ant-steps .ant-steps-item-wait.ant-steps-item-custom .ant-steps-item-icon > .ant-steps-icon {
   color: #979696;
 }
 
@@ -218,11 +214,7 @@
   background: #8f8f8f;
 }
 
-:root
-  .ant-table-wrapper
-  .ant-table-tbody
-  .ant-table-row.ant-table-row-selected
-  > .ant-table-cell {
+:root .ant-table-wrapper .ant-table-tbody .ant-table-row.ant-table-row-selected > .ant-table-cell {
   background: #290303;
 }
 
